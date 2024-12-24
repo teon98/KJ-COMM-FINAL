@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-+($qk2fe21pf6m8*xw9_t$a%(#7zk11h2@jrc#u%zex_d^+5$j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['eommpj.onrender.com', '127.0.0.1']
+ALLOWED_HOSTS = ['eommpj.onrender.com', '127.0.0.1','www.kj2024.co.kr', 'kj2024.co.kr']
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -51,6 +52,18 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# 정적 파일의 URL 경로
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# 개발 중에 사용할 정적 파일 디렉토리들
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# 압축된 정적 파일 제공 설정
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'eommpj.urls'
 
@@ -81,9 +94,11 @@ DATABASES = {
     #    'ENGINE': 'django.db.backends.sqlite3',
     #    'NAME': BASE_DIR / 'db.sqlite3',
     #}
+    DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL')
+        default=os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')  # 기본값: SQLite
     )
+}
 }
 
 
