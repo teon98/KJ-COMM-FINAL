@@ -31,8 +31,17 @@ ALLOWED_HOSTS = ['eommpj.onrender.com', '127.0.0.1','www.kj2024.co.kr', 'kj2024.
 #ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # 콘솔에 출력
+#배포 환경에서 열기
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_PORT = 587
+#EMAIL_USE_TLS = True
+#EMAIL_HOST_USER = 'your_email@gmail.com'
+#EMAIL_HOST_PASSWORD = 'your_password'
 
 # Application definition
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
