@@ -22,4 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main_home, name='main_home'),  # 기본 페이지
     path('shop/', include('shop.urls')),  # shop 앱 연결
+    path('accounts/', include('django.contrib.auth.urls')),  # 기본 인증 URL
+    path('accounts/', include('accounts.urls')),  # 회원가입 경로 추가
 ]

@@ -28,7 +28,9 @@ SECRET_KEY = 'django-insecure-+($qk2fe21pf6m8*xw9_t$a%(#7zk11h2@jrc#u%zex_d^+5$j
 DEBUG = True
 
 ALLOWED_HOSTS = ['eommpj.onrender.com', '127.0.0.1','www.kj2024.co.kr', 'kj2024.co.kr']
+#ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # 콘솔에 출력
 
 # Application definition
 
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shop',
+    'accounts'
 ]
 
 MIDDLEWARE = [
