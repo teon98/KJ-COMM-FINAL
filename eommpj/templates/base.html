@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}한국종합상사{% endblock %}</title>
+    <meta
+      name="description"
+      content="국제종합상사는 최고의 상품 거래 플랫폼입니다. 신뢰할 수 있는 거래와 다양한 상품을 제공합니다."
+    />
+    <meta
+      name="keywords"
+      content="국제종합상사, 상품 거래, 국제 거래, 상품 플랫폼"
+    />
+    <meta name="author" content="국제종합상사" />
+    <!-- static 태그 사용 -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <ul class="header_menu">
+          <li><a href="/">홈으로</a></li>
+          <li><a>이용안내</a></li>
+          <li><a>질문과답변</a></li>
+          <li><a>자유게시판</a></li>
+          <li><a>주문내역</a></li>
+          <li><a>마이페이지</a></li>
+          <li><a>장바구니</a></li>
+          <li><a>즐겨찾기</a></li>
+        </ul>
+      </header>
+      <nav>
+        <div>
+          <form>
+            <input type="text" name="search" />
+            <button type="submit">상품검색🔍</button>
+          </form>
+        </div>
+        <div>
+          <ul>
+            <li><a>자료실</a></li>
+            <li><a>개인결제</a></li>
+            <li><a>중고상품</a></li>
+            <li><a>A/S접수</a></li>
+            <li><a>고객센터</a></li>
+            <li><a>회사소개</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="account_form">
+        <p class="account">
+          <label for="userid">아이디</label>
+          <input type="text" id="userid" name="userid" />
+        </p>
+        <p class="account">
+          <label for="userpw">비밀번호</label>
+          <input type="password" id="userpw" name="userpw" />
+        </p>
+        <button type="submit">로그인</button>
+        <button type="submit">회원가입</button>
+        <button type="submit">비밀번호분실</button>
+      </div>
+
+      <nav>
+        <p>상품카테고리</p>
+      </nav>
+
+      <main>{% block content %} {% endblock %}</main>
+
+      <footer>
+        <p>2024 My Django Site</p>
+      </footer>
+    </div>
+  </body>
+</html>
