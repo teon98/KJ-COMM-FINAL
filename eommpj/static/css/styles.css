@@ -1,27 +1,245 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
 .container {
-  max-width: 1340px; /* 최대 너비를 1340px로 고정 */
-  min-width: 200px;
+  width: 100%;
   margin: 0 auto;
 }
 
-ul {
-  list-style: none; /*목록 스타일 제거*/
-  margin: 0;
-  padding: 0;
-  width: 100%;
+header {
+  background-color: #f7f7f7;
+  padding: 10px 0;
 }
 
-li {
+.header_menu {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
   margin: 0;
+  padding: 0 10px;
+}
+
+/* 메뉴 스타일 */
+.secondary-menu {
+  display: flex;
+  justify-content: center; /* 메뉴 항목을 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  gap: 30px;
+  padding: 10px;
+  margin: 0 auto;
+}
+
+/* 메뉴 아이템 스타일 */
+.secondary-menu-list {
+  display: flex;
+  list-style: none;
   padding: 0;
+}
+
+.header_menu li {
+  margin: 0 10px;
+}
+
+.secondary-menu-list li {
+  text-align: center;
+  margin: 0 40px;
+}
+
+.header_menu a {
+  text-decoration: none;
+  color: #707070;
+  font-size: 16px;
+}
+
+.hamburger {
+  display: none;
+  font-size: 30px;
+  background: none;
+  border: none;
+  color: #707070;
+  cursor: pointer;
+}
+
+.secondary-menu a {
+  text-decoration: none;
+  color: #707070;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav form {
+  display: flex;
+}
+
+nav input[type="text"] {
+  width: 300px;
+  padding: 8px;
+  margin-right: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+nav button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+nav button:hover {
+  background-color: #0056b3;
+}
+
+/* 로그인 폼 스타일 */
+.account {
+  display: flex;
+  justify-content: center;
+  background-color: #fafafa;
+  border-top: 1px solid #d5d5d5;
+  border-bottom: 1px solid #d5d5d5;
 }
 
 .account_form {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 }
 
-.header_menu {
+.account_form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 8px 12px;
+  border: 1px solid #21a9ff;
+  background-color: #21a9ff;
+  color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+footer {
+  background-color: #f7f7f7;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* 검색창 스타일 */
+.search {
   display: flex;
-  flex-direction: row;
-  justify-content: end;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.search form {
+  display: flex;
+  justify-content: center;
+}
+
+.search input[type="text"] {
+  width: 300px;
+  padding: 8px;
+  margin-right: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.search button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.search button:hover {
+  background-color: #0056b3;
+}
+
+/* 반응형 스타일 추가 */
+@media (max-width: 768px) {
+  .header_menu {
+    display: none; /* 기본적으로 메뉴 숨기기 */
+    flex-direction: column; /* 메뉴 항목 세로 배치 */
+    padding: 0;
+  }
+
+  .header_menu.active {
+    display: flex; /* 햄버거 버튼 클릭 시 메뉴 보이기 */
+  }
+
+  .header_menu li {
+    margin: 4px;
+  }
+
+  .hamburger {
+    display: block; /* 햄버거 아이콘 보이기 */
+  }
+
+  .header_menu a {
+    font-size: 14px; /* 모바일에서 글자 크기 조금 작게 */
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav form {
+    margin-bottom: 10px;
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .account_form {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .header_menu {
+    font-size: 16px;
+  }
+
+  nav input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  footer {
+    font-size: 12px;
+  }
 }

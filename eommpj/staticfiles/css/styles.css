@@ -1,0 +1,27 @@
+.container {
+  max-width: 1340px; /* 최대 너비를 1340px로 고정 */
+  min-width: 200px;
+  margin: 0 auto;
+  padding: 0 80px; /* 좌우 여백 추가 (뷰포트에 따라 적용) */
+  background-color: aqua;
+}
+
+ul {
+  list-style: none; /*목록 스타일 제거*/
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+}
+
+.account_form {
+  display: flex;
+}
+
+.header_menu {
+  display: flex;
+} 
