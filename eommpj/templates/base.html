@@ -5,8 +5,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}한국종합상사{% endblock %}</title>
-    <meta name="description" content="국제종합상사는 최고의 상품 거래 플랫폼입니다. 신뢰할 수 있는 거래와 다양한 상품을 제공합니다." />
-    <meta name="keywords" content="국제종합상사, 상품 거래, 국제 거래, 상품 플랫폼" />
+    <meta
+      name="description"
+      content="국제종합상사는 최고의 상품 거래 플랫폼입니다. 신뢰할 수 있는 거래와 다양한 상품을 제공합니다."
+    />
+    <meta
+      name="keywords"
+      content="국제종합상사, 상품 거래, 국제 거래, 상품 플랫폼"
+    />
     <meta name="author" content="국제종합상사" />
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     {% block extra_head %}{% endblock %}
@@ -14,7 +20,7 @@
   <body>
     <div class="container">
       <header>
-        <button class="hamburger" aria-label="메뉴 열기">&#9776;</button> 
+        <button class="hamburger" aria-label="메뉴 열기">&#9776;</button>
         <ul class="header_menu">
           <li><a href="/">홈으로</a></li>
           <li><a>이용안내</a></li>
@@ -28,8 +34,13 @@
       </header>
 
       <div class="search">
+        <img src="{% static 'images/KJ_logo.png' %}" alt="logo" />
         <form>
-          <input type="text" name="search" placeholder="검색어를 입력해주세요" />
+          <input
+            type="text"
+            name="search"
+            placeholder="검색어를 입력해주세요"
+          />
           <button type="submit">상품검색🔍</button>
         </form>
       </div>
@@ -61,17 +72,14 @@
       </div>
 
       <!-- content 블록을 main 태그 안에 배치 -->
-      <main>
-        {% block content %}{% endblock %}
-      </main>
-      
+      <main>{% block content %}{% endblock %}</main>
     </div>
     <script>
-      const hamburger = document.querySelector('.hamburger');
-      const headerMenu = document.querySelector('.header_menu');
-    
-      hamburger.addEventListener('click', () => {
-        headerMenu.classList.toggle('active');
+      const hamburger = document.querySelector(".hamburger");
+      const headerMenu = document.querySelector(".header_menu");
+
+      hamburger.addEventListener("click", () => {
+        headerMenu.classList.toggle("active");
       });
     </script>
   </body>
