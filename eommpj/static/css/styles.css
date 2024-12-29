@@ -337,3 +337,35 @@ footer {
     font-size: 12px;
   }
 }
+
+.first_category_li {
+  display: flex;
+  align-items: center;
+  margin: 5px 0px;
+}
+
+.first_category_img_list {
+  width: 30px;
+  margin-right: 10px;
+}
+
+.main_content {
+  width: 100%;
+  display: flex;
+}
+
+.main_content main {
+  margin: 10px;
+}
+
+.main_content article {
+  width: 180px;
+}
+
+a {
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit; /* 부모 요소의 색상 상속 */
+  padding: 0; /* 기본 여백 제거 */
+  margin: 0; /* 기본 여백 제거 */
+  font-size: inherit; /* 부모 요소의 글꼴 크기 상속 */
+}

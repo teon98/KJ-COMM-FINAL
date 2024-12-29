@@ -40,7 +40,6 @@
           <hr class="custom-hr" />
         </ul>
       </header>
-
       <div class="search">
         <img src="{% static 'images/KJ_logo.png' %}" alt="logo" />
         <form>
@@ -81,8 +80,124 @@
         </form>
       </div>
 
-      <!-- content 블록을 main 태그 안에 배치 -->
-      <main>{% block content %}{% endblock %}</main>
+      <!-- 왼족 주 카테고리 메뉴-->
+      <content class="main_content">
+        <article class="first_category">
+          <ul>
+            <a href="">
+              <li class="first_category_li">
+                <img
+                  class="first_category_img_list"
+                  src="{% static 'images/체육용품아이콘.png' %}"
+                  alt="체육용품아이콘"
+                />
+                체육 용품
+              </li></a
+            >
+            <a href="">
+              <li class="first_category_li">
+                <img
+                  class="first_category_img_list"
+                  src="{% static 'images/유니폼의류아이콘.png' %}"
+                  alt="유니폼의류아이콘"
+                />유니폼의류
+              </li></a
+            >
+            <a href="">
+              <li class="first_category_li">
+                <img
+                  class="first_category_img_list"
+                  src="{% static 'images/에어용품_2.png' %}"
+                  alt="에어 용품"
+                />에어 용품
+              </li>
+            </a>
+            <a href="">
+              <li class="first_category_li">
+                <img
+                  class="first_category_img_list"
+                  src="{% static 'images/낚시용품.png' %}"
+                  alt="낚시 용품"
+                />낚시 용품
+              </li>
+            </a>
+            <a href="">
+              <li class="first_category_li">
+                <img
+                  class="first_category_img_list"
+                  src="{% static 'images/골프용품.png' %}"
+                  alt="골프 용품"
+                />골프 용품
+              </li>
+            </a>
+            <a href="">
+              <li class="first_category_li">
+                <img
+                  class="first_category_img_list"
+                  src="{% static 'images/생활용품.png' %}"
+                  alt="생활 용품"
+                />생활 용품
+              </li>
+            </a>
+            <a href="">
+              <li class="first_category_li">
+                <img
+                  class="first_category_img_list"
+                  src="{% static 'images/자동차용품.png' %}"
+                  alt="자동차 용품"
+                />자동차용품
+              </li>
+            </a>
+            <a href="">
+              <li class="first_category_li">
+                <img
+                  class="first_category_img_list"
+                  src="{% static 'images/호신용품.png' %}"
+                  alt="호신 용품"
+                />호신 용품
+              </li>
+            </a>
+            <a href="">
+              <li class="first_category_li">
+                <img
+                  class="first_category_img_list"
+                  src="{% static 'images/사무용품.png' %}"
+                  alt="사무 용품"
+                />사무 용품
+              </li>
+            </a>
+            <a href="">
+              <li class="first_category_li">
+                <img
+                  class="first_category_img_list"
+                  src="{% static 'images/어린이용품.png' %}"
+                  alt="어린이 용품"
+                />어린이용품
+              </li>
+            </a>
+            <a href="">
+              <li class="first_category_li">
+                <img
+                  class="first_category_img_list"
+                  src="{% static 'images/크리스마스용품.png' %}"
+                  alt="크리스마스"
+                />크리스마스
+              </li>
+            </a>
+            <a href="">
+              <li class="first_category_li">
+                <img
+                  class="first_category_img_list"
+                  src="{% static 'images/전자제품.png' %}"
+                  alt="전자제품 용품"
+                />전자 제품
+              </li>
+            </a>
+          </ul>
+        </article>
+        <!-- content 블록을 main 태그 안에 배치 -->
+        <main>{% block content %}{% endblock %}</main>
+      </content>
     </div>
     <script>
       const hamburger = document.querySelector(".hamburger");
