@@ -17,8 +17,9 @@ header {
   list-style: none;
   display: flex;
   justify-content: flex-end;
-  margin: 4px;
-  padding-right: 40px;
+  margin: 0;
+  padding: 0 10px;
+  width: 1340px; /*웹 화면 왼쪽 상단 고정*/
 }
 
 /* 메뉴 스타일 */
@@ -28,8 +29,9 @@ header {
   justify-content: center; /* 메뉴 항목을 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
   gap: 30px;
-  margin: 0 auto; 
-  /* padding: 10px 80px; */
+  /*margin: 0 auto; 왼쪽 정렬 고정을 위해 주석처리*/
+  width: 1340px;
+  padding: 10px 80px;
 }
 
 /* 메뉴 아이템 스타일 */
@@ -109,10 +111,8 @@ nav button:hover {
   justify-content: flex-start;
   background-color: #fafafa;
   border-top: 1px solid #d5d5d5;
-  border-bottom: 1px solid #d5d5d5; 
-  width: 1340px;
-  padding: 0 200px;
-  flex-wrap: wrap;
+  border-bottom: 1px solid #d5d5d5;
+  padding: 0 80px;
 }
 
 .account_form {
@@ -159,8 +159,13 @@ footer {
   margin-top: 10px;
   width: 1340px;
   padding: 0 200px;
-  height: 50px;
-} */
+.search {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+  width: 100%;
+  padding: 0 80px;
+ */
 
 .search {
   display: flex;
