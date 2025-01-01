@@ -23,21 +23,13 @@
         <button class="hamburger" aria-label="메뉴 열기">&#9776;</button>
         <ul class="header_menu">
           <li><a href="/">홈으로</a></li>
-          <hr class="custom-hr" />
           <li><a>이용안내</a></li>
-          <hr class="custom-hr" />
           <li><a>질문과답변</a></li>
-          <hr class="custom-hr" />
           <li><a>자유게시판</a></li>
-          <hr class="custom-hr" />
           <li><a>주문내역</a></li>
-          <hr class="custom-hr" />
           <li><a>마이페이지</a></li>
-          <hr class="custom-hr" />
           <li><a>장바구니</a></li>
-          <hr class="custom-hr" />
           <li><a>즐겨찾기</a></li>
-          <hr class="custom-hr" />
         </ul>
       </header>
       <div class="search">
@@ -63,20 +55,27 @@
         </ul>
       </nav>
       <div class="account">
-        <form class="account_form">
-          <p>
-            <label for="userid">아이디</label>
-            <input type="text" id="userid" name="userid" />
+        <form class="account_form" method="post" action="{% url 'login' %}">
+          {% csrf_token %} {% if user.is_authenticated %}
+          <p class="account_p">
+            {{ user.username }}님 안녕하세요,
+            <a class="main_buttons" type="submit" href="{% url 'logout' %}"
+              >로그아웃</a
+            >
           </p>
-          <p>
-            <label for="userpw">비밀번호</label>
-            <input type="password" id="userpw" name="userpw" />
+          {% else %}
+          <p class="account_p">
+            <label for="username">아이디</label>
+            <input type="text" id="username" name="username" />
           </p>
-          <div class="btn">
-            <button type="submit">로그인</button>
-            <button type="submit">회원가입</button>
-            <button type="submit">비밀번호분실</button>
-            </div>
+          <p class="account_p">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="password" />
+          </p>
+          <button class="main_buttons" type="submit">로그인</button>
+          <a class="main_buttons" href="{% url 'register' %}">회원가입</a>
+          <a href="#" class="main_buttons">비밀번호 찾기</a>
+          {% endif %}
         </form>
       </div>
 

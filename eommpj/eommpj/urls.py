@@ -38,8 +38,8 @@ from shop import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main_home, name='main_home'),  # 기본 페이지
-    path('shop/', include('shop.urls')),  # shop 앱 연결
-    path('accounts/', include('django.contrib.auth.urls')),  # 기본 인증 URL
-    path('accounts/signup', include('accounts.urls')),  # 회원가입 경로 추가
+    path('shop/', include('shop.urls')),  # shop 앱 연결    
+    path('accounts/', include('accounts.urls')),  # 회원가입 경로 추가
+
     #path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
 ]

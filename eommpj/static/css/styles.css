@@ -2,6 +2,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  text-align: center;
 }
 
 .container {
@@ -18,8 +19,8 @@ header {
   display: flex;
   justify-content: flex-end;
   margin: 0;
-  padding: 0 10px;
-  width: 1340px; /*웹 화면 왼쪽 상단 고정*/
+  padding: 10px 10px;
+  /*width: 1340px; /*웹 화면 왼쪽 상단 고정*/
 }
 
 /* 메뉴 스타일 */
@@ -29,9 +30,10 @@ header {
   justify-content: center; /* 메뉴 항목을 수평 중앙 정렬 */
   align-items: center; /* 수직 중앙 정렬 */
   gap: 30px;
-  /*margin: 0 auto; 왼쪽 정렬 고정을 위해 주석처리*/
+  margin: 0 auto; /*왼쪽 정렬 고정을 위해 주석처리*/
+  /*width: 1340px;*/
+  padding: 10px;
   width: 1340px;
-  padding: 10px 80px;
 }
 
 /* 메뉴 아이템 스타일 */
@@ -48,7 +50,6 @@ header {
 .secondary-menu-list li {
   text-align: center;
   margin: 0 40px;
-
 }
 
 .header_menu a {
@@ -101,6 +102,15 @@ nav button {
   cursor: pointer;
 }
 
+.main_buttons {
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
 nav button:hover {
   background-color: #0056b3;
 }
@@ -117,11 +127,11 @@ nav button:hover {
 
 .account_form {
   display: flex;
-  /* flex-direction: row; */
+  flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  /* gap: 10px; */
-  width: 100%;
+  gap: 10px;
+  width: 1340px;
 }
 
 .account_form input {
@@ -129,6 +139,16 @@ nav button:hover {
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 90%; /* 입력창이 화면 너비에 맞게 크기 조정 */
+}
+
+.account_p {
+  display: flex;
+  text-align: center;
+  align-items: center;
+}
+
+.account_p label {
+  width: 100px;
 }
 
 button {
@@ -170,8 +190,8 @@ footer {
 .search {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 20px 0px 0px 0px;
+  justify-content: flex-start;
+  margin: 20px 80px 0px 80px;
 }
 
 .search img {
@@ -182,7 +202,7 @@ footer {
 
 .search form {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   margin-left: 50px;
 }
 
@@ -300,19 +320,22 @@ footer {
     width: 100%; /* 부모 요소 너비에 맞게 설정 */
     padding: 0;
     border-top: 1px solid #d5d5d5;
-    border-bottom: 1px solid #d5d5d5; 
+    border-bottom: 1px solid #d5d5d5;
     height: auto; /* 화면 크기에 맞춰 높이를 자동으로 설정 */
   }
 
-  .account_form{
+  .account_form {
     align-items: center; /* 수평 중앙 정렬 */
     justify-content: center; /* 수직 중앙 정렬 */
   }
 
+  /*
   .search {
-    flex-direction: column; /* 세로로 정렬 */
-    align-items: center; /* 왼쪽 정렬 */
-  }
+    flex-direction: column; 세로로 정렬 
+    align-items: center; 왼쪽 정렬 
+    justify-content: flex-start;
+    margin: 20px 80px 0px 80px;
+  }*/
 
   .search img {
     margin-bottom: 20px;
@@ -373,4 +396,24 @@ a {
   padding: 0; /* 기본 여백 제거 */
   margin: 0; /* 기본 여백 제거 */
   font-size: inherit; /* 부모 요소의 글꼴 크기 상속 */
+}
+
+.content_register {
+  text-align: left;
+  width: 800px;
+}
+
+.content_text {
+  width: 100%;
+  height: 250px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid #707070;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: small;
+}
+
+.content_text > p {
+  font-weight: bold;
 }
