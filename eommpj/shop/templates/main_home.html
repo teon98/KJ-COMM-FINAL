@@ -1,5 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main_home.css' %}">
+</head>
+<body>
   <h1>환영합니다, {{ user.username }}</h1>
+  <h3>추천상품</h3>
+  <div class="ItemContainer">
+    <div class="Item">
+      <div class="ItemImg">
+        <img src="{% static 'images/체육용품아이콘.png' %}" width="200" height="200">
+      </div>
+      <div>
+        <p>상품명</p>
+      </div>
+    </div>
+    <div class="Item">
+      <div class="ItemImg">
+        <img src="{% static 'images/체육용품아이콘.png' %}" width="200" height="200">
+      </div>
+      <div>
+        <p>상품명</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>신규입고 상품</h3>
+  <div>
+
+  </div>
+</body>
 {% endblock %}

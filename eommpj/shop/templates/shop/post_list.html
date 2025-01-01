@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main_home.css' %}">
+    <title>Document</title>
+</head>
+    <h3>체육 용품</h3>
+    <hr></hr>
+    {% for p in post_list %} 
+    <div class="ItemContainer">
+        <div class="Item"><a href="{{ p.get_absolute_url }}">
+        {% if p.head_image %}
+            <div class="ItemImg">
+                <img src="{{ p.head_image.url }}" width="200" height="200">
+            </div>
+        {% endif %}
+            <div>
+                <p>{{ p.title }}</p>
+            </div>
+        </a></div>
+    {% endfor %}
+</body>
+</html>
+{% endblock %}
