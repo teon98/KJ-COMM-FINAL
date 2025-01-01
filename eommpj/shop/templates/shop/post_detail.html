@@ -18,6 +18,18 @@
     {% if post.file_upload %}
         <button><a href="{{ post.file_upload.url }}">다운</a></button>
     {% endif %}
+<!-- 수정 폼 -->
+    <form action="{% url 'post_edit' pk=post.pk %}" method="get" style="display: inline;">
+        <button type="submit">수정</button>
+    </form>
+
+    <!-- 삭제 폼 -->
+    <form action="{% url 'post_delete' pk=post.pk %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+</form>
+
+    
 </body>
 </html>
 {% endblock %}

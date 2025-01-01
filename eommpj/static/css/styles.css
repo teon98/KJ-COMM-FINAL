@@ -19,7 +19,7 @@ header {
   justify-content: flex-end;
   margin: 0;
   padding: 0 10px;
-  width: 1340px; /*웹 화면 왼쪽 상단 고정*/
+  /* width: 1340px; */
 }
 
 /* 메뉴 스타일 */
@@ -30,8 +30,8 @@ header {
   align-items: center; /* 수직 중앙 정렬 */
   gap: 30px;
   /*margin: 0 auto; 왼쪽 정렬 고정을 위해 주석처리*/
-  width: 1340px;
-  padding: 10px 80px;
+  /* width: 1340px; */
+  /* padding: 10px 80px; */
 }
 
 /* 메뉴 아이템 스타일 */
@@ -279,7 +279,7 @@ footer {
   }
 
   .secondary-menu {
-    width: 80%;
+    width: 100%;
     /* width: 100px; */
     justify-content: center;
   }
@@ -357,13 +357,16 @@ footer {
 .main_content {
   width: 100%;
   display: flex;
+  justify-content: center; /* 중앙 배치 */
 }
 
 .main_content main {
-  margin: 10px;
+  margin-left: 20px;
+  margin-right: 40px;
+  flex-grow: 1; /* main이 가능한 공간을 모두 차지하도록 설정 */
 }
 
-.main_content article {
+.main_content> article {
   width: 180px;
 }
 
@@ -374,3 +377,4 @@ a {
   margin: 0; /* 기본 여백 제거 */
   font-size: inherit; /* 부모 요소의 글꼴 크기 상속 */
 }
+

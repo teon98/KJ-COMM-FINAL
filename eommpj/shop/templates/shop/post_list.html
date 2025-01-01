@@ -11,6 +11,10 @@
     <title>Document</title>
 </head>
     <h3>체육 용품</h3>
+    <div style="text-align: right;">
+        <button class="new_post"><a href="{% url 'create_post' %}">새 글 쓰기</a></button>
+      </div>
+      
     <hr></hr>
     {% for p in post_list %} 
     <div class="ItemContainer">
