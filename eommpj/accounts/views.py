@@ -26,3 +26,8 @@ def user_logout(request):
 
 def register(request):
     return render(request, 'accounts/register.html' )
+
+def register_form(request):
+    register_username = request.GET.get('register_username', 'Anonymous')
+
+    return render(request, 'accounts/register2.html', {'register_username': register_username})

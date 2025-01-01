@@ -245,11 +245,30 @@
 
   </div>
   <hr/>
-  <form class="register_username">
+  <form class="register_username" method="GET" action="{% url 'register_form' %}">
     <div>
-      <label for="register_username">이름</label>
+      <label for=" register_username">이름</label>
       <input type="register_username" id="register_username" name="register_username">
     </div>
-    <button type="submit">회원가입 다음단계
+    <button id="nextStepButton" type="submit" disabled="disabled">회원가입 다음단계
     </form>
+
+    <script>
+      const userAgreement = document.getElementById('userAgreement');
+      const privacyPolicy = document.getElementById('privacyPolicy');
+      const nextStepButton = document.getElementById('nextStepButton');
+
+      function toggleButtonState() {
+        //버튼 활성화 조건: 두 체크박스가 모두 체크되어야 함
+        if (userAgreement.checked && privacyPolicy.checked) {
+          nextStepButton.disabled = false; //활성화
+        } else {
+          nextStepButton.disabled = true; //비활성화
+        }
+      }
+
+      //체크박스 상태 변화 이벤트 리스너
+      userAgreement.addEventListener('change', toggleButtonState);
+      privacyPolicy.addEventListener('change', toggleButtonState);
+    </script>
   {% endblock %}
