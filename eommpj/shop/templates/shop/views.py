@@ -78,7 +78,7 @@ class BlogCreate(CreateView):
         return redirect('blog_list')  # 'post_list' URL로 리디렉션
     
 class BlogDelete(DeleteView):
-    model = Blog
+    model = Post
     success_url = reverse_lazy('blog_list')  # 삭제 후 이동할 URL
 
     def get(self, request, *args, **kwargs):
@@ -88,11 +88,11 @@ class BlogDelete(DeleteView):
         return self.post(request, *args, **kwargs)
     
 class BlogUpdate(UpdateView):
-    model = Blog
+    model = Post
     fields = ['title','content']
 
     template_name = 'shop/blog_update_form.html'
-    success_url = reverse_lazy('blog_detail')  # 수정 후 이동할 페이지, pk를 사용한 URL로 변경 가능
+    success_url = reverse_lazy('post_detail')  # 수정 후 이동할 페이지, pk를 사용한 URL로 변경 가능
 
     def get_success_url(self):
         return reverse_lazy('blog_detail', kwargs={'pk': self.object.pk})
