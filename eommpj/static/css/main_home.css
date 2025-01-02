@@ -1,0 +1,10 @@
+.Item {
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-right: 10px; /* 아이템 간 간격을 추가 */
+  }
+
+.ItemContainer {
+    display: flex; /* 아이템들을 가로로 배치 */
+    flex-wrap: wrap; /* 화면 크기에 맞춰 아이템이 줄바꿈 되도록 설정 */
+}

@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login,logout
-from django.contrib.auth.decorators import login_required
 from .models import Post, Blog
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
@@ -21,28 +20,9 @@ def main_home(request):
         if form.is_valid():
             login(request, form.get_user())
             return redirect('/')  # 로그인 후 홈 화면으로 리디렉션
-
-            #사용자 타입에 따라 리다이렉션 또는 정보 전달
-            if user.user_type == "admin":
-                role = "관리자"
-            else:
-                role = "사용자"
-
-            #로그인 후 메인 화면에 사용자 타입 표시
-            return render(request, 'main_home.html', {'form': form, 'role': role})
-    
     else:
         form = AuthenticationForm()
     return render(request, 'main_home.html', {'form': form})
-
-@login_required
-def accounts_info(request):
-    if request.user.user_tyoe == 'admin':
-        role="관리자"
-    else:
-        role="사용자"
-
-    return render(request, 'base.html', {'role': role})
 
 class PostList(ListView):
     model = Post
@@ -98,7 +78,7 @@ class BlogCreate(CreateView):
         return redirect('blog_list')  # 'post_list' URL로 리디렉션
     
 class BlogDelete(DeleteView):
-    model = Blog
+    model = Post
     success_url = reverse_lazy('blog_list')  # 삭제 후 이동할 URL
 
     def get(self, request, *args, **kwargs):
@@ -108,11 +88,11 @@ class BlogDelete(DeleteView):
         return self.post(request, *args, **kwargs)
     
 class BlogUpdate(UpdateView):
-    model = Blog
+    model = Post
     fields = ['title','content']
 
     template_name = 'shop/blog_update_form.html'
-    success_url = reverse_lazy('blog_detail')  # 수정 후 이동할 페이지, pk를 사용한 URL로 변경 가능
+    success_url = reverse_lazy('post_detail')  # 수정 후 이동할 페이지, pk를 사용한 URL로 변경 가능
 
     def get_success_url(self):
         return reverse_lazy('blog_detail', kwargs={'pk': self.object.pk})

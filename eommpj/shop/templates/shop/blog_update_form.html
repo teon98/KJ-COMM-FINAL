@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/post_form.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <h1>질문 수정</h1>
+    <hr />
+    <div>
+        <div class="form-container">
+            <form class="post" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- 제목 -->
+                <label for="title">제목</label>
+                {{ form.title }} <!-- form 객체를 사용하여 기존 값 채우기 -->
+                
+                <!-- 내용 -->
+                <label for="content">내용</label>
+                {{ form.content }}
+                
+
+                <!-- <label for="head_image">이미지</label>
+                {{ form.head_image }}
+                
+
+                <label for="file_upload">파일</label>
+                {{ form.file_upload }}
+                
+
+                <label for="price">가격</label>
+                {{ form.price }} -->
+                
+                <button type="submit">저장</button>
+            </form>
+            
+            <a href="{% url 'blog_list' %}">취소</a>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}
+
