@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="content_register">
+    <h2>회원가입</h2>
+    <p style="color: #707070">
+      회원가입 하시기전 이용약관 및 개인정보취급방침에 동의하셔야 합니다. 고객님의 정보를 보호 하기위해 각별히 주의하겠습니다.<br/>
+      회원가입을 통하여 보다 편리하게 홈페이지를 이용하실 수 있습니다.
+    </p>
+    <h3>회원 가입폼
+      <span style="font-size: 12px; font-weight: 300;">(<span class="color_red">*</span>
+        표시는 필수 항목입니다. 반드시 기입하여 주십시오)</span>
+    </h3>
+    <div class="content_text">
+      <form action="">
+        <div class="table-container">
+          <!-- 아이디 -->
+          <div class="table-row">
+            <div class="table-cell">
+              <label for="register_id">
+                <span class="color_red">*</span>아이디
+              </label>
+            </div>
+            <div class="table-cell">
+              <input type="text" id="register_id" name="register_id">
+            </div>
+            <div class="table-cell">
+              <a href="#">아이디중복검색</a>
+            </div>
+          </div>
+      
+          <!-- 패스워드 -->
+          <div class="table-row">
+            <div class="table-cell">
+              <label for="register_pw">
+                <span class="color_red">*</span>패스워드
+              </label>
+            </div>
+            <div class="table-cell">
+              <input type="password" id="register_pw" name="register_pw">
+            </div>
+            <div class="table-cell">
+              <label for="register_pw_second">
+                <span class="color_red">*</span>패스워드확인
+              </label>
+            </div>
+            <div class="table-cell">
+              <input type="password" id="register_pw_second" name="register_pw_second">
+              <a href="#">확인</a>
+            </div>
+          </div>
+      
+          <!-- 이름 -->
+          <div class="table-row">
+            <div class="table-cell">
+              <label for="register_name">
+                <span class="color_red">*</span>이름
+              </label>
+            </div>
+            <div class="table-cell">
+              <input type="text" id="register_name" name="register_name" value="{{ register_username }}">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

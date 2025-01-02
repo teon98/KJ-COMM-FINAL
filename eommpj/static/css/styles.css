@@ -384,6 +384,7 @@ footer {
 
 .main_content main {
   margin: 10px;
+  width: 866px;
 }
 
 .main_content article {
@@ -400,11 +401,10 @@ a {
 
 .content_register {
   text-align: left;
-  width: 800px;
 }
 
 .content_text {
-  width: 100%;
+  width: 825px;
   height: 250px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -416,4 +416,107 @@ a {
 
 .content_text > p {
   font-weight: bold;
+}
+
+.register_username{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.register_username div{
+  display: flex;
+  text-align: left;
+  align-items: center;
+  
+}
+
+.register_username label{
+  width: 80px;
+}
+
+.register_username input{
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 90%;
+}
+
+.nextStepButton:disabled {
+  background-color: #707070; /* 비활성화된 버튼 배경색 */
+  color: white; /* 비활성화된 버튼 텍스트 색상 */
+  cursor: not-allowed; /* 커서 모양 */
+}
+
+.color_red{
+  color: red;
+}
+
+.content_text label{
+  width: 80px;
+}
+
+.content_text input{
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 90%;
+}
+
+.content_text a{
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: #21a9ff;
+  color: white;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.content_text_merge{
+  margin-bottom: 15px;
+}
+
+/* 공통 스타일 */
+form {
+  width: 100%;
+}
+
+div.table-container {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+div.table-row {
+  display: table-row;
+}
+
+div.table-cell {
+  display: table-cell;
+  padding: 5px;
+  vertical-align: middle;
+}
+
+/* 라벨 스타일 */
+label {
+  font-weight: bold;
+}
+
+/* 필수 항목 강조 */
+.color_red {
+  color: red;
+}
+
+/* 입력 필드 스타일 */
+/* 링크 스타일 */
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 추가 여백 스타일 */
+label + input {
+  margin-left: 10px;
 }
