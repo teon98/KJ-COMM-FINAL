@@ -453,14 +453,14 @@ a {
 }
 
 .content_text label{
-  width: 80px;
+  width: 100px;
 }
 
 .content_text input{
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 90%;
+  width: 200px
 }
 
 .content_text a{
@@ -487,6 +487,7 @@ div.table-container {
   display: table;
   width: 100%;
   border-collapse: collapse;
+  text-align: right;
 }
 
 div.table-row {
