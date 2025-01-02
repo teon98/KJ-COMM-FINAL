@@ -13,6 +13,7 @@ urlpatterns = [
     path('create_blog/', views.BlogCreate.as_view(), name ='create_blog'),
     path('delete_blog/<int:pk>/', views.BlogDelete.as_view(), name='delete_blog'),
     path('update_blog/<int:pk>/', views.BlogUpdate.as_view(), name='update_blog'),
+    path('accounts-info/', views.accounts_info, name="accounts_info")
 ]
 
 # urlpatterns = format_suffix_patterns(url)
