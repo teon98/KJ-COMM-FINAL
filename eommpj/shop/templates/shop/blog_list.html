@@ -1,34 +1,84 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/main_home.css' %}"> -->
-    <title>Document</title>
+    <title>자유게시판</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            border-bottom: 2px solid #ddd;
+            background-color: #f9f9f9;
+            font-weight: bold;
+        }
+        td {
+            border-bottom: 1px solid #ddd;
+        }
+        .new_post {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .new_post:hover {
+            background-color: #45a049;
+        }
+        .action-container {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+<body>
     <h3>자유게시판</h3>
-    <div style="text-align: right;">
-        <button class="new_post"><a href="{% url 'create_blog' %}">새 글 쓰기</a></button>
-      </div>
-      
-    <hr></hr>
-    {% for b in blog_list %} 
-    <div class="ItemContainer">
-        <div class="Item"><a href="{{ b.get_absolute_url }}">
-        {% if b.head_image %}
-            <div class="ItemImg">
-                <img src="{{ b.head_image.url }}" width="200" height="200">
-            </div>
-        {% endif %}
-            <div>
-                <p>{{ b.title }}</p>
-            </div>
-        </a></div>
-    {% endfor %}
+    <div class="action-container">
+        <a href="{% url 'create_blog' %}" class="new_post">새 글 쓰기</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Category</th>
+                <th>Subject</th>
+                <th>Writer</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for b in blog_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ b.category }}</td>
+                <td><a href="{{ b.get_absolute_url }}">{{ b.title }}</a></td>
+                <td>{{ b.writer }}</td>
+                <td>{{ b.created_at|date:"Y.m.d H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center;">등록된 글이 없습니다.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
 {% endblock %}

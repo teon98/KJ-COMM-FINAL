@@ -1,0 +1,269 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
+
+.header_menu {
+  display: flex;
+  gap: 15px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: flex-end;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+
+.header_menu a {
+  text-decoration: none;
+  color: #707070;
+  ;
+  /* font-weight: bold; */
+}
+
+.search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+  background: #fff;
+  border-radius: 5px;
+  padding: 10px 20px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+
+.search img {
+  max-height: 50px;
+}
+
+.search form {
+  display: flex;
+  gap: 10px;
+  flex: 0.6;
+}
+
+.search input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.search button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search button:hover {
+  background-color: #0056b3;
+}
+
+.secondary-menu {
+  background-color: #f1f1f1;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.secondary-menu-list {
+  display: flex;
+  gap: 15px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+
+.secondary-menu-list a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.account {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.account_form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.account_p {
+  margin: 0;
+}
+
+.account_form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.account_form input {
+  padding: 6px 8px;
+  width: 150px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.main_buttons {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.main_buttons:hover {
+  background-color: #0056b3;
+}
+
+.first_category {
+  width: 20%;
+  float: left;
+  background: #f1f1f1;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+}
+
+.first_category ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.first_category_li {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.first_category_li:hover {
+  background: #007bff;
+  color: white;
+}
+
+.first_category_img_list {
+  max-width: 30px;
+  margin-right: 10px;
+}
+
+main {
+  width: 75%;
+  float: left;
+}
+
+.hamburger {
+  display: none;
+  font-size: 30px;
+  background: none;
+  border: none;
+  color: #707070;
+  cursor: pointer;
+  z-index: 11;
+  margin-top: 10px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .header_menu {
+    display: none; /* 기본 상태: 메뉴 숨김 */
+    position: fixed; /* 고정 위치 */
+    top: 0;
+    left: -100%; /* 화면 밖으로 숨김 */
+    width: 66.66%; /* 화면의 2/3 너비 */
+    height: 100%; /* 화면 전체 높이 */
+    background-color: #f7f7f7; /* 메뉴 배경색 */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    flex-direction: column; /* 세로 정렬 */
+    padding-top: 40px;
+    padding-left: 20px;
+    transition: left 0.3s ease; /* 부드러운 이동 효과*/
+    justify-content: flex-start;
+  }
+
+  .header_menu.active {
+    display: flex; /* 메뉴 보이기 */
+    left: 0; /* 화면 안으로 이동 */
+    z-index: 14;
+  }
+
+  .hamburger {
+    display: block; /* 햄버거 아이콘 보이기 */
+    position: fixed;
+    z-index: 15; /* 메뉴보다 위에 표시 */
+    background: none; /* 배경 제거 */
+    border: none; /* 테두리 제거 */
+    font-size: 24px; /* 크기 조정 */
+    cursor: pointer; /* 클릭 가능 표시 */
+  }
+
+
+  .hamburger {
+    display: block;
+  }
+
+  .hamburger.active + .header_menu {
+    display: flex;
+  }
+
+  .secondary-menu-list {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .first_category {
+    width: 100%;
+    float: none;
+    margin-bottom: 20px;
+  }
+
+  main {
+    width: 100%;
+    float: none;
+  }
+}

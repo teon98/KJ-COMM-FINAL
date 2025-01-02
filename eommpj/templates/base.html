@@ -25,9 +25,7 @@
           <li><a href="/">홈으로</a></li>
           <li><a>이용안내</a></li>
           <li><a>질문과답변</a></li>
-          <hr class="custom-hr" />
           <li><a  href="{% url 'blog_list' %}">자유게시판</a></li>
-          <hr class="custom-hr" />
           <li><a>주문내역</a></li>
           <li><a>마이페이지</a></li>
           <li><a>장바구니</a></li>
@@ -46,7 +44,7 @@
         </form>
       </div>
 
-      <nav class="secondary-menu">
+      <div class="secondary-menu">
         <ul class="secondary-menu-list">
           <li><a href="#">자료실</a></li>
           <li><a href="#">개인결제</a></li>
@@ -55,7 +53,7 @@
           <li><a href="#">고객센터</a></li>
           <li><a href="#">회사소개</a></li>
         </ul>
-      </nav>
+      </div>
       <div class="account">
         <form class="account_form" method="post" action="{% url 'login' %}">
           {% csrf_token %} {% if user.is_authenticated %}
@@ -74,9 +72,11 @@
             <label for="password">비밀번호</label>
             <input type="password" id="password" name="password" />
           </p>
-          <button class="main_buttons" type="submit">로그인</button>
-          <a class="main_buttons" href="{% url 'register' %}">회원가입</a>
-          <a href="#" class="main_buttons">비밀번호 찾기</a>
+          <div>
+            <button class="main_buttons" type="submit">로그인</button>
+            <button class="main_buttons"><a class="main_buttons" href="{% url 'register' %}">회원가입</a></button>
+            <button class="main_buttons" type="submit"><a href="#" class="main_buttons">비밀번호 찾기</a></button>
+          </div>
           {% endif %}
         </form>
       </div>
@@ -203,9 +203,11 @@
     <script>
       const hamburger = document.querySelector(".hamburger");
       const headerMenu = document.querySelector(".header_menu");
+      const secondaryMenu = document.querySelector('.secondary-menu');
 
       hamburger.addEventListener("click", () => {
         headerMenu.classList.toggle("active");
+        secondaryMenu.classList.toggle('active');
       });
     </script>
   </body>
