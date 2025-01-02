@@ -1,0 +1,63 @@
+.form-container {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+/* .post form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+} */
+
+label {
+    font-size: 14px;
+    color: #333;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+textarea {
+    height: 300px; /* 높이를 지정 */
+    resize: both; /* 사용자가 크기를 가로와 세로로 조절할 수 있도록 설정 */
+    padding: 10px; /* 내부 여백을 추가하여 편안한 사용 */
+    font-size: 16px; /* 글자 크기 조정 */
+    border: 1px solid #ccc; /* 테두리 설정 */
+    border-radius: 5px; /* 모서리 둥글게 설정 */
+}
+
+button {
+    padding: 10px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #333;
+}

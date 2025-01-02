@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ blog.title }}</title>
+</head>
+<body>
+    <h1>{{ blog.title }}</h1>
+    <h2>{{ blog.created_at }}</h2>
+    {% if blog.head_image %}
+        <img src="{{ blog.head_image.url }}">
+    {% endif %}
+    <p>{{ blog.content }}</p>
+    {% if blog.file_upload %}
+        <button><a href="{{ blog.file_upload.url }}">다운</a></button>
+    {% endif %}
+    <!-- 수정 폼 -->
+    <form action="{% url 'update_blog' pk=blog.pk %}" method="get" style="display: inline;">
+        <button type="submit">수정</button>
+    </form>
+
+    <!-- 삭제 폼 -->
+    <form action="{% url 'delete_blog' pk=blog.pk %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+</form>
+
+    
+</body>
+</html>
+{% endblock %}
