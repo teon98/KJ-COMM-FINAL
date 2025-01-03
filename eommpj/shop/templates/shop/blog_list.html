@@ -1,57 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/blog_list.css' %}">
     <title>자유게시판</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            border-bottom: 2px solid #ddd;
-            background-color: #f9f9f9;
-            font-weight: bold;
-        }
-        td {
-            border-bottom: 1px solid #ddd;
-        }
-        .new_post {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .new_post:hover {
-            background-color: #45a049;
-        }
-        .action-container {
-            text-align: right;
-            margin-bottom: 10px;
-        }
-        a {
-            text-decoration: none;
-            color: #000;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
 </head>
 <body>
     <h3>자유게시판</h3>
     <div class="action-container">
+        {% if user.is_authenticated %}
         <a href="{% url 'create_blog' %}" class="new_post">새 글 쓰기</a>
+        {% endif %}
     </div>
     <table>
         <thead>

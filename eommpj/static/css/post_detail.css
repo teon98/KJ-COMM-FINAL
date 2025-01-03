@@ -1,0 +1,129 @@
+.product-page {
+    display: flex;
+    justify-content: flex-start; /* 좌측 정렬 */
+    align-items: flex-start;
+    gap: 40px;
+    margin: 40px;
+    flex-wrap: nowrap; /* 줄바꿈 방지 */
+    width: 100%;
+    max-width: 1200px; /* 최대 너비 설정 */
+    box-sizing: border-box;
+}
+
+.product-image {
+    flex: 0 0 50%; /* 이미지가 절반 너비를 차지하도록 설정 */
+    max-width: 700px; /* 최대 크기 */
+}
+
+.product-image img {
+    width: 100%;
+    height: auto; /* 이미지 비율 유지 */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-info {
+    flex: 1; /* 남은 공간을 차지 */
+    max-width: 50%; /* 나머지 절반 */
+    padding-left: 20px;
+}
+
+.product-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.product-price {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.discount-price {
+    color: red;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #aaa;
+}
+
+.post-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    margin-left: 40px;
+}
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.product-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-buy {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-buy:hover {
+    background-color: #0056b3;
+}
+
+.btn-cart {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.btn-cart:hover {
+    background-color: #e0e0e0;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .product-page {
+        flex-direction: column; /* 세로 배치 */
+        align-items: center; /* 가운데 정렬 */
+    }
+
+    .product-image {
+        max-width: 90%; /* 화면 너비에 맞게 조정 */
+    }
+
+    .product-info {
+        max-width: 100%;
+        text-align: center;
+        padding: 0;
+    }
+
+    .product-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-actions button {
+        width: 90%; /* 모바일에서 버튼이 넓게 표시되도록 설정 */
+    }
+}
+
+@media (max-width: 480px) {
+    .product-title {
+        font-size: 24px;
+    }
+
+    .product-actions button {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
+}

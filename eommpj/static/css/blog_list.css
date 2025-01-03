@@ -1,0 +1,38 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+th {
+    border-bottom: 2px solid #ddd;
+    background-color: #f9f9f9;
+    font-weight: bold;
+}
+td {
+    border-bottom: 1px solid #ddd;
+}
+.new_post {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.new_post:hover {
+    background-color: #45a049;
+}
+.action-container {
+    text-align: right;
+    margin-bottom: 10px;
+}
+a {
+    text-decoration: none;
+    color: #000;
+}
+a:hover {
+    text-decoration: underline;
+}

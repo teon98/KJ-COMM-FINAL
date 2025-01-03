@@ -7,28 +7,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main_home.css' %}">
-    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/post_list.css' %}">
+    <title>체육 용품</title>
 </head>
-    <h3>체육 용품</h3>
-    <div style="text-align: right;">
-        <button class="new_post"><a href="{% url 'create_post' %}">새 글 쓰기</a></button>
-      </div>
-      
-    <hr></hr>
-    {% for p in post_list %} 
-    <div class="ItemContainer">
-        <div class="Item"><a href="{{ p.get_absolute_url }}">
-        {% if p.head_image %}
-            <div class="ItemImg">
-                <img src="{{ p.head_image.url }}" width="200" height="200">
-            </div>
-        {% endif %}
-            <div>
-                <p>{{ p.title }}</p>
-            </div>
-        </a></div>
-    {% endfor %}
+<body>
+    <div class="page-header">
+        <h3>체육 용품</h3>
+        <button class="new-post-button">
+            <a href="{% url 'create_post' %}">새 글 쓰기</a>
+        </button>
+    </div>
+
+    <hr>
+
+    <div class="item-container">
+        {% for p in post_list %}
+        <div class="item">
+            <a href="{{ p.get_absolute_url }}">
+                {% if p.head_image %}
+                <div class="item-img">
+                    <img src="{{ p.head_image.url }}" alt="{{ p.title }}">
+                </div>
+                {% endif %}
+                <div class="item-title">
+                    <p>{{ p.title }}</p>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
 </body>
 </html>
 {% endblock %}

@@ -4,43 +4,51 @@
 {% load static %}
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'css/post_form.css' %}">
-    <title>Document</title>
+    <title>질문 등록</title>
 </head>
 <body>
-    <h1>질문 수정</h1>
-    <hr />
-    <div>
-        <div class="form-container">
-            <form class="post" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                
-                <!-- 제목 -->
+    <div class="form-container">
+        <h1>질문 등록</h1>
+        <hr />
+        <form class="post" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- 제목 -->
+            <div class="form-group">
                 <label for="title">제목</label>
-                {{ form.title }} <!-- form 객체를 사용하여 기존 값 채우기 -->
-                
-                <!-- 내용 -->
+                {{ form.title }}
+            </div>
+            
+            <!-- 내용 -->
+            <div class="form-group">
                 <label for="content">내용</label>
                 {{ form.content }}
-                
-                <!-- 이미지 -->
+            </div>
+            
+            <!-- 이미지 -->
+            <div class="form-group">
                 <label for="head_image">이미지</label>
                 {{ form.head_image }}
-                
-                <!-- 파일 -->
+            </div>
+            
+            <!-- 파일 -->
+            <div class="form-group">
                 <label for="file_upload">파일</label>
                 {{ form.file_upload }}
-                
-                <!-- 가격 -->
+            </div>
+            
+            <!-- 가격 -->
+            <div class="form-group">
                 <label for="price">가격</label>
                 {{ form.price }}
-                
-                <button type="submit">저장</button>
-            </form>
+            </div>
             
-            <a href="{% url 'post_list' %}">취소</a>
-        </div>
+            <!-- 버튼 -->
+            <div class="form-actions">
+                <button type="submit" class="btn-save">저장</button>
+                <a href="{% url 'post_list' %}" class="btn-cancel">취소</a>
+            </div>
+        </form>
     </div>
 </body>
-</html>
 {% endblock %}
-

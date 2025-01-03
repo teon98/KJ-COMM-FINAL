@@ -1,0 +1,100 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.blog-container {
+    width: 90%;
+    margin-left: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 10px;
+}
+
+.blog-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.blog-date {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+.blog-content p{
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-all !important;
+    white-space: normal !important;
+    line-height: 1.8; /* 줄 간격 조정 */
+    font-size: 16px; /* 글씨 크기 */
+    color: #555; /* 글씨 색 */
+    padding: 10px 0; /* 위아래 여백 */
+}
+
+
+.blog-content img {
+    display: block;
+    max-width: 100%;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+.blog-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-edit {
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.btn-edit:hover {
+    background-color: #0056b3;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+.btn-download {
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.btn-download:hover {
+    background-color: #218838;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+}
