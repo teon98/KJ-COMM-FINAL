@@ -19,9 +19,10 @@
   </head>
   <body>
     <div class="container">
-      <header>
-        <button class="hamburger" aria-label="메뉴 열기">&#9776;</button>
-        <ul class="header_menu">
+      <!-- 색깔 바 -->
+      <!-- 오른쪽 상단 메뉴-->
+      <div class="header">
+        <ul>
           <li><a href="/">홈으로</a></li>
           <li><a>이용안내</a></li>
           <li><a>질문과답변</a></li>
@@ -31,9 +32,11 @@
           <li><a>장바구니</a></li>
           <li><a>즐겨찾기</a></li>
         </ul>
-      </header>
+      </div>
+
+      <!-- 검색창 -->
       <div class="search">
-        <img src="{% static 'images/KJ_logo.png' %}" alt="logo" />
+        <img src="{% static 'images/logo.png' %}" alt="logo" />
         <form>
           <input
             type="text"
@@ -44,7 +47,7 @@
         </form>
       </div>
 
-      <nav class="secondary-menu">
+      <div class="nav">
         <ul class="secondary-menu-list">
           <li><a href="#">자료실</a></li>
           <li><a href="#">개인결제</a></li>
@@ -53,8 +56,9 @@
           <li><a href="#">고객센터</a></li>
           <li><a href="#">회사소개</a></li>
         </ul>
-      </nav>
-      <div class="account">
+      </div>
+
+      <div class="accounts">
         <form class="account_form" method="post" action="{% url 'login' %}">
           {% csrf_token %} {% if user.is_authenticated %}
           <p class="account_p">
@@ -79,9 +83,8 @@
         </form>
       </div>
 
-      <!-- 왼족 주 카테고리 메뉴-->
-      <content class="main_content">
-        <article class="first_category">
+      <tr>
+        <td class="category">
           <ul>
             <a href="">
               <li class="first_category_li">
@@ -193,18 +196,11 @@
               </li>
             </a>
           </ul>
-        </article>
-        <!-- content 블록을 main 태그 안에 배치 -->
-        <main>{% block content %}{% endblock %}</main>
-      </content>
+        </td>
+        <td class="main">{% block content %}{% endblock %}</td>
+        <td class="aside">최근 본 상품 목록</td>
+      </tr>
+      <footer></footer>
     </div>
-    <script>
-      const hamburger = document.querySelector(".hamburger");
-      const headerMenu = document.querySelector(".header_menu");
-
-      hamburger.addEventListener("click", () => {
-        headerMenu.classList.toggle("active");
-      });
-    </script>
   </body>
 </html>
