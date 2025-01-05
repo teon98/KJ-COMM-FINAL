@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block content %}
+<div>
+    <h3>카테고리 업로드 페이지</h3>
+    <ul>
+    {% for category in categorys %}
+    <div>
+        <li>
+            <input type="checkbox"/>
+            {% if category.image %}
+            <img src="{{category.image.url }}" alt="{{category.name}}" width="30px">
+            {% endif %}
+            {{category.name}}
+        </li>
+        {% if category.subcategories.all %}
+            {% for subcategory in category.subcategories.all %}
+                <li>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"/>
+                    |__ {{ subcategory.name }}
+                </li>
+                {% if category.image %}
+            {% else %}
+                <p>이미지가 없습니다.</p>
+            {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    </div>
+    <form method="POST" enctype="multipart/form-data"  action="{% url 'upload_category' %}">
+        {% csrf_token %}
+        <div>
+        {{ form.as_table  }}
+        </div>
+        <button type="submit">등록하기</button>
+        
+    </form>
+</div>
+{% endblock %}

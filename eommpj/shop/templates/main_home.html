@@ -1,4 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <h3>추천 상품</h3>
-
+{% for category in categories %}
+    <img src="{{ category.image.url}}" alt="{{ category.name}}" width="50px" />
+{{ category.name }}
+{% endfor %}
 {% endblock %}

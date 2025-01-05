@@ -3,8 +3,11 @@ from django.http import HttpResponse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
-
+from .models import Category
+from .forms import CategoryUploadForm
+import logging
 # Create your views here.
+logger = logging.getLogger(__name__)
 
 def main_home(request):
     if request.method == 'POST':
@@ -34,3 +37,20 @@ def accounts_info(request):
         role="사용자"
 
     return render(request, 'base.html', {'role': role})
+
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, 'category_list.html', {'categories': categories})
+
+def category_upload(request):
+    if request.method == "POST":
+        form = CategoryUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            category = form.save()
+            return redirect('upload_category')
+        else:
+            logger.error(f"폼 에러: {form.errors}")
+    else:
+        form = CategoryUploadForm()
+    categories = Category.objects.filter(parent__isnull=True)
+    return render(request, 'category_upload.html', {'form': form, 'categorys':categories})
