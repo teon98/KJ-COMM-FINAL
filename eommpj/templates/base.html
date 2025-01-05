@@ -69,17 +69,39 @@
           </p>
           {% else %}
           <p class="account_p">
-            <label for="username" style="margin-right:5px">아이디</label>
+            <label for="username" style="margin-right: 5px">아이디</label>
             <input type="text" id="username" name="username" />
           </p>
-          <p class="account_p" style="margin-left:20px">
-            <label for="password" style="margin-right:5px">비밀번호</label>
+          <p class="account_p" style="margin-left: 20px">
+            <label for="password" style="margin-right: 5px">비밀번호</label>
             <input type="password" id="password" name="password" />
           </p>
-          <button class="main_buttons" type="submit" style="margin-left:20px">로그인</button>
+          <button class="main_buttons" type="submit" style="margin-left: 20px">
+            로그인
+          </button>
 
-          <a style="margin-left:10px; display:flex; align-items:center; justify-content:center;" class="main_buttons" href="{% url 'register' %}">회원가입</a>
-          <a style="margin-left:10px; display:flex; align-items:center; justify-content:center;" href="#" class="main_buttons">비밀번호 찾기</a>
+          <a
+            style="
+              margin-left: 10px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+            class="main_buttons"
+            href="{% url 'register' %}"
+            >회원가입</a
+          >
+          <a
+            style="
+              margin-left: 10px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+            href="#"
+            class="main_buttons"
+            >비밀번호 찾기</a
+          >
           {% endif %}
         </form>
       </div>

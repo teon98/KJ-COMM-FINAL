@@ -104,18 +104,19 @@ a {
   display: inline-block;
 }
 
-.accounts form button, .accounts form a{
+.accounts form button,
+.accounts form a {
   border-radius: 5px;
   width: 120px;
-  height: 32px
+  height: 32px;
 }
 
-.accounts form{
+.accounts form {
   display: flex;
-  align-items: center
+  align-items: center;
 }
 
-.accounts form button{
+.accounts form button {
   background-color: black;
   color: white;
 }
@@ -128,17 +129,17 @@ a {
   background-color: #c58111;
   color: white;
   font-size: 13px;
-  
 }
 
-.first_category_li{
+.first_category_li {
   display: flex;
   align-items: center;
   font-weight: 500;
   margin-bottom: 10px;
+  min-width: 110px;
 }
 
-.first_category_img_list{
+.first_category_img_list {
   height: 28px;
   width: 28px;
   margin-right: 5px;
@@ -148,14 +149,81 @@ footer {
   grid-column: 1 / span 3;
 }
 
-.content_text{
+.content_text {
   height: 200px;
   overflow-y: auto;
-  border: 1px solid #D5D5D5;
+  border: 1px solid #d5d5d5;
   border-radius: 5px;
   padding: 0 10px;
 }
 
-.content_text p{
+.content_text p {
   font-weight: bold;
+}
+
+.register_username input {
+  border: 1px solid #bbbbbb;
+  padding: 0 10px;
+  border-radius: 5px;
+  width: 120px;
+  height: 30px;
+}
+
+.register_username {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.register_username button {
+  background-color: #c58111;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.register_username button:disabled {
+  background-color: #fafafa;
+  border: 1px solid #d5d5d5;
+  color: #707070;
+  border-radius: 5px;
+}
+
+.form_text {
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+
+.form_text form {
+  display: grid;
+  grid-template-columns: 100px auto;
+  align-items: center;
+}
+
+.form_text div {
+  display: block;
+  margin: 10px 0px;
+}
+
+.form_text span {
+  color: #dd4040;
+}
+
+.form_text input {
+  border: 1px solid #bbbbbb;
+  padding: 0 10px;
+  border-radius: 5px;
+  width: 120px;
+  height: 30px;
+}
+
+.form_text a {
+  background-color: black;
+  width: 100px;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  margin-left: 10px;
 }

@@ -13,72 +13,53 @@
       주십시오)</span
     >
   </h3>
-  <div class="content_text" style="height: 800px">
+  <div class="form_text" style="height: 800px">
     <form action="#">
-      <div style="display: flex; align-items: center">
-        <div class="content_label">
-          <span>*</span>
-          <label>아이디</label>
-        </div>
-        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp &nbsp &nbsp &nbsp &nbsp
-        <input type="text" />
+      <!-- 아이디 -->
+      <label><span>*</span>아이디</label>
+      <div>
+        <input type="text" name="register_userid" />
         <a>아이디중복검색</a>
       </div>
-      <br />
-      <div class="content_label">
-        <span>*</span>
-        <label>패스워드</label>
-        &nbsp;&nbsp;&nbsp &nbsp &nbsp &nbsp
-        <input type="password" />
+      <!-- 비밀번호 -->
+      <label><span>*</span>비밀번호</label>
+      <div style="display: flex; align-items: center">
+        <input type="password" name="register_password" />
+        <label style="width: 100px; margin-left: 10px; margin-right: 12px"
+          ><span>*</span>비밀번호확인</label
+        >
+        <input type="password" name="register_password_confirm" />
       </div>
-      <br />
-      <div class="content_label">
-        <span>*</span>
-        <label>패스워드 확인</label>
-        &nbsp;
-        <input type="password" />
+      <!-- 이름 -->
+      <label><span>*</span>이름</label>
+      <div>
+        <input
+          type="text"
+          name="register_username"
+          value="{{register_username}}"
+        />
       </div>
-      <br />
-      <div class="content_label">
-        <span>*</span>
-        <label>이름</label>
-        &nbsp;&nbsp &nbsp &nbsp &nbsp;&nbsp &nbsp &nbsp &nbsp
-        <input type="text" value="{{register_username}}" disabled />
+      <!-- 회사명 -->
+      <label>회사명</label>
+      <div>
+        <input type="text" name="register_company" />
       </div>
-      <br />
-      <div class="content_label">
-        <label>회사명</label>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="password" />
-      </div>
-      <br />
-      <div class="content_label" style="display: flex; align-items: center">
-        <label>성별</label>
-        &nbsp;&nbsp;&nbsp &nbsp &nbsp &nbsp;&nbsp &nbsp &nbsp &nbsp
-        &nbsp&nbsp&nbsp&nbsp&nbsp;
-        <label>남성</label>
-        <input type="radio" name="register_gender" checked />
-        &nbsp&nbsp&nbsp&nbsp
-        <label>여성</label>
-        <input type="radio" name="register_gender" />
-      </div>
-      <br />
-      <div class="content_label" style="display: flex; align-items: center">
-        <label>생년월일</label>
-        &nbsp;&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-        <input type="text" style="width: 70px" />&nbsp년 &nbsp;
-        <input type="text" style="width: 70px" />&nbsp월 &nbsp;
-        <input type="text" style="width: 70px" />&nbsp일 &nbsp;
-        <input type="checkbox" />(음력)
-      </div>
-      <br />
-      <div class="content_label" style="display: flex; align-items: center">
-        <label>연락처</label>
-        &nbsp;&nbsp &nbsp &nbsp &nbsp &nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="text" style="width: 70px" />&nbsp - &nbsp;
-        <input type="text" style="width: 70px" />&nbsp - &nbsp;
-        <input type="text" style="width: 70px" />&nbsp - &nbsp;
-        <input type="checkbox" />(음력)
+      <!-- 성별 -->
+      <label>성별</label>
+      <div style="display: flex; align-items: center">
+        남성<input
+          style="width: 15px; margin-right: 10px"
+          name="gender"
+          value="male"
+          type="radio"
+          checked
+        />
+        여성<input
+          style="width: 15px"
+          name="gender"
+          value="female"
+          type="radio"
+        />
       </div>
     </form>
   </div>
