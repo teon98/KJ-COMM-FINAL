@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+<div>
   <div class="content_register">
     <h2>회원가입</h2>
     <p style="color: #707070">
@@ -248,7 +249,7 @@
     <br/>
 
   </div>
-  <hr/>
+  <hr>
   <form class="register_username" method="GET" action="{% url 'register_form' %}">
     <div>
       <label for=" register_username">이름</label>
@@ -256,7 +257,7 @@
     </div>
     <button id="nextStepButton" type="submit" disabled="disabled">회원가입 다음단계
     </form>
-
+  </div>
     <script>
       const userAgreement = document.getElementById('userAgreement');
       const privacyPolicy = document.getElementById('privacyPolicy');

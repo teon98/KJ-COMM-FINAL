@@ -5,6 +5,7 @@ ul {
 body {
   margin: 0px;
 }
+
 a {
   text-decoration: none; /* 밑줄 제거 */
   color: inherit; /* 텍스트 색상을 부모 요소와 동일하게 */
@@ -77,6 +78,7 @@ a {
   font-weight: bold;
   display: grid;
   grid-template-columns: repeat(6, minmax(70px, 1fr));
+  justify-items: center;
 }
 
 .accounts {
@@ -92,7 +94,7 @@ a {
   border: 1px solid #bbbbbb;
   padding: 0 10px;
   border-radius: 5px;
-  width: 200px;
+  width: 120px;
   height: 30px;
 }
 
@@ -102,6 +104,58 @@ a {
   display: inline-block;
 }
 
+.accounts form button, .accounts form a{
+  border-radius: 5px;
+  width: 120px;
+  height: 32px
+}
+
+.accounts form{
+  display: flex;
+  align-items: center
+}
+
+.accounts form button{
+  background-color: black;
+  color: white;
+}
+
+.accounts div {
+  display: inline-block;
+}
+
+.accounts a {
+  background-color: #c58111;
+  color: white;
+  font-size: 13px;
+  
+}
+
+.first_category_li{
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.first_category_img_list{
+  height: 28px;
+  width: 28px;
+  margin-right: 5px;
+}
+
 footer {
   grid-column: 1 / span 3;
+}
+
+.content_text{
+  height: 200px;
+  overflow-y: auto;
+  border: 1px solid #D5D5D5;
+  border-radius: 5px;
+  padding: 0 10px;
+}
+
+.content_text p{
+  font-weight: bold;
 }
