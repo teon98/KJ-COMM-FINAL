@@ -82,6 +82,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+# 업로드된 파일의 URL 경로
+MEDIA_URL = '/media/'
+# 업로드된 파일의 실제 저장 위치
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # 압축된 정적 파일 제공 설정
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

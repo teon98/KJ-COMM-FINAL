@@ -13,6 +13,7 @@ class Category(models.Model):
     name = models.CharField(max_length=255) #카테고리 이름
     image = models.ImageField(upload_to=category_image_upload_path, blank=True, null=True)  # 이미지 업로드
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='subcategories')
+    content_type = models.CharField(max_length=255, default='글') #글 타입('글','이미지')
 
     class Meta:
         db_table = 'category' 

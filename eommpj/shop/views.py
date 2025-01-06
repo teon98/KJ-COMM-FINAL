@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Category
 from .forms import CategoryUploadForm
 import logging
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.contrib import messages
 # Create your views here.
 logger = logging.getLogger(__name__)
 
@@ -44,13 +47,60 @@ def category_list(request):
 
 def category_upload(request):
     if request.method == "POST":
-        form = CategoryUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            category = form.save()
-            return redirect('upload_category')
-        else:
-            logger.error(f"폼 에러: {form.errors}")
-    else:
+        action = request.POST.get('action')  # 어떤 버튼이 눌렸는지 확인
+        category_id = request.POST.get('id')  # 수정 시 전달되는 ID
+
+        if action == "edit" and category_id:  # 수정 작업
+            try:
+                category = Category.objects.get(id=category_id)
+                form = CategoryUploadForm(request.POST, request.FILES, instance=category)
+                if form.is_valid():
+                    form.save()
+                    return JsonResponse({'status': 'success', 'message': '카테고리가 수정되었습니다.'}, status=200)
+                else:
+                    return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+            except Category.DoesNotExist:
+                return JsonResponse({'status': 'error', 'message': '카테고리가 존재하지 않습니다.'}, status=404)
+
+        elif action == "add":  # 등록 작업
+            form = CategoryUploadForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'status': 'success', 'message': '카테고리가 등록되었습니다.'}, status=200)
+            else:
+                return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+
+        return JsonResponse({'status': 'error', 'message': 'Invalid action'}, status=400)
+
+    else:  # GET 요청 처리
         form = CategoryUploadForm()
-    categories = Category.objects.filter(parent__isnull=True)
-    return render(request, 'category_upload.html', {'form': form, 'categorys':categories})
+        categories = Category.objects.filter(parent__isnull=True)
+        return render(request, 'category_upload.html', {'form': form, 'categorys': categories})
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
+from .models import Category
+from .forms import CategoryUploadForm
+
+# 카테고리 수정 뷰
+def category_edit(request, id):
+    if request.method == "POST":
+        category = get_object_or_404(Category, id=id)
+        form = CategoryUploadForm(request.POST, request.FILES, instance=category)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'status': 'success', 'message': '카테고리가 수정되었습니다.'}, status=200)
+        else:
+            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+    return JsonResponse({'status': 'error', 'message': '잘못된 요청입니다.'}, status=400)
+
+@csrf_exempt
+def delete_category(request, category_id):
+    if request.method == 'POST':
+        try:
+            category = Category.objects.get(id=category_id)
+            category.delete()
+            return JsonResponse({'status': 'success'}, status=200)
+        except Category.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Category not found'}, status=404)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
