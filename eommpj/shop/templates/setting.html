@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% block content %}
+<div>
+  <h1>관리자 설정</h1>
+  <ul class="admin_setting">
+    <li><a href="{% url 'upload_category' %}">⚙️ 카테고리 관리</a></li>
+    <li><a href="{% url 'product_list' %}">⚙️ 전체 상품 관리</a></li>
+    <li><a href="{% url 'upload_product' %}">⚙️ 상품 업로드</a></li>
+  </ul>
+</div>
+{% endblock %}

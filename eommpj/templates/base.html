@@ -36,7 +36,7 @@
 
       <!-- 검색창 -->
       <div class="search">
-        <img src="{% static 'images/logo.png' %}" alt="logo" />
+        <a href="/"><img src="{% static 'images/logo.png' %}" alt="logo" /></a>
         <form>
           <input
             type="text"
@@ -62,10 +62,13 @@
         <form class="account_form" method="post" action="{% url 'login' %}">
           {% csrf_token %} {% if user.is_authenticated %}
           <p class="account_p">
-            {{ user.username }}님 안녕하세요,
-            <a class="main_buttons" type="submit" href="{% url 'logout' %}"
+            <b>{{ user.username }}</b>님 안녕하세요!
+            <a class="logout_button" type="submit" href="{% url 'logout' %}"
               >로그아웃</a
             >
+            {% if user.user_type == "admin" %}
+            <a class="setting_button" href="{% url 'setting' %}">관리자설정</a>
+            {% endif %}
           </p>
           {% else %}
           <p class="account_p">
@@ -108,6 +111,32 @@
 
       <tr>
         <td class="category">
+          <ul class="category-menu">
+            {% for category in categories %}
+            <li>
+              <img class="first_category_img_list"
+              src="/shop{{category.image.url }}" alt="{{category.name}}" /
+              <a href="#">{{category.name}}</a>
+              {% if category.subcategories.all %}
+              <ul class="sub-category-menu">
+                {% for subcategory in category.subcategories.all %}
+                <li>
+                  {% if subcategory.content_type == "글" %}
+                  <span class="icon">📄</span>
+                  {% elif subcategory.content_type == "사진" %}
+                  <span class="icon">🏞️</span>
+                  {% endif %}
+                  <a href="{% url 'category_detail' subcategory.name %}"
+                    >{{ subcategory.name }}</a
+                  >
+                </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+          <!-- 
           <ul>
             <a href="">
               <li class="first_category_li">
@@ -192,6 +221,7 @@
               </li>
             </a>
           </ul>
+          -->
         </td>
         <td class="main">{% block content %}{% endblock %}</td>
         <td class="aside">최근 본 상품 목록</td>

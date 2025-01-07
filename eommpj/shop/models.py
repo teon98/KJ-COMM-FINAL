@@ -19,4 +19,23 @@ class Category(models.Model):
         db_table = 'category' 
 
     def __str__(self):
+        # 상위 카테고리 > 하위 카테고리 형식으로 표시
+        if self.parent:
+            return f"{self.parent.name} > {self.name}"
         return self.name
+
+class Product(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    header_image = models.ImageField(upload_to='products/headers/')
+    detail_image = models.ImageField(upload_to='products/details/')
+    title = models.CharField(max_length=200)
+    price = models.DecimalField(max_digits=10, decimal_places=0)
+    price_detail = models.TextField()
+    origin = models.CharField(max_length=100)
+    brand = models.CharField(max_length=100)
+    manufacturer = models.CharField(max_length=100)
+    is_free_shipping = models.BooleanField(default=False)
+    is_admin_recommended = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title

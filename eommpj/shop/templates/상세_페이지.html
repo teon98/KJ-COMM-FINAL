@@ -1,0 +1,64 @@
+{% extends 'base.html' %} {% block content %}
+<div class="detail_body">
+  <div class="admin_product_detail">
+    <img
+      src="/shop{{ product.header_image.url }}"
+      alt="Header Image"
+      width="200px"
+    />
+    <div style="display: flex;flex-direction: column;">
+      <table class="product_detail_table" border="0">
+        <tr>
+          <td style="text-align: left" colspan="2" id="product_title">
+            {{ product.title }}
+          </td>
+        </tr>
+        <tr>
+          <th>판매가격</th>
+          <td>
+            {{ product.price }} <br />
+            <span style="text-align: left">{{product.price_detail}}</span>
+          </td>
+        </tr>
+        <tr>
+          <th>원산지</th>
+          <td>{{ product.origin }}</td>
+        </tr>
+        <tr>
+          <th>브랜드</th>
+          <td>{{ product.brand }}</td>
+        </tr>
+        <tr>
+          <th>제조사</th>
+          <td>{{ product.manufacturer }}</td>
+        </tr>
+        <tr>
+          <th>주문수량</th>
+          <td
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+            "
+          >
+            <input type="number" style="width: 100px" />&nbsp;&nbsp;개
+          </td>
+        </tr>
+      </table>
+      <div class="product_detail_buttons" colspan="2">
+        <a href="" class="primary">바로구매</a>
+        <a href="" class="second">장바구니</a>
+        <br/>
+        <a href="" class="second">목록</a>
+        <a href="" class="second">찜하기</a>
+      </div>
+    </div>
+    </div>
+    <hr />
+    <div>
+      <h3>상품 상세 설명</h3>
+      <img src="/shop{{ product.detail_image.url }}" alt="Detail Image" />
+    </div>
+  </div>
+  {% endblock %}
+</div>

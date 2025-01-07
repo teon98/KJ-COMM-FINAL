@@ -3,8 +3,8 @@ from django.http import HttpResponse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
-from .models import Category
-from .forms import CategoryUploadForm
+from .models import Category, Product
+from .forms import CategoryUploadForm, ProductForm
 import logging
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -30,6 +30,7 @@ def main_home(request):
     
     else:
         form = AuthenticationForm()
+    
     return render(request, 'main_home.html', {'form': form})
 
 @login_required
@@ -104,3 +105,79 @@ def delete_category(request, category_id):
         except Category.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Category not found'}, status=404)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+def category_detail(request, category_name):
+    # Category 객체 가져오기
+    category = get_object_or_404(Category, name=category_name)
+    
+    # content_type에 따라 다른 템플릿 선택
+    if category.content_type == "글":
+        template_name = "글_게시판.html"  # 글 게시판 템플릿 이름
+    elif category.content_type == "사진":
+        template_name = "사진_게시판.html"  # 사진 게시판 템플릿 이름
+    else:
+        template_name = "default_category.html"  # 기본 템플릿 이름
+
+    # 템플릿에 context 전달
+    context = {
+        'category': category,
+    }
+
+    return render(request, template_name, context)
+
+def setting(request):
+    return render(request, 'setting.html')
+
+def product_upload(request):
+    if request.method == 'POST':
+        child_category_id = request.POST.get('child_category')
+        print("선택된 하위 카테고리 ID:", child_category_id)
+
+
+        # 하위 카테고리 확인
+        if not child_category_id:
+            return render(request, '상품업로드.html', {
+                'form': ProductForm(),
+                'error': '하위 카테고리를 선택해주세요.'
+            })
+
+        # 하위 카테고리 객체 가져오기
+        child_category = get_object_or_404(Category, id=child_category_id)
+
+        # POST 데이터를 수정하여 category 필드를 추가
+        post_data = request.POST.copy()
+        post_data['category'] = child_category_id
+
+        # 수정된 POST 데이터를 사용하여 폼 생성
+        form = ProductForm(post_data, request.FILES)
+        print("수정된 폼 데이터:", form.data)  # 수정된 데이터 확인
+        print("POST 데이터:", post_data)  # 수정된 POST 데이터 출력
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.category = child_category  # 하위 카테고리를 직접 매핑
+            product.save()
+            return redirect('product_list')
+        else:
+            print("폼 에러:", form.errors)  # 폼 에러 확인
+            return render(request, '상품업로드.html', {
+                'form': form,
+                'error': '폼 유효성 검사를 통과하지 못했습니다.'
+            })
+
+    return render(request, '상품업로드.html', {'form': ProductForm()})
+
+
+def product_list(request):
+    products = Product.objects.all()
+    return render(request, '전체상품리스트.html', {'products': products})
+
+def get_child_categories(request, parent_id):
+    if request.method == "GET":
+        child_categories = Category.objects.filter(parent_id=parent_id).values('id', 'name')
+        print(list(child_categories))
+        return JsonResponse(list(child_categories), safe=False)
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    return render(request, '상세_페이지.html', {'product': product})

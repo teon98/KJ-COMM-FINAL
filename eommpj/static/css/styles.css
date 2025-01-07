@@ -98,10 +98,23 @@ a {
   height: 30px;
 }
 
-.accounts form p,
 .accounts form button,
 .accounts form a {
   display: inline-block;
+}
+
+.account_p {
+  display: flex;
+  align-items: center;
+}
+
+.account_p .logout_button,
+.account_p .setting_button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
 }
 
 .accounts form button,
@@ -226,4 +239,125 @@ footer {
   padding: 5px;
   border-radius: 5px;
   margin-left: 10px;
+}
+
+.category-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.category-menu > li {
+  position: relative;
+  margin-bottom: 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  min-width: 70px;
+}
+
+.sub-category-menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100px;
+  list-style: none;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  z-index: 100;
+  width: 120px;
+}
+
+.category-menu > li:hover .sub-category-menu {
+  display: block;
+}
+
+.icon {
+  margin-right: 5px;
+}
+
+.admin_setting li {
+  margin-bottom: 10px;
+}
+.admin_setting li a:hover {
+  background-color: lightsteelblue;
+}
+
+.admin_product_list {
+  border: 1px solid #bbbbbb;
+}
+
+.admin_product_list a {
+  background-color: black;
+  width: 50px;
+  color: white;
+  cursor: pointer;
+}
+
+.admin_product_list a:hover {
+  background-color: lightsteelblue;
+  color: black;
+}
+
+.admin_product_detail {
+  display: flex;
+  padding: 20px;
+}
+
+.admin_product_detail th {
+  color: #484848;
+}
+
+.product_detail_table {
+  margin-left: 20px;
+  text-align: right;
+}
+
+.product_detail_table {
+  border-collapse: collapse;
+}
+
+.product_detail_table th {
+  text-align: left;
+  padding: 10px 15px;
+}
+
+.product_detail_table tr {
+  height: 30px;
+  border-bottom: 1px solid #bbbbbb;
+}
+.product_detail_table td {
+  width: 130px;
+  padding: 10px 15px;
+}
+#product_title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #c58111;
+}
+
+.product_detail_buttons {
+  display: flex;
+  margin-left: 40px;
+  margin-right: 20px;
+  margin-top: 20px;
+}
+.product_detail_buttons a {
+  width: 70px;
+  height: 30px;
+  color: white;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-right: 10px;
+}
+
+.primary {
+  background-color: #c58111;
+}
+
+.second {
+  background-color: #484848;
 }
