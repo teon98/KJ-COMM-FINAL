@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 import os
+from django.utils.timezone import now
 
 def category_image_upload_path(instance, filename):
     # 파일 확장자 추출
@@ -25,17 +26,20 @@ class Category(models.Model):
         return self.name
 
 class Product(models.Model):
+    class Meta:
+        ordering = ['-updated_at']
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     header_image = models.ImageField(upload_to='products/headers/')
     detail_image = models.ImageField(upload_to='products/details/')
     title = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=10, decimal_places=0)
-    price_detail = models.TextField()
-    origin = models.CharField(max_length=100)
-    brand = models.CharField(max_length=100)
-    manufacturer = models.CharField(max_length=100)
+    price_detail = models.TextField(blank=True, null=True)
+    origin = models.CharField(max_length=100, blank=True, null=True)
+    brand = models.CharField(max_length=100, blank=True, null=True)
+    manufacturer = models.CharField(max_length=100, blank=True, null=True)
     is_free_shipping = models.BooleanField(default=False)
     is_admin_recommended = models.BooleanField(default=False)
+    updated_at = models.DateTimeField(default=now, blank=True, null=True)
 
     def __str__(self):
         return self.title

@@ -2,6 +2,7 @@
 <div>
   <h1>상품 업로드</h1>
   <form
+    class="product_upload_form"
     method="post"
     action="{% url 'upload_product' %}"
     enctype="multipart/form-data"
@@ -32,8 +33,8 @@
       <!-- 상품 제목 -->
       <tr>
         <th>
-          <label for="{{ form.title.id_for_label }}"
-            >{{ form.title.label }}</label
+          <label
+            >상품 제목</label
           >
         </th>
         <td>
@@ -47,7 +48,7 @@
       <tr>
         <th>
           <label for="{{ form.header_image.id_for_label }}"
-            >{{ form.header_image.label }}</label
+            >상품 헤더 이미지</label
           >
         </th>
         <td>{{ form.header_image }}</td>
@@ -57,7 +58,7 @@
       <tr>
         <th>
           <label for="{{ form.detail_image.id_for_label }}"
-            >{{ form.detail_image.label }}</label
+            >상품 상세 이미지</label
           >
         </th>
         <td>{{ form.detail_image }}</td>
@@ -67,7 +68,7 @@
       <tr>
         <th>
           <label for="{{ form.price.id_for_label }}"
-            >{{ form.price.label }}</label
+            >상품 가격</label
           >
         </th>
         <td>
@@ -87,7 +88,7 @@
       <tr>
         <th>
           <label for="{{ form.price_detail.id_for_label }}"
-            >{{ form.price_detail.label }}</label
+            >상품 가격 설명</label
           >
         </th>
         <td>{{ form.price_detail }}</td>
@@ -97,7 +98,7 @@
       <tr>
         <th>
           <label for="{{ form.origin.id_for_label }}"
-            >{{ form.origin.label }}</label
+            >원산지</label
           >
         </th>
         <td>{{ form.origin }}</td>
@@ -107,7 +108,7 @@
       <tr>
         <th>
           <label for="{{ form.brand.id_for_label }}"
-            >{{ form.brand.label }}</label
+            >브랜드</label
           >
         </th>
         <td>{{ form.brand }}</td>
@@ -117,7 +118,7 @@
       <tr>
         <th>
           <label for="{{ form.manufacturer.id_for_label }}"
-            >{{ form.manufacturer.label }}</label
+            >제조사</label
           >
         </th>
         <td>{{ form.manufacturer }}</td>
@@ -127,7 +128,7 @@
       <tr>
         <th>
           <label for="{{ form.is_free_shipping.id_for_label }}"
-            >{{ form.is_free_shipping.label }}</label
+            >무료 배송 여부</label
           >
         </th>
         <td>{{ form.is_free_shipping }}</td>
@@ -137,14 +138,16 @@
       <tr>
         <th>
           <label for="{{ form.is_admin_recommended.id_for_label }}"
-            >{{ form.is_admin_recommended.label }}</label
+            >관리자 추천 상품 여부</label
           >
         </th>
         <td>{{ form.is_admin_recommended }}</td>
       </tr>
     </table>
 
-    <button type="submit">상품 등록</button>
+    <div class="product_submmit_button">
+      <button type="submit">상품 등록</button>
+    </div>
   </form>
 
   <script>

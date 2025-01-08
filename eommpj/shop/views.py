@@ -68,7 +68,7 @@ def category_upload(request):
             form = CategoryUploadForm(request.POST, request.FILES)
             if form.is_valid():
                 form.save()
-                return JsonResponse({'status': 'success', 'message': '카테고리가 등록되었습니다.'}, status=200)
+                return redirect('upload_category')
             else:
                 return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
 

@@ -52,15 +52,15 @@
     <div>
       <table>
         <tr>
-          <th>{{ form.name.label_tag }}</th>
+          <th>카테고리 이름</th>
           <td><input type="text" id="form-name" name="name" /></td>
         </tr>
         <tr>
-          <th>{{ form.image.label_tag }}</th>
+          <th>카테고리 이미지 <br/>(상위 카테고리만 등록)</th>
           <td><input type="file" id="form-image" name="image" /></td>
         </tr>
         <tr>
-          <th>{{ form.parent.label_tag }}</th>
+          <th>상위 카테고리 이름</th>
           <td>
             <select id="form-parent" name="parent">
               <option value="">--- Select Parent ---</option>
@@ -71,7 +71,7 @@
           </td>
         </tr>
         <tr>
-          <th>{{ form.content_type.label_tag }}</th>
+          <th>게시판 종류</th>
           <td>
             <select id="form-content-type" name="content_type">
               <option value="글">글</option>
@@ -81,9 +81,11 @@
         </tr>
       </table>
     </div>
-    <button type="submit" name="action" value="add">등록하기</button>
-    <button type="button" id="edit-button">수정하기</button>
-    <button type="button" id="delete-button">삭제하기</button>
+    <div class="cateogry_form_buttons">
+      <button style="background-color: #c58111;" type="submit" name="action" value="add">등록하기</button>
+      <button type="button" id="edit-button">수정하기</button>
+      <button type="button" id="delete-button">삭제하기</button>
+  </div>
   </form>
 </div>
 

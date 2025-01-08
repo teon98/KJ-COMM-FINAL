@@ -2,6 +2,7 @@
 <div>
   <h1>상품 업로드</h1>
   <form
+   class="product_upload_form"
     method="post"
     action="{% url 'product_edit' product.pk %}"
     enctype="multipart/form-data"
@@ -152,7 +153,9 @@
       </tr>
     </table>
 
-    <button type="submit">상품 등록</button>
+    <div class="product_submmit_button" style="margin-bottom: 30px;">
+      <button type="submit">상품 수정</button>
+    </div>
   </form>
 
   <script>

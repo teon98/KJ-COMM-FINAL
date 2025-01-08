@@ -249,10 +249,14 @@ footer {
 .category-menu > li {
   position: relative;
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
-  min-width: 70px;
+  min-width: 100px;
+}
+
+.category-menu > li:hover{
+  text-decoration: underline;
 }
 
 .sub-category-menu {
@@ -265,7 +269,11 @@ footer {
   background-color: #fff;
   border: 1px solid #ddd;
   z-index: 100;
-  width: 120px;
+  width: 150px;
+}
+
+.sub-category-menu > li:hover{
+  text-decoration: underline;
 }
 
 .category-menu > li:hover .sub-category-menu {
@@ -470,4 +478,95 @@ footer {
   margin-left: 30px;
   margin-top: 10px;
   width: 150px;
+  height: 200px;
+}
+
+#category-form {
+  color:#484848;
+  text-align: left;
+  font-size: 13px;
+  margin-bottom: 30px;
+}
+
+#category-form input[type="text"], 
+#category-form select{
+  width: 200px;
+  height: 20px;
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+}
+
+#category-form tr{
+  height: 30px;
+}
+
+#category-form button{
+  width: 100px;
+  height: 25px;
+  border-radius: 5px;
+  background-color: #484848;
+  color: white;
+  border: none;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.cateogry_form_buttons{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.product_upload_form{
+  font-size: 13px;
+  color: #484848;
+  text-align: left;
+}
+
+.product_upload_form input[type="text"], 
+.product_upload_form input[type="number"],
+.product_upload_form select{
+  width: 200px;
+  height: 20px;
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+}
+
+.product_upload_form textarea{
+  width: 300px;
+  height: 30px;
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+}
+
+.product_upload_form tr{
+  height: 30px;
+}
+
+.product_submmit_button{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.product_submmit_button button{
+  width: 100px;
+  height: 25px;
+  border-radius: 5px;
+  background-color:#c58111;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.product_update_button{
+  display: flex;
+  width: 100px;
+  height: 25px;
+  border-radius: 5px;
+  background-color:#c58111;
+  color: white;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
 }
