@@ -17,6 +17,8 @@ urlpatterns = [
     path('products/', views.product_list, name='product_list'),
     path('api/categories/<int:parent_id>/', get_child_categories, name='get_child_categories'),
     path('product/<int:pk>/', views.product_detail, name='product_detail'),
+    path('products/edit/<int:pk>/', views.product_edit, name='product_edit'),
+    path('products/delete/<int:pk>/', views.product_delete, name='product_delete'),
 ]
 
 # 미디어 파일 서빙 설정

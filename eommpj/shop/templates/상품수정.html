@@ -1,0 +1,194 @@
+{% extends 'base.html' %} {% block content %}
+<div>
+  <h1>상품 업로드</h1>
+  <form
+    method="post"
+    action="{% url 'product_edit' product.pk %}"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <!-- 상위 카테고리 -->
+    <table>
+      <!-- 상위 카테고리 -->
+      <tr>
+        <th><label for="parent-category">부모 카테고리</label></th>
+        <td>
+          <select id="parent-category" name="parent_category">
+            <option value="">부모 카테고리를 선택하세요</option>
+            {% for category in parent_categories %}
+            <option value="{{ category.id }}" {% if category.id == selected_parent %}selected{% endif %}>
+              {{ category.name }}
+            </option>
+            {% endfor %}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th><label for="child-category">하위 카테고리</label></th>
+        <td>
+          <select id="child-category" name="category" required>
+            <option value="">상위 카테고리를 먼저 선택하세요</option>
+            {% for category in child_categories %}
+            <option value="{{ category.id }}" {% if category.id == selected_child %}selected{% endif %}>
+              {{ category.name }}
+            </option>
+            {% endfor %}
+          </select>
+        </td>
+      </tr>
+
+      <!-- 상품 제목 -->
+      <tr>
+        <th>
+          <label for="{{ form.title.id_for_label }}"
+            >{{ form.title.label }}</label
+          >
+        </th>
+        <td>
+          {{ form.title }} {% if form.title.help_text %}
+          <small>{{ form.title.help_text }}</small>
+          {% endif %}
+        </td>
+      </tr>
+
+      <!-- 헤더 이미지 -->
+      <tr>
+        <th>
+          <label for="{{ form.header_image.id_for_label }}"
+            >{{ form.header_image.label }}</label
+          >
+        </th>
+        <td>{{ form.header_image }}</td>
+      </tr>
+
+      <!-- 상세 설명 이미지 -->
+      <tr>
+        <th>
+          <label for="{{ form.detail_image.id_for_label }}"
+            >{{ form.detail_image.label }}</label
+          >
+        </th>
+        <td>{{ form.detail_image }}</td>
+      </tr>
+
+      <!-- 가격 -->
+      <tr>
+        <th>
+          <label for="{{ form.price.id_for_label }}"
+            >{{ form.price.label }}</label
+          >
+        </th>
+        <td>
+          <input
+            type="number"
+            name="price"
+            value="{{ form.price.value|default:'' }}"
+            step="1000"
+            min="0"
+            required
+            id="id_price"
+          />
+        </td>
+      </tr>
+
+      <!-- 가격 상세 설명 -->
+      <tr>
+        <th>
+          <label for="{{ form.price_detail.id_for_label }}"
+            >{{ form.price_detail.label }}</label
+          >
+        </th>
+        <td>{{ form.price_detail }}</td>
+      </tr>
+
+      <!-- 원산지 -->
+      <tr>
+        <th>
+          <label for="{{ form.origin.id_for_label }}"
+            >{{ form.origin.label }}</label
+          >
+        </th>
+        <td>{{ form.origin }}</td>
+      </tr>
+
+      <!-- 브랜드 -->
+      <tr>
+        <th>
+          <label for="{{ form.brand.id_for_label }}"
+            >{{ form.brand.label }}</label
+          >
+        </th>
+        <td>{{ form.brand }}</td>
+      </tr>
+
+      <!-- 제조사 -->
+      <tr>
+        <th>
+          <label for="{{ form.manufacturer.id_for_label }}"
+            >{{ form.manufacturer.label }}</label
+          >
+        </th>
+        <td>{{ form.manufacturer }}</td>
+      </tr>
+
+      <!-- 무료 배송 여부 -->
+      <tr>
+        <th>
+          <label for="{{ form.is_free_shipping.id_for_label }}"
+            >{{ form.is_free_shipping.label }}</label
+          >
+        </th>
+        <td>{{ form.is_free_shipping }}</td>
+      </tr>
+
+      <!-- 관리자 추천 여부 -->
+      <tr>
+        <th>
+          <label for="{{ form.is_admin_recommended.id_for_label }}"
+            >{{ form.is_admin_recommended.label }}</label
+          >
+        </th>
+        <td>{{ form.is_admin_recommended }}</td>
+      </tr>
+    </table>
+
+    <button type="submit">상품 등록</button>
+  </form>
+
+  <script>
+    // 상위 카테고리 선택 시 동적으로 하위 카테고리 로드
+    document
+      .getElementById("parent-category")
+      .addEventListener("change", function () {
+        const parentId = this.value; // 선택된 상위 카테고리 ID
+        const childSelect = document.getElementById("child-category");
+
+        // 초기화
+        childSelect.innerHTML =
+          '<option value="">하위 카테고리를 선택하세요</option>';
+
+        if (parentId) {
+          // API 호출로 하위 카테고리 가져오기
+          fetch(`/shop/api/categories/${parentId}/`)
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("하위 카테고리 데이터:", data);
+              data.forEach((category) => {
+                const option = document.createElement("option");
+                option.value = category.id;
+                option.textContent = category.name;
+                childSelect.appendChild(option);
+              });
+            })
+            .catch((error) => console.error("Error:", error));
+        }
+      });
+
+    document
+      .getElementById("child-category")
+      .addEventListener("change", function () {
+        console.log("선택된 하위 카테고리 ID:", this.value); // 하위 카테고리 ID 출력
+      });
+  </script>
+</div>
+{% endblock %}

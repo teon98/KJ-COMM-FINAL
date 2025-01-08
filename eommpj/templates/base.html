@@ -67,7 +67,12 @@
               >로그아웃</a
             >
             {% if user.user_type == "admin" %}
-            <a class="setting_button" href="{% url 'setting' %}">관리자설정</a>
+            <a
+              style="background-color: #484848"
+              class="setting_button"
+              href="{% url 'setting' %}"
+              >관리자설정</a
+            >
             {% endif %}
           </p>
           {% else %}
@@ -114,10 +119,13 @@
           <ul class="category-menu">
             {% for category in categories %}
             <li>
-              <img class="first_category_img_list"
+              {% if category.image %} <img class="first_category_img_list"
               src="/shop{{category.image.url }}" alt="{{category.name}}" /
               <a href="#">{{category.name}}</a>
-              {% if category.subcategories.all %}
+              {% else %} <img class="first_category_img_list" src="{% static
+              'images/기본이미지.png' %}" alt="{{category.name}}" /
+              <a href="#">{{category.name}}</a>
+              {% endif %} {% if category.subcategories.all %}
               <ul class="sub-category-menu">
                 {% for subcategory in category.subcategories.all %}
                 <li>
@@ -136,95 +144,17 @@
             </li>
             {% endfor %}
           </ul>
-          <!-- 
-          <ul>
-            <a href="">
-              <li class="first_category_li">
-                <img
-                  class="first_category_img_list"
-                  src="{% static 'images/에어용품_2.png' %}"
-                  alt="에어 용품"
-                />에어 용품
-              </li>
-            </a>
-            <a href="">
-              <li class="first_category_li">
-                <img
-                  class="first_category_img_list"
-                  src="{% static 'images/전자제품.png' %}"
-                  alt="전자제품 용품"
-                />전자 제품
-              </li>
-            </a>
-            <a href="">
-              <li class="first_category_li">
-                <img
-                  class="first_category_img_list"
-                  src="{% static 'images/골프용품.png' %}"
-                  alt="골프 용품"
-                />골프 용품
-              </li>
-            </a>
-            <a href="">
-              <li class="first_category_li">
-                <img
-                  class="first_category_img_list"
-                  src="{% static 'images/낚시용품.png' %}"
-                  alt="낚시 용품"
-                />낚시 용품
-              </li>
-            </a>
-            <a href="">
-              <li class="first_category_li">
-                <img
-                  class="first_category_img_list"
-                  src="{% static 'images/체육용품아이콘.png' %}"
-                  alt="체육용품아이콘"
-                />
-                체육 용품
-              </li></a
-            >
-            <a href="">
-              <li class="first_category_li">
-                <img
-                  class="first_category_img_list"
-                  src="{% static 'images/탈인형.png' %}"
-                  alt="탈인형"
-                />탈인형
-              </li>
-            </a>
-            <a href="">
-              <li class="first_category_li">
-                <img
-                  class="first_category_img_list"
-                  src="{% static 'images/생활용품.png' %}"
-                  alt="생활용품"
-                />생활용품
-              </li>
-            </a>
-            <a href="">
-              <li class="first_category_li">
-                <img
-                  class="first_category_img_list"
-                  src="{% static 'images/유니폼의류아이콘.png' %}"
-                  alt="유니폼의류아이콘"
-                />유니폼의류
-              </li></a
-            >
-            <a href="">
-              <li class="first_category_li">
-                <img
-                  class="first_category_img_list"
-                  src="{% static 'images/상점.png' %}"
-                  alt="도매상품문의"
-                />도매 상품 문의
-              </li>
-            </a>
-          </ul>
-          -->
         </td>
         <td class="main">{% block content %}{% endblock %}</td>
-        <td class="aside">최근 본 상품 목록</td>
+        <td class="aside">
+          <div class="aside_div">
+            <p>오늘 본 상품</p>
+            <p>1개</p>
+            <button>🔼</button>
+            <img src="#" alt="상품이미지" />
+            <button>🔽</button>
+          </div>
+        </td>
       </tr>
       <footer></footer>
     </div>

@@ -9,6 +9,7 @@ import logging
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib import messages
+from django.core.paginator import Paginator
 # Create your views here.
 logger = logging.getLogger(__name__)
 
@@ -57,7 +58,7 @@ def category_upload(request):
                 form = CategoryUploadForm(request.POST, request.FILES, instance=category)
                 if form.is_valid():
                     form.save()
-                    return JsonResponse({'status': 'success', 'message': '카테고리가 수정되었습니다.'}, status=200)
+                    return redirect('upload_category')
                 else:
                     return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
             except Category.DoesNotExist:
@@ -168,8 +169,33 @@ def product_upload(request):
 
 
 def product_list(request):
+    #검색어 가져오기
+    search_query = request.GET.get('search', '')
+    category_id = request.GET.get('category', '')
+
+    #기본 상품 쿼리셋
     products = Product.objects.all()
-    return render(request, '전체상품리스트.html', {'products': products})
+
+    #카테고리 필터링:
+    if category_id:
+        products = products.filter(category_id=category_id)
+    
+    #검색 필터링
+    if search_query:
+        products = products.filter(title__icontains=search_query)
+    
+    # 페이징 설정 (20개씩 표시)
+    paginator = Paginator(products, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    # 모든 카테고리 가져오기
+    #all_categories = Category.objects.all()
+    parent_categories = Category.objects.filter(parent__isnull=True)
+    return render(request, '전체상품리스트.html', {'page_obj': page_obj,
+        'parent_categories': parent_categories,
+        'search_query': search_query,
+        'category_id': category_id,})
 
 def get_child_categories(request, parent_id):
     if request.method == "GET":
@@ -178,6 +204,38 @@ def get_child_categories(request, parent_id):
         return JsonResponse(list(child_categories), safe=False)
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
+def product_edit(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    
+    print("product", product)
+
+    if request.method == "POST":
+        print("POST 데이터:", request.POST)
+        print("FILES 데이터:", request.FILES)
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        #print(form)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "상품이 성공적으로 수정되었습니다.")
+            return redirect('product_list')
+        else:
+            print("폼 에러:", form.errors)  # 폼 에러 출력
+    else:
+        form = ProductForm(instance=product)
+
+    parent_categories = Category.objects.filter(parent__isnull=True)
+    child_categories = Category.objects.filter(parent=product.category.parent) if product.category else []
+    return render(request, '상품수정.html', {'form': form, 'product': product,'parent_categories': parent_categories,
+        'child_categories': child_categories,
+        'selected_parent': product.category.parent.id if product.category and product.category.parent else None,
+        'selected_child': product.category.id if product.category else None,})
+
+def product_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    product.delete()
+    messages.success(request, "상품이 성공적으로 삭제되었습니다.")
+    return redirect('product_list')
+
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    return render(request, '상세_페이지.html', {'product': product})
+    return render(request, '상세_페이지.html', {'product': product, })
