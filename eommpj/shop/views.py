@@ -10,10 +10,24 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
+from .models import Category
+from .forms import CategoryUploadForm
+
 # Create your views here.
 logger = logging.getLogger(__name__)
 
 def main_home(request):
+        # 관리자 추천 상품 (최신 업데이트 순)
+    admin_recommended_products = Product.objects.filter(is_admin_recommended=True).order_by('-updated_at')[:8]
+
+    # 신규 업데이트 상품 (최신 업데이트 순)
+    newly_updated_products = Product.objects.order_by('-updated_at')[:8]
+
+    # 전체 상품 (최신 업데이트 순)
+    all_products = Product.objects.order_by('-updated_at')[:8]
+
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -32,7 +46,9 @@ def main_home(request):
     else:
         form = AuthenticationForm()
     
-    return render(request, 'main_home.html', {'form': form})
+    return render(request, 'main_home.html', {'form': form, 'admin_recommended_products': admin_recommended_products,
+        'newly_updated_products': newly_updated_products,
+        'all_products': all_products})
 
 @login_required
 def accounts_info(request):
@@ -79,10 +95,7 @@ def category_upload(request):
         categories = Category.objects.filter(parent__isnull=True)
         return render(request, 'category_upload.html', {'form': form, 'categorys': categories})
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
-from .models import Category
-from .forms import CategoryUploadForm
+
 
 # 카테고리 수정 뷰
 def category_edit(request, id):
@@ -132,22 +145,24 @@ def setting(request):
 def product_upload(request):
     if request.method == 'POST':
         child_category_id = request.POST.get('child_category')
+        parent_category_id = request.POST.get('parent_category')
         print("선택된 하위 카테고리 ID:", child_category_id)
 
 
         # 하위 카테고리 확인
         if not child_category_id:
-            return render(request, '상품업로드.html', {
-                'form': ProductForm(),
-                'error': '하위 카테고리를 선택해주세요.'
-            })
+            category = get_object_or_404(Category, id=parent_category_id)
+        else:
+            category = get_object_or_404(Category, id=child_category_id)
+
+        print("카테고리", category)
 
         # 하위 카테고리 객체 가져오기
-        child_category = get_object_or_404(Category, id=child_category_id)
+        #child_category = get_object_or_404(Category, id=child_category_id)
 
         # POST 데이터를 수정하여 category 필드를 추가
         post_data = request.POST.copy()
-        post_data['category'] = child_category_id
+        post_data['category'] = category.id
 
         # 수정된 POST 데이터를 사용하여 폼 생성
         form = ProductForm(post_data, request.FILES)
@@ -155,15 +170,11 @@ def product_upload(request):
         print("POST 데이터:", post_data)  # 수정된 POST 데이터 출력
         if form.is_valid():
             product = form.save(commit=False)
-            product.category = child_category  # 하위 카테고리를 직접 매핑
+            product.category = category  # 하위 카테고리를 직접 매핑
             product.save()
             return redirect('product_list')
         else:
-            print("폼 에러:", form.errors)  # 폼 에러 확인
-            return render(request, '상품업로드.html', {
-                'form': form,
-                'error': '폼 유효성 검사를 통과하지 못했습니다.'
-            })
+            return render(request, '상품업로드.html', {'form': form, 'error': '폼 유효성 검사를 통과하지 못했습니다.'})
 
     return render(request, '상품업로드.html', {'form': ProductForm()})
 
@@ -239,3 +250,4 @@ def product_delete(request, pk):
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, '상세_페이지.html', {'product': product, })
+

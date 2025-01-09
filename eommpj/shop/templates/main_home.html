@@ -1,3 +1,31 @@
-{% extends 'base.html' %} {% block content %}
-<h3>추천 상품</h3>
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+<div>
+    <div class="product-section">
+        <h3>추천 상품</h3>
+        <div class="product-content">
+            {% for product in admin_recommended_products %}
+                <div class="product-item">
+                    <img src="/shop{{ product.header_image.url }}" alt="{{ product.title }}" width="150px">
+                    <p style="color:#333333; font-size: 13px;">{{ product.title }}</p>
+                    <p style="font-weight: bold;">{{ product.price|intcomma }} 원</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="product-section">
+        <h3>신규 업데이트 상품</h3>
+        <div class="product-content">
+            {% for product in newly_updated_products %}
+            <div class="product-item">
+                <img src="/shop{{ product.header_image.url }}" alt="{{ product.title }}" width="150px"/>
+                <p>{{ product.title }}</p>
+                <p>{{ product.price|intcomma }} 원</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

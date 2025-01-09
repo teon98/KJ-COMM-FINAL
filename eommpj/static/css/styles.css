@@ -570,3 +570,25 @@ footer {
   justify-content: center;
   font-size: 13px;
 }
+
+.product-content{
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 500px;
+}
+
+.product-item{
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.product-item img{
+  width: 150px;
+  height: 150px;
+}
+
+.product-item p{
+  margin: 5px
+}

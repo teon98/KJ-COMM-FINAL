@@ -28,7 +28,7 @@ class Category(models.Model):
 class Product(models.Model):
     class Meta:
         ordering = ['-updated_at']
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products',null=True, blank=True)
     header_image = models.ImageField(upload_to='products/headers/')
     detail_image = models.ImageField(upload_to='products/details/')
     title = models.CharField(max_length=200)

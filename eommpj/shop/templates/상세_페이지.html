@@ -27,15 +27,15 @@
         </tr>
         <tr>
           <th>원산지</th>
-          <td>{{ product.origin }}</td>
+          <td>{{ product.origin|default_if_none:"" }}</td>
         </tr>
         <tr>
           <th>브랜드</th>
-          <td>{{ product.brand }}</td>
+          <td>{{ product.brand|default_if_none:"" }}</td>
         </tr>
         <tr>
           <th>제조사</th>
-          <td>{{ product.manufacturer }}</td>
+          <td>{{ product.manufacturer|default_if_none:"" }}</td>
         </tr>
         <tr>
           <th>주문수량</th>
