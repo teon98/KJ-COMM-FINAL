@@ -1,5 +1,6 @@
 {% extends 'base.html' %} 
 {% load humanize %}
+{% load static %}
 {% block content %} 
 <div class="detail_body">
   <div class="admin_product_detail">
@@ -64,7 +65,9 @@
       <h3>상품 상세 설명</h3>
       <img src="/shop{{ product.detail_image.url }}" alt="Detail Image" />
     </div>
-    <ㅇ
+    <div class="product_info">
+      <img src="{% static 'images/상품안내.png' %}" alt="상품안내"/>
+    </div>
   </div>
   {% endblock %}
 </div>
