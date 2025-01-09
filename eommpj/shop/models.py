@@ -28,6 +28,7 @@ class Category(models.Model):
 
     class Meta:
         db_table = 'category' 
+        ordering = ['id']
 
     def __str__(self):
         # 상위 카테고리 > 하위 카테고리 형식으로 표시
