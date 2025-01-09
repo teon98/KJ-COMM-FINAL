@@ -120,21 +120,35 @@ def delete_category(request, category_id):
             return JsonResponse({'status': 'error', 'message': 'Category not found'}, status=404)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
-def category_detail(request, category_name):
+def category_detail(request, category_name = None):
+    #정렬 기준 가져오기(기본값: 날짜순)
+    sort_option = request.GET.get('sort', 'updated_at')
+    order_by = '-views' if sort_option == 'views' else '-updated_at'
     # Category 객체 가져오기
-    category = get_object_or_404(Category, name=category_name)
-    
-    # content_type에 따라 다른 템플릿 선택
-    if category.content_type == "글":
-        template_name = "글_게시판.html"  # 글 게시판 템플릿 이름
-    elif category.content_type == "사진":
-        template_name = "사진_게시판.html"  # 사진 게시판 템플릿 이름
+    if category_name: #특정 카테고리가 지정된 경우
+        category = get_object_or_404(Category, name=category_name)
+        products = Product.objects.filter(category=category).order_by('-updated_at')
+        # 제목 생성
+        if category.parent:  # 하위 카테고리가 있는 경우
+            title = f"{category.parent.name} > {category.name}"
+        else:  # 상위 카테고리만 있는 경우
+            title = category.name
+        
+        # content_type에 따라 다른 템플릿 선택
+        template_name = "사진_게시판.html" if category.content_type == "사진" else "글_게시판.html"
     else:
-        template_name = "default_category.html"  # 기본 템플릿 이름
-
+        products = Product.objects.all().order_by('-updated_at');
+        category = None
+        title = "전체 상품"
+        #content_type = "사진"  # 기본 content_type 설정
+        template_name = "사진_게시판.html"  # 기본 템플릿 설정
+    
     # 템플릿에 context 전달
     context = {
         'category': category,
+        'products': products,
+        'title': title,
+        'sort_option': sort_option,
     }
 
     return render(request, template_name, context)
@@ -249,5 +263,7 @@ def product_delete(request, pk):
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    return render(request, '상세_페이지.html', {'product': product, })
+    product.views += 1  # 조회수 증가
+    product.save()
+    return render(request, '상세_페이지.html', {'product': product})
 

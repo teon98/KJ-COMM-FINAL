@@ -10,6 +10,16 @@ def category_image_upload_path(instance, filename):
     safe_filename = slugify(os.path.splitext(filename)[0])
     return f"categories/{safe_filename}.{ext}"
 
+def safe_file_upload_path_headers(instance, filename):
+    name, ext = os.path.splitext(filename)
+    safe_name = slugify(name)  # 파일 이름을 안전한 ASCII 문자열로 변환
+    return f"products/headers/{safe_name}{ext}"
+
+def safe_file_upload_path_details(instance, filename):
+    name, ext = os.path.splitext(filename)
+    safe_name = slugify(name)  # 파일 이름을 안전한 ASCII 문자열로 변환
+    return f"products/details/{safe_name}{ext}"
+
 class Category(models.Model):
     name = models.CharField(max_length=255) #카테고리 이름
     image = models.ImageField(upload_to=category_image_upload_path, blank=True, null=True)  # 이미지 업로드
@@ -29,8 +39,8 @@ class Product(models.Model):
     class Meta:
         ordering = ['-updated_at']
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products',null=True, blank=True)
-    header_image = models.ImageField(upload_to='products/headers/')
-    detail_image = models.ImageField(upload_to='products/details/')
+    header_image = models.ImageField(upload_to=safe_file_upload_path_headers)
+    detail_image = models.ImageField(upload_to=safe_file_upload_path_details)
     title = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=10, decimal_places=0)
     price_detail = models.TextField(blank=True, null=True)
@@ -40,6 +50,7 @@ class Product(models.Model):
     is_free_shipping = models.BooleanField(default=False)
     is_admin_recommended = models.BooleanField(default=False)
     updated_at = models.DateTimeField(default=now, blank=True, null=True)
+    views = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title

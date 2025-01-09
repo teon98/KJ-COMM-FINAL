@@ -11,6 +11,7 @@ urlpatterns = [
     path('upload-category/', views.category_upload, name='upload_category'),
     path('upload-category/<int:id>/', views.category_edit, name='category_edit'),  # 수정 동작
     path('delete-category/<int:category_id>/', views.delete_category, name='delete_category'),
+    path('category/', views.category_detail, name='all_products'),
     path('category/<str:category_name>/', views.category_detail, name='category_detail'),
     path('setting/', views.setting, name="setting"), #관리자 설정
     path('upload-product', product_upload, name="upload_product"),

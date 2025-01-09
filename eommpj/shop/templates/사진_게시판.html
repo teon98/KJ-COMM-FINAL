@@ -1,6 +1,26 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
 <div>
-  <h1>{{ category.name }} 사진 게시판</h1>
-  <p>사진 게시판 내용 여기에 표시</p>
+  <div class="all_products"><h3>{{ title }}</h3></div>
+  <div class="products_filter" style="padding-left: 10px;">
+    <a href="?sort=updated_at" class="{% if sort_option %}">조회순</a>
+    |
+    <a>날짜순</a>
+  </div>
+  <div class="product-content">
+    {% for product in products %}
+        <a href="{% url 'product_detail' product.pk %}">
+        <div class="product-item">
+            {% if product.is_free_shipping %}
+                <div class="free_div">무료배송</div>
+            {% endif %}
+            <img src="/shop{{ product.header_image.url }}" alt="{{ product.title }}" width="150px">
+            <p>{{ product.title }}</p>
+            <p>{{ product.price|intcomma }} 원</p>
+        </div>
+        </a>
+    {% endfor %}
+</div>
 </div>
 {% endblock %}

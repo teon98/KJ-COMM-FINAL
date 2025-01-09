@@ -3,27 +3,64 @@
 {% block content %}
 <div>
     <div class="product-section">
-        <h3>추천 상품</h3>
+        <div class="all_products">
+            <h3>추천 상품</h3>
+            <a href="{% url 'all_products' %}">전체상품보기</a>
+        </div>
         <div class="product-content">
             {% for product in admin_recommended_products %}
+                <a href="{% url 'product_detail' product.pk %}">
                 <div class="product-item">
+                    {% if product.is_free_shipping %}
+                        <div class="free_div">무료배송</div>
+                    {% endif %}
                     <img src="/shop{{ product.header_image.url }}" alt="{{ product.title }}" width="150px">
                     <p style="color:#333333; font-size: 13px;">{{ product.title }}</p>
                     <p style="font-weight: bold;">{{ product.price|intcomma }} 원</p>
                 </div>
+                </a>
             {% endfor %}
         </div>
     </div>
 
     <div class="product-section">
+        <div class="all_products">
         <h3>신규 업데이트 상품</h3>
+            <a href="{% url 'all_products' %}">전체상품보기</a>
+        </div>
         <div class="product-content">
             {% for product in newly_updated_products %}
+            <a href="{% url 'product_detail' product.pk %}">
             <div class="product-item">
+                {% if product.is_free_shipping %}
+                    <div class="free_div">무료배송</div>
+                {% endif %}
                 <img src="/shop{{ product.header_image.url }}" alt="{{ product.title }}" width="150px"/>
-                <p>{{ product.title }}</p>
-                <p>{{ product.price|intcomma }} 원</p>
+                <p style="color:#333333; font-size: 13px;">{{ product.title }}</p>
+                <p style="font-weight: bold;">{{ product.price|intcomma }} 원</p>
             </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="product-section">
+        <div class="all_products">
+        <h3>전체상품</h3>
+            <a href="{% url 'all_products' %}">전체상품보기</a>
+        </div>
+        <div class="product-content">
+            {% for product in all_products %}
+            <a href="{% url 'product_detail' product.pk %}">
+            <div class="product-item">
+                {% if product.is_free_shipping %}
+                    <div class="free_div">무료배송</div>
+                {% endif %}
+                <img src="/shop{{ product.header_image.url }}" alt="{{ product.title }}" width="150px"/>
+                <p style="color:#333333; font-size: 13px;">{{ product.title }}</p>
+                <p style="font-weight: bold;">{{ product.price|intcomma }} 원</p>
+            </div>
+            </a>
             {% endfor %}
         </div>
     </div>
