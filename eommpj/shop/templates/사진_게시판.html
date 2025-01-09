@@ -4,9 +4,9 @@
 <div>
   <div class="all_products"><h3>{{ title }}</h3></div>
   <div class="products_filter" style="padding-left: 10px;">
-    <a href="?sort=updated_at" class="{% if sort_option %}">조회순</a>
+    <a href="?sort=updated_at" class="{% if sort_option == 'updated_at' %}btn-active{% else %}btn{% endif %}">날짜순</a>
     |
-    <a>날짜순</a>
+    <a href="?sort=views" class="{% if sort_option == 'views' %}btn-active{% else %}btn{% endif %}">조회순</a>
   </div>
   <div class="product-content">
     {% for product in products %}
@@ -21,6 +21,6 @@
         </div>
         </a>
     {% endfor %}
-</div>
+  </div>
 </div>
 {% endblock %}

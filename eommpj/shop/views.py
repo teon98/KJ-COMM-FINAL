@@ -127,7 +127,7 @@ def category_detail(request, category_name = None):
     # Category 객체 가져오기
     if category_name: #특정 카테고리가 지정된 경우
         category = get_object_or_404(Category, name=category_name)
-        products = Product.objects.filter(category=category).order_by('-updated_at')
+        products = Product.objects.filter(category=category).order_by('order_by')
         # 제목 생성
         if category.parent:  # 하위 카테고리가 있는 경우
             title = f"{category.parent.name} > {category.name}"
@@ -137,7 +137,7 @@ def category_detail(request, category_name = None):
         # content_type에 따라 다른 템플릿 선택
         template_name = "사진_게시판.html" if category.content_type == "사진" else "글_게시판.html"
     else:
-        products = Product.objects.all().order_by('-updated_at');
+        products = Product.objects.all().order_by(order_by);
         category = None
         title = "전체 상품"
         #content_type = "사진"  # 기본 content_type 설정
