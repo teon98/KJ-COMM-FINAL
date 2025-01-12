@@ -1,5 +1,6 @@
 from django import forms
 from .models import Category, Product
+from accounts.models import CustomUser
 
 class CategoryUploadForm(forms.ModelForm):
     class Meta:
@@ -43,3 +44,23 @@ class ProductForm(forms.ModelForm):
                 'min': 0,      # 최소값 설정
             }),
         }
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = [
+            'userid', 'email', 'first_name', 'last_name', 'company', 'gender',
+            'birth_date', 'phone_number', 'mobile_number', 'address', 'homepage',
+            'recommender_id', 'additional_info'
+        ]
+        widgets = {
+            'birth_date': forms.DateInput(attrs={'type': 'date'}),  # 생년월일을 date picker로 표시
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 선택적 필드 설정
+        self.fields['homepage'].required = False
+        self.fields['recommender_id'].required = False
+        self.fields['additional_info'].required = False
+        self.fields['birth_date'].required = False  # 생년월일 선택적 입력

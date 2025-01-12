@@ -14,6 +14,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from .models import Category
 from .forms import CategoryUploadForm
+from .forms import ProfileUpdateForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 
 # Create your views here.
 logger = logging.getLogger(__name__)
@@ -267,3 +270,16 @@ def product_detail(request, pk):
     product.save()
     return render(request, '상세_페이지.html', {'product': product})
 
+
+def my_page(request):
+    User = get_user_model()
+    user = User.objects.get(pk=request.user.pk)  # 새로 쿼리
+    print(f"birth_date from DB: {user.birth_date}")  # 확인
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('my_page')
+    else:
+        form = ProfileUpdateForm(instance=user)
+    return render(request, 'my_page.html', {'form': form})

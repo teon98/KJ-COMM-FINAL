@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.text import slugify
 import os
 from django.utils.timezone import now
+from django.contrib.auth.models import AbstractUser
+
 
 def category_image_upload_path(instance, filename):
     # 파일 확장자 추출
@@ -55,3 +57,5 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+    
+

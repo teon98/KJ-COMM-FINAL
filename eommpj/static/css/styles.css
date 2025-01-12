@@ -657,3 +657,17 @@ footer span{
 .products_filter a:hover{
   color: #dd4040;
 }
+
+.signupButton{
+  border: none;
+  background-color: #484848;
+  color: white;
+  width: 120px;
+  height: 30px;
+  border-radius: 5px;
+}
+
+.register_text{
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+}
