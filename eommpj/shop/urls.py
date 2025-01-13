@@ -4,6 +4,7 @@ from . import views  # 현재 디렉토리의 views를 가져옵니다
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import product_upload, get_child_categories
+from django.urls import re_path
 
 urlpatterns = [
     path('', views.main_home, name='main_home'),  # 기본 페이지 경로
@@ -11,8 +12,10 @@ urlpatterns = [
     path('upload-category/', views.category_upload, name='upload_category'),
     path('upload-category/<int:id>/', views.category_edit, name='category_edit'),  # 수정 동작
     path('delete-category/<int:category_id>/', views.delete_category, name='delete_category'),
+    # 키 값이 없는 경우: 전체 상품을 보여줌
     path('category/', views.category_detail, name='all_products'),
-    path('category/<str:category_name>/', views.category_detail, name='category_detail'),
+    # 키 값이 있는 경우: 특정 카테고리의 상품을 보여줌
+    re_path(r'^category/(?P<category_name>.+)/$', views.category_detail, name='category_detail'),
     path('setting/', views.setting, name="setting"), #관리자 설정
     path('upload-product', product_upload, name="upload_product"),
     path('products/', views.product_list, name='product_list'),

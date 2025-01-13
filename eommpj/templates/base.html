@@ -62,7 +62,7 @@
         <form class="account_form" method="post" action="{% url 'login' %}">
           {% csrf_token %} {% if user.is_authenticated %}
           <p class="account_p">
-            <b>{{ user.username }}</b>님 안녕하세요!
+            <b>{{ user.userid }}</b>님 안녕하세요!
             <a class="logout_button" type="submit" href="{% url 'logout' %}"
               >로그아웃</a
             >
@@ -120,11 +120,11 @@
             {% for category in categories %}
             <li>
               {% if category.image %} <img class="first_category_img_list"
-              src="/shop{{category.image.url }}" alt="{{category.name}}" /
-              <a href="#">{{category.name}}</a>
+              src="/shop{{category.image.url }}" alt="{{category.name}}" />
+              <a href="{% url 'category_detail' category.name|urlencode  %}">{{ category.name }}</a>
               {% else %} <img class="first_category_img_list" src="{% static
-              'images/기본이미지.png' %}" alt="{{category.name}}" /
-              <a href="#">{{category.name}}</a>
+              'images/기본이미지.png' %}" alt="{{category.name}}" />
+              <a href="{% url 'category_detail' category.name|urlencode  %}">{{ category.name }}</a>
               {% endif %} {% if category.subcategories.all %}
               <ul class="sub-category-menu">
                 {% for subcategory in category.subcategories.all %}

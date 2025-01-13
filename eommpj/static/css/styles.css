@@ -23,6 +23,7 @@ a {
 
 .header {
   grid-column: 2 / span 2;
+  justify-self: end;
 }
 
 .header ul {
@@ -32,6 +33,7 @@ a {
   justify-items: end;
   color: #707070;
   font-size: 10px;
+  max-width: 600px;
 }
 
 .search {
@@ -669,5 +671,28 @@ footer span{
 
 .register_text{
   border: 1px solid #bbbbbb;
+  border-radius: 5px;
+}
+
+.mypage form table input, .mypage form table select{
+  border: 1px solid #bbbbbb;
+  width: 140px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.mypage form table textarea{
+  border: 1px solid #bbbbbb;
+  width: 200px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.mypage button{
+  border: none;
+  width: 100px;
+  height: 30px;
+  background-color: #484848;
+  color: white;
   border-radius: 5px;
 }

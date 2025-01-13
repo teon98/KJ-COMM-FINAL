@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% block content %}
-<div>
+<div class="mypage">
     <h2>내 정보 수정</h2>
     <form method="post" action="{% url 'my_page' %}">
         {% csrf_token %}
@@ -113,7 +113,7 @@
             <tr>
                 <td><label for="id_address">주소</label></td>
                 <td>
-                    <input type="text" id="id_address" name="address" value="{{ form.address.value }}">
+                    <input type="text" id="id_address" name="address" value="{{ form.address.value }}" style="width:200px;">
                     {% if form.address.errors %}
                         <div style="color: red;">{{ form.address.errors.0 }}</div>
                     {% endif %}

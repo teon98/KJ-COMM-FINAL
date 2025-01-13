@@ -17,6 +17,7 @@ from .forms import CategoryUploadForm
 from .forms import ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from urllib.parse import unquote
 
 # Create your views here.
 logger = logging.getLogger(__name__)
@@ -123,29 +124,32 @@ def delete_category(request, category_id):
             return JsonResponse({'status': 'error', 'message': 'Category not found'}, status=404)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
-def category_detail(request, category_name = None):
-    #정렬 기준 가져오기(기본값: 날짜순)
+def category_detail(request, category_name=None):
+    # 정렬 기준 가져오기 (기본값: 날짜순)
     sort_option = request.GET.get('sort', 'updated_at')
     order_by = '-views' if sort_option == 'views' else '-updated_at'
+
     # Category 객체 가져오기
-    if category_name: #특정 카테고리가 지정된 경우
-        category = get_object_or_404(Category, name=category_name)
-        products = Product.objects.filter(category=category).order_by('order_by')
+    if category_name:  # 특정 카테고리가 지정된 경우
+        # URL 디코딩
+        category_name = unquote(category_name)
+        category = get_object_or_404(Category, name__iexact=category_name.strip())
+        products = Product.objects.filter(category=category).order_by(order_by)
+
         # 제목 생성
         if category.parent:  # 하위 카테고리가 있는 경우
             title = f"{category.parent.name} > {category.name}"
         else:  # 상위 카테고리만 있는 경우
             title = category.name
-        
-        # content_type에 따라 다른 템플릿 선택
+
+        # 템플릿 선택
         template_name = "사진_게시판.html" if category.content_type == "사진" else "글_게시판.html"
     else:
-        products = Product.objects.all().order_by(order_by);
+        products = Product.objects.all().order_by(order_by)
         category = None
         title = "전체 상품"
-        #content_type = "사진"  # 기본 content_type 설정
         template_name = "사진_게시판.html"  # 기본 템플릿 설정
-    
+
     # 템플릿에 context 전달
     context = {
         'category': category,
@@ -155,6 +159,7 @@ def category_detail(request, category_name = None):
     }
 
     return render(request, template_name, context)
+
 
 def setting(request):
     return render(request, 'setting.html')
