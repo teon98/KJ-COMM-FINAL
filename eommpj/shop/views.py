@@ -278,6 +278,9 @@ def product_detail(request, pk):
 def company_introduce(request):
     return render(request, '회사소개.html')
 
+def use_info(request):
+    return render(request, '이용안내.html')
+
 def my_page(request):
     User = get_user_model()
     user = User.objects.get(pk=request.user.pk)  # 새로 쿼리

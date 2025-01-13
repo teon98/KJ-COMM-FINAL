@@ -703,3 +703,12 @@ footer span{
   max-width: 200px; /* 이미지 크기 조정 */
   height: auto; /* 이미지 비율 유지 */
 }
+
+.use_info div{
+  margin-bottom: 50px;
+}
+
+.use_info .use_info_title{
+  font-weight: bold;
+  color:#c58111;
+}

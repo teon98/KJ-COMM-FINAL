@@ -24,11 +24,11 @@
       <div class="header">
         <ul>
           <li><a href="/">홈으로</a></li>
-          <li><a>이용안내</a></li>
+          <li><a href="{% url 'use_info' %}">이용안내</a></li>
           <li><a>질문과답변</a></li>
           <li><a>자유게시판</a></li>
           <li><a>주문내역</a></li>
-          <li><a href="{% url 'my_page'%}">마이페이지</a></li>
+          <li><a href="{% url 'my_page' %}">마이페이지</a></li>
           <li><a>장바구니</a></li>
           <li><a>즐겨찾기</a></li>
         </ul>
@@ -161,7 +161,7 @@
           <table>
             <tr class="footer_header">
               <td style="width: 170px;"><a href="/">홈으로</a></td>
-              <td><a>이용안내</a></td>
+              <td><a href="{% url 'use_info' %}">이용안내</a></td>
               <td><a>이용약관</a></td>
               <td><a>개인정보취급방침</a></td>
               <td><a>제휴문의</a></td>
