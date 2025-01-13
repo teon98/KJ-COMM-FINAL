@@ -275,6 +275,8 @@ def product_detail(request, pk):
     product.save()
     return render(request, '상세_페이지.html', {'product': product})
 
+def company_introduce(request):
+    return render(request, '회사소개.html')
 
 def my_page(request):
     User = get_user_model()

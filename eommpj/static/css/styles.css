@@ -696,3 +696,10 @@ footer span{
   color: white;
   border-radius: 5px;
 }
+.right-image {
+  float: right;
+  margin-left: 15px; /* 텍스트와 이미지 간의 간격 */
+  margin-bottom: 10px; /* 아래 텍스트와 이미지 간격 */
+  max-width: 200px; /* 이미지 크기 조정 */
+  height: auto; /* 이미지 비율 유지 */
+}
