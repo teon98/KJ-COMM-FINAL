@@ -26,6 +26,7 @@ urlpatterns = [
     path('my-page/', views.my_page, name='my_page'),
     path('company_introduce', views.company_introduce, name="company_introduce"),
     path('use_info', views.use_info, name="use_info"),
+    path('usage_policy', views.usage_policy, name="usage_policy")
 ]
 
 # 미디어 파일 서빙 설정
