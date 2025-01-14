@@ -37,13 +37,13 @@
       <!-- 검색창 -->
       <div class="search">
         <a href="/"><img src="{% static 'images/logo.png' %}" alt="logo" /></a>
-        <form>
+        <form style="display: flex; align-items: center;">
           <input
             type="text"
             name="search"
             placeholder="검색어를 입력해주세요"
           />
-          <button type="submit">상품검색🔍</button>
+          <button type="submit" style="margin-left: 10px; width: ;">상품검색🔍</button>
         </form>
       </div>
 
@@ -63,13 +63,13 @@
           {% csrf_token %} {% if user.is_authenticated %}
           <p class="account_p">
             <b>{{ user.userid }}</b>님 안녕하세요!
-            <a class="logout_button" type="submit" href="{% url 'logout' %}"
+            <a class="logout_button accounts_a" type="submit" href="{% url 'logout' %}"
               >로그아웃</a
             >
             {% if user.user_type == "admin" %}
             <a
               style="background-color: #484848"
-              class="setting_button"
+              class="setting_button accounts_a"
               href="{% url 'setting' %}"
               >관리자설정</a
             >
@@ -95,7 +95,7 @@
               align-items: center;
               justify-content: center;
             "
-            class="main_buttons"
+            class="main_buttons accounts_a"
             href="{% url 'register' %}"
             >회원가입</a
           >
@@ -107,11 +107,14 @@
               justify-content: center;
             "
             href="#"
-            class="main_buttons"
+            class="main_buttons accounts_a"
             >비밀번호 찾기</a
           >
           {% endif %}
         </form>
+        <a class="special-text">
+          <span>도</span><span>매</span><span> </span><span>별</span><span>도</span><span>문</span><span>의</span>
+        </a>
       </div>
 
       <tr>
@@ -143,7 +146,20 @@
               {% endif %}
             </li>
             {% endfor %}
+            <li>
+              <a><img src="{% static 'images/고객센터_이미지.png' %}"/></a>
+            </li>
+            <li>
+              <a><img src="{% static 'images/네이버_이미지.png' %}"/></a>
+            </li>
+            <li>
+              <a><img src="{% static 'images/대한통운_이미지.png' %}"/></a>
+            </li>
+            <li>
+              <a><img src="{% static 'images/무통장입금_이미지.png' %}"/></a>
+            </li>
           </ul>
+          
         </td>
         <td class="main">{% block content %}{% endblock %}</td>
         <td class="aside">
@@ -169,9 +185,9 @@
               <td><a>자주하는질문</a></td>
               <td><a>온라인견적서</a></td>
             </tr>
-            <tr>
+            <tr style="background-color: #f2f2f2;">
               <td>
-                <img src="{% static 'images/footer_logo.png' %}" width="170px" logo="로고"/>
+                <img src="{% static 'images/로고_투명.png' %}" width="170px" logo="로고"/>
               </td>
               <td colspan="7">
                 <span>상담시간</span> 평일 09:00 ~ 18:00 (주말/공휴일 전화상담가능) <br/>

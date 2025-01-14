@@ -100,6 +100,11 @@ a {
   height: 30px;
 }
 
+.accounts{
+  display: flex;
+  align-items: center;
+}
+
 .accounts form button,
 .accounts form a {
   display: inline-block;
@@ -140,7 +145,7 @@ a {
   display: inline-block;
 }
 
-.accounts a {
+.accounts_a {
   background-color: #c58111;
   color: white;
   font-size: 13px;
@@ -698,9 +703,7 @@ footer span{
 }
 .right-image {
   float: right;
-  margin-left: 15px; /* 텍스트와 이미지 간의 간격 */
-  margin-bottom: 10px; /* 아래 텍스트와 이미지 간격 */
-  max-width: 200px; /* 이미지 크기 조정 */
+  max-width: 250px; /* 이미지 크기 조정 */
   height: auto; /* 이미지 비율 유지 */
 }
 
@@ -711,4 +714,60 @@ footer span{
 .use_info .use_info_title{
   font-weight: bold;
   color:#c58111;
+}
+
+/* 기본 스타일 */
+.special-text {
+  font-size: 24px; /* 글자 크기 */
+  font-weight: bold; /* 글자 굵기 */
+  display: inline-block; /* 애니메이션 효과를 위한 블록 설정 */
+  min-width: 150px;
+  margin-left: 10px;
+
+}
+
+/* 각 글자의 스타일 */
+.special-text span {
+  display: inline-block; /* 각 글자를 블록화 */
+  animation: fade-color 2s linear infinite; /* 애니메이션 설정 */
+}
+
+/* 순차적으로 딜레이 추가 */
+.special-text span:nth-child(1) {
+  animation-delay: 0s; /* 첫 글자 딜레이 없음 */
+}
+.special-text span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.special-text span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+.special-text span:nth-child(4) {
+  animation-delay: 0.6s;
+}
+.special-text span:nth-child(5) {
+  animation-delay: 0.8s;
+}
+.special-text span:nth-child(6) {
+  animation-delay: 1s;
+}
+.special-text span:nth-child(7) {
+  animation-delay: 1.2s;
+}
+
+/* 애니메이션 정의 */
+@keyframes fade-color {
+  0% {
+    color: black; /* 초기 색상 */
+  }
+  50% {
+    color: red; /* 색상이 빨간색으로 변화 */
+  }
+  100% {
+    color: black; /* 다시 검은색으로 복귀 */
+  }
+}
+
+table {
+  border-collapse: collapse; /* 테두리 간격 제거 */
 }
