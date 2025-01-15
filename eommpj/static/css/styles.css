@@ -500,12 +500,9 @@ footer span{
   flex-direction: column;
   /* width: 100px; */
   align-items: center;
-  border: 1px solid #bbbbbb;
-  border-radius: 5px;
   margin-left: 30px;
   margin-top: 10px;
   width: 150px;
-  height: 200px;
 }
 
 #category-form {
