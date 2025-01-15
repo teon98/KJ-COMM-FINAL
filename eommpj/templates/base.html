@@ -167,12 +167,15 @@
           <div class="aside_div">
             <p>오늘 본 상품</p>
         {% if recently_viewed_products %}
-            <ul>
+            <ul style="
+            margin: 0px;
+            padding: 0px;
+            ">
                 {% for product in recently_viewed_products %}
                 <li>
                     <a href="{% url 'product_detail' product.pk %}">
-                        <img style="width: 150px; height: 150px"src="{{ product.header_image.url }}" alt="{{ product.title }}">
-                        <p>{{ product.name }}</p>
+                        <img style="width: 120px; height: 120px"src="{{ product.header_image.url }}" alt="{{ product.title }}">
+                        <p>{{ product.title }}</p>
                     </a>
                 </li>
                 {% endfor %}
