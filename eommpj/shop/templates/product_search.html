@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+<h1>검색 결과</h1>
+    {% if products %}
+        <ul class="search_box">
+            {% for product in products %}
+                <li>
+                    <a href="{% url 'product_detail' product.id %}">
+                        <p class="product_title">{{ product.title }}</p>
+                        <p>가격: {{ product.price }}</p>
+                        <img src="{{ product.header_image.url }}" alt="{{ product.title }}" style="width: 150px; height: auto;">
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>검색 결과가 없습니다.</p>
+    {% endif %}
+</div>
+{% endblock %}

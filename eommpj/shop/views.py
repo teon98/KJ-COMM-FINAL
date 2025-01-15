@@ -18,6 +18,7 @@ from .forms import ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from urllib.parse import unquote
+from django.db.models import Q  # Q 객체 사용
 
 # Create your views here.
 logger = logging.getLogger(__name__)
@@ -311,3 +312,15 @@ def my_page(request):
     else:
         form = ProfileUpdateForm(instance=user)
     return render(request, 'my_page.html', {'form': form})
+
+def product_search(request):
+    query = request.GET.get('q', '').strip()  # 검색어 가져오기 및 공백 제거
+    print(f"검색어: {query}")  # 디버깅 출력
+    
+    products = Product.objects.filter(title__icontains=query) if query else Product.objects.none()
+    print(f"검색 결과: {products}")  # 디버깅 출력
+    
+    return render(request, 'product_search.html', {
+        'products': products,
+        'query': query,
+    })

@@ -37,11 +37,12 @@
       <!-- 검색창 -->
       <div class="search">
         <a href="/"><img src="{% static 'images/logo.png' %}" alt="logo" /></a>
-        <form style="display: flex; align-items: center;">
+        <form action="{% url 'product_search' %}" method="get" style="display: flex; align-items: center;">
           <input
             type="text"
-            name="search"
+            name="q"
             placeholder="검색어를 입력해주세요"
+            value="{{ request.GET.q|default:'' }}"
           />
           <button type="submit" style="margin-left: 10px; width: 100px;">상품검색🔍</button>
         </form>

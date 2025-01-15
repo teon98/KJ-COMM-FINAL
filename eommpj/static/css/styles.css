@@ -846,3 +846,19 @@ footer table {
   display: flex;
   margin-bottom: 10px;
 }
+
+.search_box{
+  display: flex;
+}
+
+.search_box li{
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+}
+
+.product_title{
+  font-weight: bold;
+  font-size: 20px;
+  width: 150px;
+  padding: 5px;
+}
