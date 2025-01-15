@@ -171,7 +171,7 @@
                 {% for product in recently_viewed_products %}
                 <li>
                     <a href="{% url 'product_detail' product.pk %}">
-                        <img src="{{ product.header_image.url }}" alt="{{ product.title }}">
+                        <img style="width: 150px; height: 150px"src="{{ product.header_image.url }}" alt="{{ product.title }}">
                         <p>{{ product.name }}</p>
                     </a>
                 </li>
