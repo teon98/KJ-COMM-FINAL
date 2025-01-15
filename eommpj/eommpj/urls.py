@@ -20,6 +20,8 @@ from django.contrib.sitemaps.views import sitemap
 from django.contrib import admin
 from django.urls import path, include
 from shop import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 # class YourModelSitemap(Sitemap):
 #     changefreq = "daily"  # 변경 빈도: daily, weekly 등
@@ -40,6 +42,8 @@ urlpatterns = [
     path('', views.main_home, name='main_home'),  # 기본 페이지
     path('shop/', include('shop.urls')),  # shop 앱 연결    
     path('accounts/', include('accounts.urls')),  # 회원가입 경로 추가
-
+    path('board/', include('board.urls')),
     #path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
-]
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('summernote/', include('django_summernote.urls')),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

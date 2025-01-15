@@ -56,8 +56,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'shop',
-    'accounts'
+    'accounts',
+    'ckeditor',
+    'ckeditor_uploader',
+    'board',
+    'django_summernote',
 ]
+
+SUMMERNOTE_THEME = 'bs5'
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -83,6 +97,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+
 # 업로드된 파일의 URL 경로
 MEDIA_URL = '/media/'
 # 업로드된 파일의 실제 저장 위치
@@ -105,6 +124,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'eommpj.context_processors.categories_context',
+                'shop.context_processors.recently_viewed_context',  # 추가
             ],
         },
     },

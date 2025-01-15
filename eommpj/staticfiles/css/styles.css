@@ -23,6 +23,7 @@ a {
 
 .header {
   grid-column: 2 / span 2;
+  justify-self: end;
 }
 
 .header ul {
@@ -32,6 +33,7 @@ a {
   justify-items: end;
   color: #707070;
   font-size: 10px;
+  max-width: 600px;
 }
 
 .search {
@@ -98,6 +100,11 @@ a {
   height: 30px;
 }
 
+.accounts{
+  display: flex;
+  align-items: center;
+}
+
 .accounts form button,
 .accounts form a {
   display: inline-block;
@@ -138,7 +145,7 @@ a {
   display: inline-block;
 }
 
-.accounts a {
+.accounts_a {
   background-color: #c58111;
   color: white;
   font-size: 13px;
@@ -656,4 +663,186 @@ footer span{
 
 .products_filter a:hover{
   color: #dd4040;
+}
+
+.signupButton{
+  border: none;
+  background-color: #484848;
+  color: white;
+  width: 120px;
+  height: 30px;
+  border-radius: 5px;
+}
+
+.register_text{
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+}
+
+.mypage form table input, .mypage form table select{
+  border: 1px solid #bbbbbb;
+  width: 140px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.mypage form table textarea{
+  border: 1px solid #bbbbbb;
+  width: 200px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.mypage button{
+  border: none;
+  width: 100px;
+  height: 30px;
+  background-color: #484848;
+  color: white;
+  border-radius: 5px;
+}
+.right-image {
+  float: right;
+  max-width: 250px; /* 이미지 크기 조정 */
+  height: auto; /* 이미지 비율 유지 */
+}
+
+.use_info div{
+  margin-bottom: 50px;
+}
+
+.use_info .use_info_title{
+  font-weight: bold;
+  color:#c58111;
+}
+
+/* 기본 스타일 */
+.special-text {
+  font-size: 24px; /* 글자 크기 */
+  font-weight: bold; /* 글자 굵기 */
+  display: inline-block; /* 애니메이션 효과를 위한 블록 설정 */
+  min-width: 150px;
+  margin-left: 10px;
+
+}
+
+/* 각 글자의 스타일 */
+.special-text span {
+  display: inline-block; /* 각 글자를 블록화 */
+  animation: fade-color 2s linear infinite; /* 애니메이션 설정 */
+}
+
+/* 순차적으로 딜레이 추가 */
+.special-text span:nth-child(1) {
+  animation-delay: 0s; /* 첫 글자 딜레이 없음 */
+}
+.special-text span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.special-text span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+.special-text span:nth-child(4) {
+  animation-delay: 0.6s;
+}
+.special-text span:nth-child(5) {
+  animation-delay: 0.8s;
+}
+.special-text span:nth-child(6) {
+  animation-delay: 1s;
+}
+.special-text span:nth-child(7) {
+  animation-delay: 1.2s;
+}
+
+/* 애니메이션 정의 */
+@keyframes fade-color {
+  0% {
+    color: black; /* 초기 색상 */
+  }
+  50% {
+    color: red; /* 색상이 빨간색으로 변화 */
+  }
+  100% {
+    color: black; /* 다시 검은색으로 복귀 */
+  }
+}
+
+footer table {
+  border-collapse: collapse; /* 테두리 간격 제거 */
+}
+
+.board_category_setting table{
+  border-collapse: collapse;
+  border: 1px solid #484848;
+  width: 100%;
+  font-size: 13px;
+}
+
+.board_category_setting th, .board_category_setting td{
+  border: 1px solid #484848;
+}
+
+.board_category_setting td{
+  height: 30px;
+  text-align: center;
+}
+
+.board_category_setting a{
+  margin: 0;
+  background-color: #c58111;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 13px;
+}
+
+.board_category_setting button{
+  border: none;
+  color: white;
+  background-color: #484848;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 13px;
+}
+
+.board_category_setting thead{
+  background-color: #f2f2f2;
+}
+
+.board_category_update input, .board_category_update textarea{
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+}
+
+.board_category_update input{
+  width: 300px;
+  height: 20px;
+}
+
+.board_category_update button{
+  width: 100px;
+  height: 25px;
+  color: white;
+  background-color: #c58111;
+  border: none;
+  border-radius: 5px;
+}
+
+.board_category_update a{
+  color: #484848;
+  text-align: right;
+  text-decoration: underline;
+}
+
+.board_category_update div{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  margin-top: 50px;
+}
+
+.board_category_setting div{
+  display: flex;
+  margin-bottom: 10px;
 }

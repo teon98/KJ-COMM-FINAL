@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div>
+    <h1>새 글 작성</h1>
+    <form method="post">
+        {% csrf_token %}
+        <!-- 카테고리 선택 -->
+        <div>
+            <label for="id_category">카테고리 선택</label>
+            <select name="category" id="id_category" required>
+                <option value="">카테고리를 선택하세요</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- 제목 -->
+        <div>
+            <label for="id_title">제목</label>
+            <input type="text" name="title" id="id_title" maxlength="255" required>
+        </div>
+        
+        <!-- 내용 (에디터) -->
+        <div>
+            <label for="id_content">내용</label>
+            <textarea name="content" id="id_content"></textarea>
+        </div>
+        
+        <button type="submit">저장</button>
+    </form>
+</div>
+
+<!-- CKEditor 스크립트 추가 -->
+<script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+<script>
+    CKEDITOR.replace('id_content', {
+        toolbar: [
+            { name: 'document', items: ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print'] },
+            { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'Undo', 'Redo'] },
+            { name: 'styles', items: ['FontSize', 'TextColor', 'BGColor'] }, <!-- 글씨 크기, 색상 추가 -->
+            { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat'] },
+            { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote'] },
+            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+            { name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar'] },
+            { name: 'tools', items: ['Maximize', 'ShowBlocks'] }
+        ],
+        height: 300
+    });
+</script>
+{% endblock %}

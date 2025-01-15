@@ -12,6 +12,9 @@
     {% for product in products %}
         <a href="{% url 'product_detail' product.pk %}">
         <div class="product-item">
+              {% if product.is_free_shipping %}
+                <div class="free_div">착불</div>
+              {% endif %}
             <img src="/shop{{ product.header_image.url }}" alt="{{ product.title }}" width="150px">
             <p>{{ product.title }}</p>
             <p>{{ product.price|intcomma }} 원</p>

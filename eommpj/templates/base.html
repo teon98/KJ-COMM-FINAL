@@ -25,8 +25,8 @@
         <ul>
           <li><a href="/">홈으로</a></li>
           <li><a href="{% url 'use_info' %}">이용안내</a></li>
-          <li><a>질문과답변</a></li>
-          <li><a>자유게시판</a></li>
+          <li><a href="{% url 'post_list_by_category' 2 %}">질문과답변</a></li>
+          <li><a href="{% url 'post_list_by_category' 3 %}">자유게시판</a></li>
           <li><a>주문내역</a></li>
           <li><a href="{% url 'my_page' %}">마이페이지</a></li>
           <li><a>장바구니</a></li>
@@ -43,17 +43,17 @@
             name="search"
             placeholder="검색어를 입력해주세요"
           />
-          <button type="submit" style="margin-left: 10px; width: ;">상품검색🔍</button>
+          <button type="submit" style="margin-left: 10px; width: 100px;">상품검색🔍</button>
         </form>
       </div>
 
       <div class="nav">
         <ul class="secondary-menu-list">
-          <li><a href="#">자료실</a></li>
-          <li><a href="#">개인결제</a></li>
-          <li><a href="#">중고상품</a></li>
-          <li><a href="#">A/S접수</a></li>
-          <li><a href="#">고객센터</a></li>
+          <li><a href="{% url 'post_list_by_category' 6 %}">자료실</a></li>
+          <li><a href="{% url 'category_detail' '개인 결제' %}">개인결제</a></li>
+          <li><a href="{% url 'category_detail' '중고 상품' %}">중고상품</a></li>
+          <li><a href="{% url 'post_list_by_category' 5 %}">A/S접수</a></li>
+          <li><a href="{% url 'post_list_by_category' 4 %}">고객센터</a></li>
           <li><a href="{% url 'company_introduce' %}">회사소개</a></li>
         </ul>
       </div>
@@ -165,10 +165,20 @@
         <td class="aside">
           <div class="aside_div">
             <p>오늘 본 상품</p>
-            <p>1개</p>
-            <button>🔼</button>
-            <img src="#" alt="상품이미지" />
-            <button>🔽</button>
+        {% if recently_viewed_products %}
+            <ul>
+                {% for product in recently_viewed_products %}
+                <li>
+                    <a href="{% url 'product_detail' product.pk %}">
+                        <img src="{{ product.header_image.url }}" alt="{{ product.title }}">
+                        <p>{{ product.name }}</p>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>최근 본 상품이 없습니다.</p>
+        {% endif %}
           </div>
         </td>
       </tr>
@@ -181,7 +191,7 @@
               <td><a href="{% url 'usage_policy' %}">이용약관</a></td>
               <td><a>개인정보취급방침</a></td>
               <td><a>제휴문의</a></td>
-              <td><a>질문과답변</a></td>
+              <td><a href="{% url 'post_list_by_category' 2 %}">질문과답변</a></td>
               <td><a>자주하는질문</a></td>
               <td><a>온라인견적서</a></td>
             </tr>

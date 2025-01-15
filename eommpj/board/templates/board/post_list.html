@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="board_category_setting">
+    <h1>{{ category.name }}</h1>
+    <div>
+        <a href="{% url 'post_create' %}">새 글 등록</a>
+    </div>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        <table>
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+                <th>관리</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+            <tr id="post-row-{{ post.id }}">
+                <td>{{ post.id }}</td>
+                <td><a style="border: none; background-color: white; text-decoration: underline; color: #c58111;" href="{% url 'post_detail' post.id %}">{{ post.title }}</a></td>
+                <td>{{ post.author }}</td>
+                <td>{{ post.created_at|date:"Y-m-d" }}</td>
+                <td>{{ post.views }}</td>
+                <td style="min-width: 90px;">
+                    <a href="">수정</a> |
+                    <a href="">삭제</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">등록된 글이 없습니다.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".delete-btn");
+    
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const postId = this.dataset.id;
+    
+                if (confirm("정말 삭제하시겠습니까?")) {
+                    fetch(`/post/${postId}/delete/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            alert(data.message);
+                            document.getElementById(`post-row-${postId}`).remove();
+                        } else {
+                            alert(data.error || "삭제 중 문제가 발생했습니다.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("서버와의 통신 중 문제가 발생했습니다.");
+                    });
+                }
+            });
+        });
+    });
+    </script>
+{% endblock %}

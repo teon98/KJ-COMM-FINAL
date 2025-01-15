@@ -1,0 +1,101 @@
+{% extends 'base.html' %} {% block content %}
+<div class="board_category_setting">
+<h1>게시판 카테고리 관리</h1>
+<a href="{% url 'category_create' %}">새 카테고리 등록</a>
+<hr>
+<table>
+    <thead>
+        <tr>
+            <th>번호</th>
+            <th>카테고리 이름</th>
+            <th>설명</th>
+            <th>관리</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category in page_obj.object_list  %}
+        <tr id="category-row-{{ category.id }}">
+            <td>{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <td>{{ category.description }}</td>
+            <td style="min-width: 90px;">
+                <a href="{% url 'category_update' category.id %}">수정</a> |
+                <button class="delete-btn" data-id="{{ category.id }}" data-name="{{ category.name }}">
+                    삭제
+                </button>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">등록된 카테고리가 없습니다.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- 페이지네이션 -->
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">처음</a>
+            <a href="?page={{ page_obj.previous_page_number }}">이전</a>
+        {% endif %}
+        <span class="current">
+            페이지 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        </span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">다음</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">마지막</a>
+        {% endif %}
+    </span>
+    
+</div>
+</div>
+<script>
+
+const csrfToken = '{{ csrf_token }}'; 
+
+document.addEventListener("DOMContentLoaded", function () {
+    const deleteButtons = document.querySelectorAll(".delete-btn");
+
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            const categoryId = this.dataset.id;
+            const categoryName = this.dataset.name;
+
+            console.log(`/board/categories/${categoryId}/delete/`);
+            if (confirm(`"${categoryName}" 카테고리를 삭제하시겠습니까?`)) {
+                fetch(`/board/categories/${categoryId}/delete/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,  // CSRF 토큰
+                        'Content-Type': 'application/json',  // 요청 본문 형식
+                        'X-Requested-With': 'XMLHttpRequest',  // AJAX 요청임을 명시
+                    },
+                    body: JSON.stringify({})  // 빈 JSON 데이터라도 전송
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.error || '서버 응답 오류');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.message) {
+                        document.getElementById(`category-row-${categoryId}`).remove();
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert(error.message || "삭제 요청 중 문제가 발생했습니다.");
+                });
+            }
+        });
+    });
+});
+// CSRF 토큰 추가
+    </script>
+{% endblock %}

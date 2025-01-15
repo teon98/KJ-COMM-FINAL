@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ post.title }}</h1>
+<p>카테고리: {{ post.category.name }}</p>
+<p>진행사항: {{ post.status }}</p>
+<p>작성자: {{ post.author }}</p>
+<p>작성일: {{ post.created_at|date:"Y-m-d H:i" }}</p>
+<p>조회수: {{ post.views }}</p>
+<hr>
+<div>
+    {{ post.content|safe }} <!-- CKEditor로 작성한 HTML을 렌더링 -->
+</div>
+<a href="{% url 'post_list' %}">목록으로</a>
+{% endblock %}

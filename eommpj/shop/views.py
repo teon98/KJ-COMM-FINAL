@@ -272,8 +272,23 @@ def product_delete(request, pk):
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     product.views += 1  # 조회수 증가
+
+    # 쿠키 설정
+    recently_viewed = request.COOKIES.get('recently_viewed', '')  # 쿠키 읽기
+    viewed_list = recently_viewed.split(',') if recently_viewed else []
+
+    if str(pk) in viewed_list:
+        viewed_list.remove(str(pk))  # 중복 제거
+    viewed_list.insert(0, str(pk))  # 맨 앞에 추가
+
+    if len(viewed_list) > 3:
+        viewed_list = viewed_list[:3]
+
+    # 템플릿 렌더링
+    response = render(request, '상세_페이지.html', {'product': product})
+    response.set_cookie('recently_viewed', ','.join(viewed_list), max_age=7*24*60*60)  # 쿠키 유지 기간: 7일
     product.save()
-    return render(request, '상세_페이지.html', {'product': product})
+    return response
 
 def company_introduce(request):
     return render(request, '회사소개.html')
