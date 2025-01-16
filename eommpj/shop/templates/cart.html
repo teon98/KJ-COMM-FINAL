@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div>
+    <h1>장바구니</h1>
+    <table class="cart_form">
+        <tr>
+            <th>상품이름</th>
+            <th>상품가격</th>
+            <th>상품수량</th>
+            <th>설정</th>
+        </tr>
+        {% for item in cart_items %}
+        <tr>
+            <td>{{ item.product.title }}</td>
+            <td>{{ item.product.price }}원</td>
+            <form method="POST" action="{% url 'cart_update' item.id %}"></form>
+            <td>
+                <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+            </td>
+            <td class="cart_form_setting">
+                <button type="submit">수정</button>&nbsp;| &nbsp;
+                <a href="{% url 'cart_remove' item.id %}">삭제</a>
+            </td>
+            </form>
+        </tr>
+        {% endfor %}
+    </table>
+    <div style="text-align: right;">
+        <a href="{% url 'checkout' %}" style="background-color: #c58111; color: white; border-radius: 5px; border: none; margin-top: 10px; padding: 5px; font-size: 13px;">결제하기</a>
+    </div>
+</div>
+{% endblock %}

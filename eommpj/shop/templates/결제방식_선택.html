@@ -1,0 +1,43 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block content %}
+<div>
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <h1>결제방식 선택</h1>
+  <div class="payment_options">
+    <form method="post" action="{% url 'payment_option' product_id %}" id="payment-form">
+      {% csrf_token %}
+      <div style="display: flex;">
+          <label>
+              <img src="{% static 'images/무통장.png' %}" alt="무통장" style="width: 100px;" />
+              <input type="radio" name="payment_method" value="bank_transfer" required>
+              <p>무통장 입금</p>
+          </label><br>
+          <label>
+              <img src="{% static 'images/카드.png' %}" alt="카드" style="width: 100px;" />
+              <input type="radio" name="payment_method" value="credit_card" required>
+              <p>카드 결제</p>
+          </label><br>
+      </div>
+  </form>
+</div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const paymentOptions = document.querySelectorAll("input[name='payment_method']");
+    const form = document.querySelector("#payment-form");
+
+    paymentOptions.forEach(function (radioButton) {
+        radioButton.addEventListener("change", function () {
+            form.submit(); // 라디오 버튼 선택 시 폼 자동 제출
+        });
+    });
+});
+
+  console.log(document.querySelector("#checkout-form"));
+
+</script>
+
+{% endblock %}
+

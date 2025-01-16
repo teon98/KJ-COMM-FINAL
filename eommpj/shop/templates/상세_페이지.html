@@ -10,6 +10,7 @@
       width="300px"
     />
     <div style="display: flex;flex-direction: column;">
+      <!-- 수량 입력 필드 -->
       <table class="product_detail_table" border="0">
         <tr>
           <td style="text-align: left" colspan="2" id="product_title">
@@ -21,44 +22,53 @@
           <td>
             {{ product.price|intcomma }} 원<br />
             <span style="text-align: left; font-size: small;">
-                <span style="color: #dd4040">* 부가세 별도입니다. 부가세: 10%</span><br/>
-                <span>단, 무통장 결제시 영수증 사용안함을<br/> 선택시 부가세 제외</span>
+              <span style="color: #dd4040">* 부가세 별도입니다. 부가세: 10%</span><br />
+              <span>단, 무통장 결제시 영수증 사용안함을<br /> 선택시 부가세 제외</span>
             </span>
           </td>
         </tr>
-        <!--
-        <tr>
-          <th>원산지</th>
-          <td>{{ product.origin|default_if_none:"" }}</td>
-        </tr>
-        <tr>
-          <th>브랜드</th>
-          <td>{{ product.brand|default_if_none:"" }}</td>
-        </tr>
-        <tr>
-          <th>제조사</th>
-          <td>{{ product.manufacturer|default_if_none:"" }}</td>
-        </tr>
-      -->
         <tr>
           <th>주문수량</th>
-          <td
-            style="
-              display: flex;
-              align-items: center;
-              justify-content: flex-end;
-            "
-          >
-            <input type="number" style="width: 100px" />&nbsp;&nbsp;개
+          <td style="display: flex; align-items: center; justify-content: flex-end;">
+            <input
+              type="number"
+              name="quantity"
+              id="order-quantity"
+              value="1"
+              min="1"
+              style="width: 100px"
+              required
+            />&nbsp;&nbsp;개
           </td>
         </tr>
       </table>
+
+      <!-- 버튼 영역 -->
       <div class="product_detail_buttons" colspan="2">
-        <a href="" class="primary">바로구매</a>
-        <a href="" class="second">장바구니</a>
-        <br/>
+        <!-- 바로구매 버튼 -->
+        <form
+          method="POST"
+          action="{% url 'payment_option' product.id %}"
+          style="display: inline;"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="quantity" id="buy-now-quantity" value="1" />
+          <button id="buy_now_bt" type="submit" class="primary">바로구매</button>
+        </form>
+
+        <!-- 장바구니 버튼 -->
+        <form
+          method="POST"
+          action="{% url 'cart_add' product.id %}"
+          style="display: inline;"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="quantity" id="add-to-cart-quantity" value="1" />
+          <button id="cart_bt" type="submit" class="second">장바구니</button>
+        </form>
+
+        <br />
         <a href="" class="second">목록</a>
-        <a href="" class="second">찜하기</a>
       </div>
     </div>
     </div>
@@ -71,5 +81,19 @@
       <img src="{% static 'images/상품안내.png' %}" alt="상품안내"/>
     </div>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // 수량 입력 필드와 숨겨진 필드를 연결
+      const quantityInput = document.getElementById("order-quantity");
+      const buyNowQuantity = document.getElementById("buy-now-quantity");
+      const addToCartQuantity = document.getElementById("add-to-cart-quantity");
+  
+      // 수량 입력 값 변경 시 숨겨진 필드 값 업데이트
+      quantityInput.addEventListener("input", function () {
+        buyNowQuantity.value = this.value;
+        addToCartQuantity.value = this.value;
+      });
+    });
+  </script>
   {% endblock %}
 </div>

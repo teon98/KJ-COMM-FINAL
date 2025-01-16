@@ -28,6 +28,20 @@ urlpatterns = [
     path('use_info', views.use_info, name="use_info"),
     path('usage_policy', views.usage_policy, name="usage_policy"),
     path('product/search/', views.product_search, name='product_search'),
+    path('payment_option/<int:product_id>/', views.payment_option, name='payment_option'),
+    path('admin/orders/', views.admin_order_list, name='admin_order_list'),
+    path('admin/orders/<int:order_id>/update/', views.update_payment_status, name='update_payment_status'),
+    path('cart/', views.cart_view, name='cart_view'),
+    path('cart/add/<int:product_id>/', views.add_to_cart, name='cart_add'),
+    path('cart/remove/<int:cart_item_id>/', views.cart_remove, name='cart_remove'),
+    path('cart/update/<int:cart_item_id>/', views.update_cart, name='cart_update'),
+    path('cart/clear/', views.clear_cart, name='clear_cart'),
+    path('checkout/', views.checkout, name='checkout'),
+    path('buy_now/<int:product_id>', views.buy_now, name='buy_now'),
+    path('checkout/complete/<str:cart_group_id>/', views.checkout_complete, name='checkout_complete'),
+    path('orders/', views.my_orders, name='my_orders'),
+
+
 ]
 
 # 미디어 파일 서빙 설정

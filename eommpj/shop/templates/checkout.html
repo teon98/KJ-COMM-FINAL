@@ -1,0 +1,7 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block content %}
+<h1>결제가 완료되었습니다</h1>
+<p>장바구니 ID: {{ cart_group_id }}</p>
+<p>총 금액: {{ total_price }}원</p>
+{% endblock %}

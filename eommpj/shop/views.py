@@ -19,6 +19,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from urllib.parse import unquote
 from django.db.models import Q  # Q 객체 사용
+from .models import Product, Cart, Order
+from uuid import uuid4
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.models import AnonymousUser
 
 # Create your views here.
 logger = logging.getLogger(__name__)
@@ -324,3 +328,205 @@ def product_search(request):
         'products': products,
         'query': query,
     })
+
+def payment_option(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    print(f"Request Method: {request.method}")  # 요청 메서드 확인
+    print(f"POST Data: {request.POST}")  # POST 데이터 확인
+
+    if request.method == 'POST':
+        payment_method = request.POST.get('payment_method')
+
+        if payment_method not in ['bank_transfer', 'credit_card']:
+            messages.error(request, "유효하지 않은 결제 방식입니다.")
+            return redirect('payment_option', product_id=product_id)
+
+        # 주문 생성
+        cart_group_id = str(uuid4())
+        quantity = 1
+
+        Order.objects.create(
+            user=request.user,
+            cart_group_id=cart_group_id,
+            product=product,
+            quantity=quantity,
+            total_price=product.price,
+            payment_method=payment_method,
+            payment_status='pending' if payment_method == 'bank_transfer' else 'completed',
+        )
+
+        # 장바구니 추가
+        request.POST = request.POST.copy()
+        request.POST['quantity'] = str(quantity)
+        add_to_cart(request, product_id)
+
+        messages.success(request, "결제가 완료되었습니다.")
+        return redirect('cart_view')
+
+    return render(request, '결제방식_선택.html', {'product': product, 'product_id': product_id})
+
+#장바구니 추가
+def add_to_cart(request, product_id):
+    print(f"add_to_cart called with Product ID: {product_id}")
+    product = get_object_or_404(Product, id=product_id)
+    quantity = int(request.POST.get('quantity', 1))
+
+    # 기존 장바구니 항목이 있는지 확인
+    cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
+    if not created:
+        cart_item.quantity += quantity  # 기존 항목에 수량 추가
+    else:
+        cart_item.quantity = quantity
+    cart_item.save()
+
+    print(f"Added to cart: {cart_item}")
+    print(f"추가 할때는 안뜨나? {request.user.username}: {Cart.objects.filter(user=request.user)}")
+
+    return redirect('cart_view')  # 장바구니 페이지로 리다이렉트
+
+#장바구니 보기
+@login_required
+def cart_view(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    for item in cart_items:
+        print(f"카트 아이템: {item.id}, 상품: {item.product.title}, 수량: {item.quantity}")
+    return render(request, 'cart.html', {'cart_items': cart_items})
+
+#장바구니 수정
+def update_cart(request, cart_item_id):
+    print(f"Updating Cart Item ID: {cart_item_id}")
+    print(f"POST Data: {request.POST}")
+
+    cart_item = get_object_or_404(Cart, id=cart_item_id, user=request.user)
+    new_quantity = int(request.POST.get('quantity', 1))
+    if new_quantity > 0:
+        cart_item.quantity = new_quantity
+        cart_item.save()
+        print(f"Cart Item Updated: {cart_item.id}, New Quantity: {cart_item.quantity}")
+    else:
+        cart_item.delete()
+        print(f"Cart Item Deleted: {cart_item.id}")
+    return redirect('cart_view')
+
+
+@login_required
+def cart_remove(request, cart_item_id):
+    """
+    장바구니에서 특정 상품 삭제
+    """
+    try:
+        # 현재 사용자의 장바구니에서 해당 상품 삭제
+        cart_item = get_object_or_404(Cart, id=cart_item_id, user=request.user)
+        cart_item.delete()
+        messages.success(request, "장바구니에서 상품이 삭제되었습니다.")
+    except Cart.DoesNotExist:
+        messages.error(request, "해당 상품이 장바구니에 없습니다.")
+    
+    return redirect('cart_view')  # 장바구니 페이지로 리디렉트
+
+
+#바로 구매(장바구니에 추가 후 장바구니로 이동)
+def buy_now(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    quantity = int(request.POST.get('quantity', 1))
+
+    # 장바구니에 추가
+    cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
+    if not created:
+        cart_item.quantity += quantity
+    else:
+        cart_item.quantity = quantity
+    cart_item.save()
+
+    return redirect('checkout')  # 결제 페이지로 이동
+
+def checkout(request):
+    payment_method = request.POST.get('payment_method')
+
+    if not request.user.is_authenticated:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            # Ajax 요청에 대해 JSON 응답 반환
+            return JsonResponse({'error': '로그인이 필요합니다.'}, status=401)
+        else:
+            # 일반 요청에 대해 로그인 페이지로 리디렉션
+            messages.error(request, "로그인이 필요합니다.")
+            return redirect('/')
+        
+    cart_items = Cart.objects.filter(user=request.user)
+
+    # 장바구니 그룹 ID 생성
+    cart_group_id = str(uuid4())
+
+    total_price = 0
+    for item in cart_items:
+        total_price += item.total_price()
+
+        # 주문 생성
+        Order.objects.create(
+            user=request.user,
+            cart_group_id=cart_group_id,
+            product=item.product,
+            quantity=item.quantity,
+            total_price=item.total_price(),
+            payment_method='bank_transfer',  # 기본값: 무통장 입금
+        )
+
+    # 장바구니 비우기
+    cart_items.delete()
+    
+    # 무통장 결제 처리
+    if payment_method == 'bank_transfer':
+        messages.success(request, "무통장 결제가 선택되었습니다. 장바구니로 이동합니다.")
+        return redirect('cart_view')  # 장바구니 페이지로 리디렉션
+
+    
+    return render(request, 'checkout.html', {
+        'cart_group_id': cart_group_id,
+        'total_price': total_price,
+    })
+
+#주문정보 관리자 페이지 뷰
+@staff_member_required
+def admin_order_list(request):
+    orders = Order.objects.all()
+
+    # 필터링 (날짜별, 그룹 ID별, 사용자 이름별)
+    user_query = request.GET.get('user', '')
+    group_query = request.GET.get('cart_group_id', '')
+    date_query = request.GET.get('date', '')
+
+    if user_query:
+        orders = orders.filter(user__username__icontains=user_query)
+    if group_query:
+        orders = orders.filter(cart_group_id=group_query)
+    if date_query:
+        orders = orders.filter(order_date__date=date_query)
+
+    return render(request, 'admin_order_list.html', {'orders': orders})
+
+#주문 상태 업데이트
+@staff_member_required
+def update_payment_status(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    new_status = request.POST.get('payment_status')
+    if new_status in dict(Order.PAYMENT_STATUS_CHOICES).keys():
+        order.payment_status = new_status
+        order.save()
+    return redirect('admin_order_list')
+
+#장바구니 한번에 초기화
+def clear_cart(request):
+    Cart.objects.filter(user=request.user).delete()
+    return redirect('cart_view')
+
+#결제 완료 화면
+def checkout_complete(request, cart_group_id):
+    orders = Order.objects.filter(cart_group_id=cart_group_id, user=request.user)
+    return render(request, 'checkout_complete.html', {'orders': orders})
+
+#사용자 자기 주문 내역
+@login_required
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user).order_by('-order_date')
+    return render(request, 'my_orders.html', {'orders': orders})
