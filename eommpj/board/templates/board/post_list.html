@@ -6,8 +6,6 @@
         <a href="{% url 'post_create' %}">새 글 등록</a>
     </div>
     <hr>
-    <form method="post">
-        {% csrf_token %}
         <table>
         <thead>
             <tr>
@@ -16,63 +14,109 @@
                 <th>작성자</th>
                 <th>작성일</th>
                 <th>조회수</th>
+                {% if category.name == "A/S 접수" %}
+                    <th>진행사항</th>
+                {% endif %}
+                {% if request.user.user_type == "admin" %}
                 <th>관리</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
-            {% for post in posts %}
-            <tr id="post-row-{{ post.id }}">
-                <td>{{ post.id }}</td>
-                <td><a style="border: none; background-color: white; text-decoration: underline; color: #c58111;" href="{% url 'post_detail' post.id %}">{{ post.title }}</a></td>
-                <td>{{ post.author }}</td>
-                <td>{{ post.created_at|date:"Y-m-d" }}</td>
-                <td>{{ post.views }}</td>
-                <td style="min-width: 90px;">
-                    <a href="">수정</a> |
-                    <a href="">삭제</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6">등록된 글이 없습니다.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+    {% for post in posts %}
+    <tr id="post-row-{{ post.id }}">
+        <td>{{ post.id }}</td>
+        <td>
+            <a style="border: none; background-color: white; text-decoration: underline; color: #c58111;" href="{% url 'post_detail' post.id %}">
+                {{ post.title }}
+            </a>
+        </td>
+        <td>{{ post.author }}</td>
+        <td>{{ post.created_at|date:"Y-m-d" }}</td>
+        <td>{{ post.views }}</td>
+        {% if category.name == "A/S 접수" %}
+        <td>
+            <form method="post" action="{% url 'update_status' post.id %}">
+                {% csrf_token %}
+                <select name="status" id="id_status">
+                    <option value="대기" {% if post.status == "대기" %}selected{% endif %}>대기</option>
+                    <option value="처리 중" {% if post.status == "처리 중" %}selected{% endif %}>처리 중</option>
+                    <option value="처리 완료" {% if post.status == "처리 완료" %}selected{% endif %}>처리 완료</option>
+                </select>
+                <button type="submit">저장</button>
+            </form>
+        </td>
+        {% endif %}
+        {% if request.user.user_type == "admin" %}
+        <td style="min-width: 90px;">
+            <a href="{% url 'post_update' post.id %}">수정</a> |
+            <a style="background-color:#484848;" href="{% url 'post_delete' post.id %}" class="delete-btn" data-id="{{ post.id }}">삭제</a>
+        </td>
+        {% endif %}
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="7">등록된 글이 없습니다.</td>
+    </tr>
+    {% endfor %}
+</tbody>
     </table>
-</form>
 </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const deleteButtons = document.querySelectorAll(".delete-btn");
-    
-        deleteButtons.forEach(button => {
-            button.addEventListener("click", function () {
+        document.querySelectorAll(".delete-btn").forEach(button => {
+            button.addEventListener("click", function (e) {
+                e.preventDefault();
                 const postId = this.dataset.id;
-    
                 if (confirm("정말 삭제하시겠습니까?")) {
-                    fetch(`/post/${postId}/delete/`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        }
+                    fetch(`/board/${postId}/delete/`, {
+                        method: "POST",
+                        headers: { "X-CSRFToken": "{{ csrf_token }}" }
                     })
                     .then(response => response.json())
                     .then(data => {
                         if (data.message) {
                             alert(data.message);
-                            document.getElementById(`post-row-${postId}`).remove();
+                            location.reload();
                         } else {
-                            alert(data.error || "삭제 중 문제가 발생했습니다.");
+                            alert(data.error);
                         }
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        alert("서버와의 통신 중 문제가 발생했습니다.");
                     });
                 }
             });
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const forms = document.querySelectorAll("form[action*='update_status']");
+    forms.forEach(form => {
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const postId = this.action.split("/").slice(-3, -2)[0];
+            const status = this.querySelector("select[name='status']").value;
+
+            console.log(postId)
+
+            fetch(this.action, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": this.querySelector("input[name='csrfmiddlewaretoken']").value,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `status=${status}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    });
+});
     </script>
 {% endblock %}

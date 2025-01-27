@@ -70,7 +70,7 @@ class Order(models.Model):
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='shop_orders')
-    cart_group_id = models.CharField(max_length=100, unique=True)  # 장바구니 그룹 ID
+    cart_group_id = models.CharField(max_length=100)  # 장바구니 그룹 ID
     product = models.ForeignKey('shop.Product', on_delete=models.CASCADE, related_name='orders')
     quantity = models.PositiveIntegerField(default=1)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)

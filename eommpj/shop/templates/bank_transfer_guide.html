@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div>
+    <h1>무통장 결제 안내</h1>
+
+    <div style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
+        <img src="{% static 'images/확인.png' %}" style="width:70px"/>
+        <p style="font-weight: bold; color:gray">결제해주셔서 감사합니다</p>
+    </div>
+
+    <div>
+        <table>
+            <tr>
+                <th style="min-width: 70px; background-color: lightgray;">주문번호</th>
+                <td>{{ cart_group_id }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="margin-top:10px ;border: 1px solid lightgray; border-radius: 5px; padding: 10px; width: 100%;">
+        <p>아래 계좌로 24시간 이내에 입금 부탁드립니다</p>
+        <p>입금 확인 후 주문이 처리 됩니다</p>
+        <hr>
+        <table class="account_info" style="width: 100%;">
+            <tr>
+                <th>은행명</th>
+                <td>기업은행</td>
+            </tr>
+            <tr>
+                <th>계좌번호</th>
+                <td>486-074724-01-011</td>
+            </tr>
+            <tr>
+                <th>예금주</th>
+                <td>최승설</td>
+            </tr>
+        </table>
+        
+    </div>
+
+    <div style="margin-top: 10px; color: #c58111; text-decoration: underline; text-align: right;">
+        <a href="{% url 'main_home' %}">🏠홈으로</a>
+    </div>
+</div>
+{% endblock %}

@@ -7,6 +7,7 @@
   <div class="payment_options">
     <form method="post" action="{% url 'payment_option' product_id %}" id="payment-form">
       {% csrf_token %}
+      <input type="hidden" name="quantity" value="{{ quantity }}">
       <div style="display: flex;">
           <label>
               <img src="{% static 'images/무통장.png' %}" alt="무통장" style="width: 100px;" />

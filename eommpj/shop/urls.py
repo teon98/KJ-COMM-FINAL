@@ -36,12 +36,15 @@ urlpatterns = [
     path('cart/remove/<int:cart_item_id>/', views.cart_remove, name='cart_remove'),
     path('cart/update/<int:cart_item_id>/', views.update_cart, name='cart_update'),
     path('cart/clear/', views.clear_cart, name='clear_cart'),
-    path('checkout/', views.checkout, name='checkout'),
+    path(' /', views.checkout, name='checkout'),
     path('buy_now/<int:product_id>', views.buy_now, name='buy_now'),
     path('checkout/complete/<str:cart_group_id>/', views.checkout_complete, name='checkout_complete'),
     path('orders/', views.my_orders, name='my_orders'),
-
-
+    path('checkout/bank-transfer/<str:cart_group_id>/', views.bank_transfer_guide, name='bank_transfer_guide'),
+    path('admin/orders/<str:cart_group_id>/', views.admin_order_detail, name='admin_order_detail'),
+    path('payment/<uuid:cart_group_id>/', views.payment_view, name='payment_view'),
+    path('checkout/complete/<str:cart_group_id>/', views.checkout_complete, name='checkout_complete'),
+    path('my_orders', views.my_orders, name='my_orders'),
 ]
 
 # 미디어 파일 서빙 설정

@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
+from django.db.models import F
 
 def post_list(request, category_id=None):
     if category_id:
@@ -16,40 +17,76 @@ def post_list(request, category_id=None):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, id=pk)
-    post.views += 1
-    post.save()
+    Post.objects.filter(id=pk).update(views=F('views') + 1)
     return render(request, 'board/post_detail.html', {'post': post})
+
+def save_post(request, post=None):
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        category_id = request.POST.get('category')
+        if form.is_valid() and category_id:
+            category = get_object_or_404(BoardCategory, id=category_id)
+            post = form.save(commit=False)
+            post.category = category
+            post.author = request.user
+            post.save()
+            return redirect('post_list_by_category', category_id=category.id)
+    else:
+        form = PostForm(instance=post)
+    
+    categories = BoardCategory.objects.all()
+    action = '수정' if post else '등록'
+    return render(request, 'board/post_form.html', {'form': form, 'categories': categories, 'action': action})
 
 def post_create(request):
     if request.method == "POST":
         form = PostForm(request.POST)
-        category_id = request.POST.get('category')  # 선택된 카테고리 ID 가져오기
+        category_id = request.POST.get('category')
         if form.is_valid() and category_id:
-            category = get_object_or_404(BoardCategory, id=category_id)  # 카테고리 객체 가져오기
+            category = get_object_or_404(BoardCategory, id=category_id)
             post = form.save(commit=False)
-            post.category = category  # 카테고리 설정
-            post.author = request.user  # 작성자 설정
+            post.category = category
+            post.author = request.user
+            #A/S 접수 카테고리일 경우 상태를 '대기'로 설정
+            if category.name == "A/S 접수":
+                post.status = '대기'
             post.save()
-            return redirect('post_list_by_category', category_id=category.id)  # 해당 카테고리 목록으로 이동
+            return redirect('post_list_by_category', category_id=category.id)
     else:
         form = PostForm()
-    
-    categories = BoardCategory.objects.all()  # 모든 카테고리 가져오기
+    categories = BoardCategory.objects.all()
     return render(request, 'board/post_form.html', {'form': form, 'categories': categories, 'action': '등록'})
 
-def post_update(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+def update_status(request, pk):
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
+        post = get_object_or_404(Post, pk=pk)
+        new_status = request.POST.get('status')
+
+        if new_status in ['대기', '처리 중', '처리 완료']:
+            post.status = new_status
+            post.save()
+            return JsonResponse({'message': '상태가 업데이트되었습니다.', 'status': post.status})
+        else:
+            return JsonResponse({'error': '유효하지 않은 상태 값입니다.'}, status=400)
+    return JsonResponse({'error': '잘못된 요청입니다.'}, status=405)
+
+def post_update(request, pk):
+    # 수정하려는 게시글 가져오기
+    post = get_object_or_404(Post, pk=pk)
+    print("얍", post)
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)  # 기존 인스턴스 전달
         if form.is_valid():
-            form.save()
-            return redirect('post_list')  # 수정 후 목록으로 이동
+            form.save()  # 수정된 데이터 저장
+            return redirect('post_detail', pk=post.pk)  # 상세 페이지로 이동
     else:
-        form = PostForm(instance=post)
-    return render(request, 'board/post_form.html', {'form': form, 'action': '수정'})
+        form = PostForm(instance=post)  # 기존 데이터를 포함한 폼 생성
+    categories = BoardCategory.objects.all()
+    # 템플릿에 폼과 게시글 전달
+    return render(request, 'board/post_form.html', {'form': form, 'categories': categories,'post': post, 'action': '수정'})
 
 def post_delete(request, pk):
-    if request.method == "POST" and request.is_ajax():
+    if request.method == "POST":
         post = get_object_or_404(Post, pk=pk)
         post.delete()
         return JsonResponse({'message': '게시글이 삭제되었습니다.'})
@@ -57,8 +94,7 @@ def post_delete(request, pk):
 
 def post_list_by_category(request, category_id):
     category = get_object_or_404(BoardCategory, id=category_id)
-    
-    posts = Post.objects.filter(category=category).order_by('id')
+    posts = Post.objects.filter(category=category).order_by('-created_at')
     return render(request, 'board/post_list.html', {'posts': posts, 'category': category})
 
 def category_list(request):

@@ -1,12 +1,9 @@
 from django import forms
 from .models import Post, BoardCategory
-from ckeditor.widgets import CKEditorWidget
 from django_summernote.fields import SummernoteTextField
 
 
 class PostForm(forms.ModelForm):
-    content = forms.CharField(widget=CKEditorWidget(), label="내용")
-
     class Meta:
         model = Post
         fields = ['category', 'title', 'content']

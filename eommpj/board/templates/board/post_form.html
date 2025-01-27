@@ -1,52 +1,78 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block content %}
 <div>
-    <h1>새 글 작성</h1>
-    <form method="post">
-        {% csrf_token %}
-        <!-- 카테고리 선택 -->
-        <div>
-            <label for="id_category">카테고리 선택</label>
-            <select name="category" id="id_category" required>
-                <option value="">카테고리를 선택하세요</option>
-                {% for category in categories %}
-                    <option value="{{ category.id }}">{{ category.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
+<h1>글 {{ action }}</h1>
+<form method="post">
+    {% csrf_token %}
+    <table class="post_form">
+        <tr>
+            <th>카테고리선택</th>
+            <td>
+                <select name="category" id="id_category" required>
+                    <option value="">카테고리를 선택하세요</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}" {% if post.category.id == category.id %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
 
-        <!-- 제목 -->
-        <div>
-            <label for="id_title">제목</label>
-            <input type="text" name="title" id="id_title" maxlength="255" required>
-        </div>
-        
-        <!-- 내용 (에디터) -->
-        <div>
-            <label for="id_content">내용</label>
-            <textarea name="content" id="id_content"></textarea>
-        </div>
-        
-        <button type="submit">저장</button>
-    </form>
-</div>
+        <tr id="status-row" style="display: none;">
+            <th>진행상태</th>
+            <td>
+                <select name="status" id="id_status" >
+                    <option value="대기" {% if post.status == "대기" %}selected{% endif %}>대기</option>
+                    <option value="처리 중" {% if post.status == "처리 중" %}selected{% endif %}>처리 중</option>
+                    <option value="처리 완료" {% if post.status == "처리 완료" %}selected{% endif %}>처리 완료</option>
+                </select>
+                
+            </td>
+        </tr>
 
-<!-- CKEditor 스크립트 추가 -->
-<script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+        <tr>
+            <th>제목</th>
+            <td><input type="text" name="title" id="id_title" value="{{ form.title.value|default:'' }}" required></td>
+        </tr>
+
+        <tr>
+            <th>내용</th>
+            <td>
+                <textarea name="content" id="id_content" cols="50" rows="10">{{ form.content.value|default:'' }}</textarea>
+            </td>
+        </tr>
+    </table>
+
+    <div style="text-align: right; margin-top: 10px;">
+        <button style="border: none; background-color: #c58111; color: white; border-radius: 5px; padding: 5px 15px; cursor: pointer;" type="submit">{{ action }}</button>
+    </div>
+</form>
+
 <script>
-    CKEDITOR.replace('id_content', {
-        toolbar: [
-            { name: 'document', items: ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print'] },
-            { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'Undo', 'Redo'] },
-            { name: 'styles', items: ['FontSize', 'TextColor', 'BGColor'] }, <!-- 글씨 크기, 색상 추가 -->
-            { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat'] },
-            { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote'] },
-            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
-            { name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar'] },
-            { name: 'tools', items: ['Maximize', 'ShowBlocks'] }
-        ],
-        height: 300
+    document.addEventListener("DOMContentLoaded", function () {
+        const categorySelect = document.getElementById("id_category");
+        const statusRow = document.getElementById("status-row");
+        const statusSelect = document.getElementById("id_status");
+    
+        function toggleStatusField() {
+            const selectedCategory = categorySelect.options[categorySelect.selectedIndex].text;
+            if (selectedCategory === "A/S 접수") {
+                statusRow.style.display = "table-row";
+                statusSelect.disabled = false;
+            } else {
+                statusRow.style.display = "none";
+                statusSelect.disabled = true;
+                statusSelect.value = "대기";  // 기본값 설정
+            }
+        }
+    
+        // 페이지 로드 시 초기 상태 설정
+        toggleStatusField();
+    
+        // 카테고리 선택 변경 시 상태 필드 토글
+        categorySelect.addEventListener("change", toggleStatusField);
     });
-</script>
+    </script>
+</div>
 {% endblock %}

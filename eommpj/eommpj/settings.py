@@ -14,7 +14,13 @@ from pathlib import Path
 import os
 import dj_database_url
 from decouple import config
+from dotenv import load_dotenv
 
+load_dotenv()
+
+IAMPORT_API_KEY = "4271183488365873"
+IAMPORT_API_SECRET = "94A2gM9NvYzAdAYNPS7vkhRP4eBrBRj4WUgUxLBuc45z7rWHFVmZvdMiEz8FgNiFTar1q1XGdRcU0sY1"
+IAMPORT_CHANNEL = "nice"  # 나이스페이먼츠 채널 설정
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,22 +34,21 @@ SECRET_KEY = 'django-insecure-+($qk2fe21pf6m8*xw9_t$a%(#7zk11h2@jrc#u%zex_d^+5$j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['eommpj.onrender.com', '127.0.0.1','www.kj2024.co.kr', 'kj2024.co.kr']
+ALLOWED_HOSTS = ['eommpj.onrender.com', '127.0.0.1','localhost','www.kj2024.co.kr', 'kj2024.co.kr']
 #ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # 콘솔에 출력
-#배포 환경에서 열기
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_PORT = 587
-#EMAIL_USE_TLS = True
-#EMAIL_HOST_USER = 'your_email@gmail.com'
-#EMAIL_HOST_PASSWORD = 'your_password'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Gmail의 경우
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'k55416325@gmail.com'
+EMAIL_HOST_PASSWORD = 'ffrh bxdm zrwq qqgs'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Application definition
-
+LOGIN_URL = '/accounts/customlogin/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
@@ -57,26 +62,16 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'shop',
     'accounts',
-    'ckeditor',
-    'ckeditor_uploader',
     'board',
-    'django_summernote',
 ]
-
-SUMMERNOTE_THEME = 'bs5'
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': '100%',
-    },
-}
 
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8000',
 ]
+
+CSRF_COOKIE_SECURE = False  # HTTPS를 사용하는 경우 True로 설정
+CSRF_USE_SESSIONS = True   # CSRF 토큰을 세션과 연결
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -88,6 +83,17 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'choiss1318@hanmail.net'  # 발신자 이메일 주소
+EMAIL_HOST_PASSWORD = '1234'  # 앱 비밀번호 (2단계 인증 설정 필요)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',

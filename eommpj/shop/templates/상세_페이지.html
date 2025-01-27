@@ -46,17 +46,17 @@
       <!-- 버튼 영역 -->
       <div class="product_detail_buttons" colspan="2">
         <!-- 바로구매 버튼 -->
+        <!-- 바로구매 버튼 -->
         <form
-          method="POST"
-          action="{% url 'payment_option' product.id %}"
-          style="display: inline;"
+        method="POST"
+        action="{% url 'buy_now' product.id %}"
+        style="display: inline;"
         >
-          {% csrf_token %}
-          <input type="hidden" name="quantity" id="buy-now-quantity" value="1" />
-          <button id="buy_now_bt" type="submit" class="primary">바로구매</button>
+        {% csrf_token %}
+        <input type="hidden" name="quantity" id="buy-now-quantity" value="1">
+        <button style="cursor: pointer;" id="buy_now_bt" type="submit" class="primary">바로구매</button>
         </form>
-
-        <!-- 장바구니 버튼 -->
+                <!-- 장바구니 버튼 -->
         <form
           method="POST"
           action="{% url 'cart_add' product.id %}"
@@ -68,7 +68,7 @@
         </form>
 
         <br />
-        <a href="" class="second">목록</a>
+        <a href="{% url 'main_home' %}" class="second">목록</a>
       </div>
     </div>
     </div>
@@ -81,19 +81,26 @@
       <img src="{% static 'images/상품안내.png' %}" alt="상품안내"/>
     </div>
   </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // 수량 입력 필드와 숨겨진 필드를 연결
-      const quantityInput = document.getElementById("order-quantity");
-      const buyNowQuantity = document.getElementById("buy-now-quantity");
-      const addToCartQuantity = document.getElementById("add-to-cart-quantity");
-  
-      // 수량 입력 값 변경 시 숨겨진 필드 값 업데이트
-      quantityInput.addEventListener("input", function () {
-        buyNowQuantity.value = this.value;
-        addToCartQuantity.value = this.value;
-      });
-    });
-  </script>
-  {% endblock %}
+
+
 </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const quantityInput = document.getElementById("order-quantity");
+    const buyNowQuantity = document.getElementById("buy-now-quantity");
+    const addToCartQuantity = document.getElementById("add-to-cart-quantity");
+
+
+    quantityInput.addEventListener("input", function () {
+      console.log("Quantity changed:", this.value);
+      buyNowQuantity.value = this.value;
+      addToCartQuantity.value = this.value;
+
+
+      console.log("quantityInput", quantityInput);
+      console.log("buyNowQuantity", buyNowQuantity);
+      console.log("addToCartQuantity", addToCartQuantity);
+    });
+  });
+</script>
+{% endblock %}

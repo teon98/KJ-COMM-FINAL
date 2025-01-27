@@ -27,10 +27,9 @@
           <li><a href="{% url 'use_info' %}">이용안내</a></li>
           <li><a href="{% url 'post_list_by_category' 2 %}">질문과답변</a></li>
           <li><a href="{% url 'post_list_by_category' 3 %}">자유게시판</a></li>
-          <li><a>주문내역</a></li>
+          <li><a href="{% url 'my_orders' %}">주문내역</a></li>
           <li><a href="{% url 'my_page' %}">마이페이지</a></li>
-          <li><a>장바구니</a></li>
-          <li><a>즐겨찾기</a></li>
+          <li><a href="{% url 'cart_view' %}">장바구니</a></li>
         </ul>
       </div>
 
@@ -107,7 +106,7 @@
               align-items: center;
               justify-content: center;
             "
-            href="#"
+            href="{% url 'password_find' %}"
             class="main_buttons accounts_a"
             >비밀번호 찾기</a
           >
@@ -198,7 +197,7 @@
               <td><a>제휴문의</a></td>
               <td><a href="{% url 'post_list_by_category' 2 %}">질문과답변</a></td>
               <td><a>자주하는질문</a></td>
-              <td><a>온라인견적서</a></td>
+              <!-- <td><a>온라인견적서</a></td>-->
             </tr>
             <tr style="background-color: #f2f2f2;">
               <td>

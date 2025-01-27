@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+<div>
+<h1>주문 상세보기</h1>
+<table class="admin_order_detail">
+    <thead>
+    <tr>
+        <th>상품명</th>
+        <th>수량</th>
+        <th>총 가격</th>
+        <th>결제 방법</th>
+        <th>결제 상태</th>
+    </tr>
+    </thead>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.product }}</td>
+        <td>{{ order.quantity }}</td>
+        <td>{{ order.total_price|floatformat:0|intcomma }} 원</td>
+        <td>{{ order.payment_method }}</td>
+        <td 
+                {% if order.payment_status == 'pending' %} 
+                    style="color: red; font-weight: bold;"
+                {% elif order.payment_status == 'completed' %} 
+                    style="color: blue; font-weight: bold;"
+                {% endif %}
+            >
+                {% if order.payment_status == "pending" %}
+                    입금 전
+                {% else %}
+                    입금 완료
+                {% endif %}
+            </td>
+    </tr>
+    {% endfor %}
+</table>
+<hr>
+<div style="margin-top: 20px; text-align: right; color: #c58111; text-decoration: underline;">
+    <a href="{% url 'admin_order_list' %}">목록으로 돌아가기</a>
+</div>
+</div>
+{% endblock %}

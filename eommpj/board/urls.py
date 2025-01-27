@@ -12,4 +12,5 @@ urlpatterns = [
     path('categories/create/', views.category_create, name='category_create'),  # 카테고리 등록
     path('categories/<int:pk>/update/', views.category_update, name='category_update'),  # 카테고리 수정
     path('categories/<int:pk>/delete/', views.category_delete, name='category_delete'),
+    path('<int:pk>/update_status/', views.update_status, name='update_status'),
 ]

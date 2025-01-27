@@ -9,5 +9,6 @@ sqlparse==0.5.3
 typing_extensions==4.12.2
 whitenoise==6.8.2
 Pillow
-django-ckeditor
-django-summernote
+python-dotenv
+requests
+iamport 

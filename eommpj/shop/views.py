@@ -23,10 +23,24 @@ from .models import Product, Cart, Order
 from uuid import uuid4
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import AnonymousUser
+from django.db import transaction
+from django.conf import settings
+from django.db import transaction
+from uuid import uuid4
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.db import transaction
+from django.shortcuts import get_object_or_404
+from .models import Cart, Order
+from .forms import PaymentForm
+import requests
+import json
+from iamport.client import Iamport
+imp_client = Iamport(imp_key=settings.IAMPORT_API_KEY, imp_secret=settings.IAMPORT_API_SECRET)
 
 # Create your views here.
 logger = logging.getLogger(__name__)
-
+global_quantity = 1
 def main_home(request):
         # 관리자 추천 상품 (최신 업데이트 순)
     admin_recommended_products = Product.objects.filter(is_admin_recommended=True).order_by('-updated_at')[:8]
@@ -332,45 +346,49 @@ def product_search(request):
 def payment_option(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
-    print(f"Request Method: {request.method}")  # 요청 메서드 확인
-    print(f"POST Data: {request.POST}")  # POST 데이터 확인
+    # 기본 quantity 값 설정
+    quantity = global_quantity
 
     if request.method == 'POST':
+
+        quantity = int(request.POST.get('quantity'))
+
+        print(f"결제방식 선택에서 받은 수량: {quantity}")
+
         payment_method = request.POST.get('payment_method')
 
         if payment_method not in ['bank_transfer', 'credit_card']:
             messages.error(request, "유효하지 않은 결제 방식입니다.")
             return redirect('payment_option', product_id=product_id)
 
-        # 주문 생성
-        cart_group_id = str(uuid4())
-        quantity = 1
+        # 세션에 결제 방식 저장
+        request.session['payment_method'] = payment_method
 
-        Order.objects.create(
+        # 장바구니에 상품 추가
+        cart_item, created = Cart.objects.get_or_create(
             user=request.user,
-            cart_group_id=cart_group_id,
             product=product,
-            quantity=quantity,
-            total_price=product.price,
-            payment_method=payment_method,
-            payment_status='pending' if payment_method == 'bank_transfer' else 'completed',
+            defaults={'quantity': quantity}
         )
+        if not created:
+            cart_item.quantity += quantity
+            cart_item.save()
 
-        # 장바구니 추가
-        request.POST = request.POST.copy()
-        request.POST['quantity'] = str(quantity)
-        add_to_cart(request, product_id)
-
-        messages.success(request, "결제가 완료되었습니다.")
+        messages.success(request, "결제 방식이 선택되었습니다. 장바구니로 이동합니다.")
         return redirect('cart_view')
 
-    return render(request, '결제방식_선택.html', {'product': product, 'product_id': product_id})
+    # GET 요청 처리: 기본값 유지
+    print(f"GET 요청에서 기본 quantity: {quantity}")
+    return render(request, '결제방식_선택.html', {'product': product, 'product_id': product_id, 'quantity': quantity})
 
 #장바구니 추가
+@login_required
 def add_to_cart(request, product_id):
     print(f"add_to_cart called with Product ID: {product_id}")
     product = get_object_or_404(Product, id=product_id)
-    quantity = int(request.POST.get('quantity', 1))
+    quantity = int(request.POST.get('quantity'))
+    global_quantity = quantity
+    print("장바구니 수량", quantity)
 
     # 기존 장바구니 항목이 있는지 확인
     cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
@@ -378,20 +396,21 @@ def add_to_cart(request, product_id):
         cart_item.quantity += quantity  # 기존 항목에 수량 추가
     else:
         cart_item.quantity = quantity
-    cart_item.save()
-
-    print(f"Added to cart: {cart_item}")
-    print(f"추가 할때는 안뜨나? {request.user.username}: {Cart.objects.filter(user=request.user)}")
-
+ 
+    cart_item.save()  # 변경사항 저장
     return redirect('cart_view')  # 장바구니 페이지로 리다이렉트
 
 #장바구니 보기
 @login_required
 def cart_view(request):
     cart_items = Cart.objects.filter(user=request.user)
+
+    # 사용자 정보 가져오기
+    user_profile = request.user 
+
     for item in cart_items:
         print(f"카트 아이템: {item.id}, 상품: {item.product.title}, 수량: {item.quantity}")
-    return render(request, 'cart.html', {'cart_items': cart_items})
+    return render(request, 'cart.html', {'cart_items': cart_items, 'user_profile': user_profile,})
 
 #장바구니 수정
 def update_cart(request, cart_item_id):
@@ -421,89 +440,177 @@ def cart_remove(request, cart_item_id):
         cart_item.delete()
         messages.success(request, "장바구니에서 상품이 삭제되었습니다.")
     except Cart.DoesNotExist:
-        messages.error(request, "해당 상품이 장바구니에 없습니다.")
+        print(request, "해당 상품이 장바구니에 없습니다.")
     
     return redirect('cart_view')  # 장바구니 페이지로 리디렉트
 
 
 #바로 구매(장바구니에 추가 후 장바구니로 이동)
+@login_required
 def buy_now(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    quantity = int(request.POST.get('quantity', 1))
 
-    # 장바구니에 추가
-    cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
+    try:
+        quantity = int(request.POST.get('quantity', 1))
+    except (TypeError, ValueError):
+        quantity = 1  # 기본 수량 설정
+
+    print(f"바로 구매 - 받은 수량: {quantity}")
+
+    # 장바구니에 상품 추가
+    cart_item, created = Cart.objects.get_or_create(
+        user=request.user,
+        product=product,
+        defaults={'quantity': quantity}
+    )
     if not created:
-        cart_item.quantity += quantity
+        cart_item.quantity += quantity  # 기존 항목에 수량 추가
     else:
-        cart_item.quantity = quantity
+        cart_item.quantity = quantity  # 새로 추가된 경우
+
     cart_item.save()
 
-    return redirect('checkout')  # 결제 페이지로 이동
+    # 장바구니 페이지로 리디렉션
+    return redirect('cart_view')
 
+@login_required
 def checkout(request):
-    payment_method = request.POST.get('payment_method')
-
     if not request.user.is_authenticated:
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            # Ajax 요청에 대해 JSON 응답 반환
-            return JsonResponse({'error': '로그인이 필요합니다.'}, status=401)
-        else:
-            # 일반 요청에 대해 로그인 페이지로 리디렉션
-            messages.error(request, "로그인이 필요합니다.")
-            return redirect('/')
-        
+        messages.error(request, "로그인이 필요합니다.")
+        return redirect('/')
+
+    # 세션에서 cart_group_id 가져오기 (중복 방지 로직 포함)
+    if 'cart_group_id' not in request.session or Order.objects.filter(cart_group_id=request.session.get('cart_group_id')).exists():
+        print("중복 cart_group_id 발견 또는 세션 없음, 새 ID 생성")
+        while True:
+            new_cart_group_id = str(uuid4())
+            if not Order.objects.filter(cart_group_id=new_cart_group_id).exists():
+                request.session['cart_group_id'] = new_cart_group_id
+                break
+    else:
+        request.session['cart_group_id'] = str(uuid4())
+
+    cart_group_id = request.session.get('cart_group_id', None)
+    print("카트 그룹 아이디", cart_group_id)
+    # 결제 방식 가져오기
+    payment_method = request.POST.get('payment_method')
+    if not payment_method:
+        messages.error(request, "결제 방식을 선택해주세요.")
+        return redirect('cart_view')
+    print("결제방식", payment_method)
+
+    # 사용자 장바구니 가져오기
     cart_items = Cart.objects.filter(user=request.user)
+    if not cart_items.exists():
+        messages.error(request, "장바구니가 비어 있습니다.")
+        return redirect('cart_view')
+    print("장바구니",cart_items)
+    total_price = sum(item.quantity * item.product.price for item in cart_items)
+    total_quantity = sum(item.quantity for item in cart_items)
+    print("총액", "총수량", total_price,total_quantity)
 
-    # 장바구니 그룹 ID 생성
-    cart_group_id = str(uuid4())
+    # 트랜잭션 시작
+    try:
+        with transaction.atomic():
+            order_list = []
+            update_list = []
 
-    total_price = 0
-    for item in cart_items:
-        total_price += item.total_price()
+            for item in cart_items:
+                order = Order.objects.filter(
+                    user=request.user,
+                    cart_group_id=cart_group_id,
+                    product=item.product
+                ).first()
 
-        # 주문 생성
-        Order.objects.create(
-            user=request.user,
-            cart_group_id=cart_group_id,
-            product=item.product,
-            quantity=item.quantity,
-            total_price=item.total_price(),
-            payment_method='bank_transfer',  # 기본값: 무통장 입금
-        )
+                if order:
+                    # 기존 주문이 있으면 업데이트
+                    print("기존 주문 발견:", order)
+                    order.quantity += item.quantity
+                    order.total_price += item.quantity * item.product.price
+                    update_list.append(order)
+                else:
+                    # 새 주문 생성
+                    new_order = Order(
+                        user=request.user,
+                        cart_group_id=cart_group_id,
+                        product=item.product,
+                        quantity=item.quantity,
+                        total_price=item.quantity * item.product.price,
+                        payment_method=payment_method,
+                        payment_status='pending' if payment_method == 'bank_transfer' else 'completed',
+                    )
+                    order_list.append(new_order)
 
-    # 장바구니 비우기
-    cart_items.delete()
-    
-    # 무통장 결제 처리
+            # 새 주문 항목을 먼저 데이터베이스에 저장
+            if order_list:
+                Order.objects.bulk_create(order_list)
+                print(f"{len(order_list)}개의 주문이 새로 추가되었습니다.")
+
+            # 기존 주문 항목 업데이트
+            if update_list:
+                Order.objects.bulk_update(update_list, ['quantity', 'total_price'])
+                print(f"{len(update_list)}개의 주문이 업데이트되었습니다.")
+
+            # 장바구니 비우기
+            cart_items.delete()
+            print("장바구니 비움 완료")
+
+            # 세션에서 cart_group_id 제거
+            if 'cart_group_id' in request.session:
+                del request.session['cart_group_id']
+                print("세션 cart_group_id 제거 완료")
+
+    except Exception as e:
+        print(f"결제 실패: {e}")
+        messages.error(request, f"결제 중 오류가 발생했습니다: {e}")
+        return redirect('cart_view')
+
+    # 결제 방식에 따른 리디렉션 처리
     if payment_method == 'bank_transfer':
-        messages.success(request, "무통장 결제가 선택되었습니다. 장바구니로 이동합니다.")
-        return redirect('cart_view')  # 장바구니 페이지로 리디렉션
+        messages.success(request, "무통장 결제가 선택되었습니다. 안내 페이지로 이동합니다.")
+        return redirect('bank_transfer_guide', cart_group_id=cart_group_id)
 
-    
-    return render(request, 'checkout.html', {
-        'cart_group_id': cart_group_id,
-        'total_price': total_price,
-    })
+    messages.success(request, "신용카드 결제가 선택되었습니다.")
+    request.session['total_price'] = float(total_price)
+    return redirect('payment_view', cart_group_id=cart_group_id)
+
+def bank_transfer_guide(request, cart_group_id):
+    return render(request, 'bank_transfer_guide.html', {'cart_group_id': cart_group_id})
 
 #주문정보 관리자 페이지 뷰
-@staff_member_required
+#@staff_member_required
 def admin_order_list(request):
     orders = Order.objects.all()
 
-    # 필터링 (날짜별, 그룹 ID별, 사용자 이름별)
-    user_query = request.GET.get('user', '')
-    group_query = request.GET.get('cart_group_id', '')
-    date_query = request.GET.get('date', '')
+    # 필터링 (날짜별, 장바구니 그룹 ID(cart_group_id)별, 사용자 ID별)
+    user_query = request.GET.get('user', '').strip()
+    group_query = request.GET.get('cart_group_id', '').strip()
+    date_query = request.GET.get('date', '').strip()
 
     if user_query:
-        orders = orders.filter(user__username__icontains=user_query)
+        orders = orders.filter(user__userid__icontains=user_query)  # CustomUser의 userid 필드 기준으로 검색
     if group_query:
-        orders = orders.filter(cart_group_id=group_query)
+        orders = orders.filter(cart_group_id__icontains=group_query)  # 포함 검색
     if date_query:
-        orders = orders.filter(order_date__date=date_query)
+        orders = orders.filter(order_date__date=date_query)  # 날짜 형식 필터링
 
-    return render(request, 'admin_order_list.html', {'orders': orders})
+    if not orders.exists():
+        no_results = True  # 검색 결과 없을 때 표시용 변수
+    else:
+        no_results = False
+
+    return render(request, 'admin_order_list.html', {
+        'orders': orders,
+        'no_results': no_results,
+        'user_query': user_query,
+        'group_query': group_query,
+        'date_query': date_query
+    })
+
+
+def admin_order_detail(request, cart_group_id):
+    orders = Order.objects.filter(cart_group_id=cart_group_id)
+    return render(request, 'admin_order_detail.html', {'orders': orders})
 
 #주문 상태 업데이트
 @staff_member_required
@@ -521,12 +628,125 @@ def clear_cart(request):
     return redirect('cart_view')
 
 #결제 완료 화면
-def checkout_complete(request, cart_group_id):
-    orders = Order.objects.filter(cart_group_id=cart_group_id, user=request.user)
-    return render(request, 'checkout_complete.html', {'orders': orders})
+#def checkout_complete(request, cart_group_id):
+#    orders = Order.objects.filter(cart_group_id=cart_group_id, user=request.user)
+#    return render(request, 'payment.html', {'orders': orders})
 
 #사용자 자기 주문 내역
 @login_required
 def my_orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-order_date')
     return render(request, 'my_orders.html', {'orders': orders})
+
+
+IAMPORT_API_URL = "https://api.iamport.kr"
+
+
+# 1. 아임포트 액세스 토큰 발급 함수
+def get_access_token():
+    response = requests.post(
+        f"{IAMPORT_API_URL}/users/getToken",
+        json={
+            "imp_key": settings.IAMPORT_API_KEY,
+            "imp_secret": settings.IAMPORT_API_SECRET,
+        }
+    )
+    result = response.json()
+    if result.get("code") == 0:
+        return result["response"]["access_token"]
+    else:
+        raise print("아임포트 액세스 토큰 발급 실패: " + result.get("message", "알 수 없는 오류"))
+
+
+# 2. 결제 요청 로직
+def payment_view(request, cart_group_id):
+    total_price = request.session.get('total_price', 0)
+
+    if request.method == 'POST':
+        # 카드 번호를 4개의 입력 필드에서 받아 조합
+        card_number = (
+            request.POST.get('card_number1', '') +
+            request.POST.get('card_number2', '') +
+            request.POST.get('card_number3', '') +
+            request.POST.get('card_number4', '')
+        )
+        expiry = request.POST.get('expiry')  # YYMM 형식 (예: 2401)
+        birth = request.POST.get('birth')  # YYMMDD 형식
+        pwd_2digit = request.POST.get('pwd_2digit')
+
+        # 필수 입력 확인
+        if not (card_number and expiry and birth and pwd_2digit):
+            print(request, "모든 필수 입력 항목을 작성해주세요.")
+            return render(request, 'payment.html', {'total_price': total_price, 'cart_group_id': cart_group_id})
+
+        try:
+            # 아임포트 토큰 발급
+            access_token = get_access_token()
+
+            payment_data = {
+                "merchant_uid": f"order_{uuid4()}",
+                "amount": total_price,
+                "card_number": card_number,
+                "expiry": expiry,
+                "birth": birth,
+                "pwd_2digit": pwd_2digit,
+                "pg": "nice",
+                "buyer_name": request.user.get_full_name(),
+                "buyer_email": request.user.email,
+                "buyer_tel": "01012345678",
+                "name": "상품 결제",
+            }
+
+            headers = {
+                "Authorization": f"Bearer {access_token}",
+                "Content-Type": "application/json"
+            }
+
+            # 결제 요청 보내기
+            response = requests.post(
+                f"{IAMPORT_API_URL}/subscribe/payments/onetime",
+                headers=headers,
+                data=json.dumps(payment_data)
+            )
+
+            result = response.json()
+            print("결제 응답:", result)  # 디버깅 용도
+
+            if result.get("code") == 0 and result["response"]["status"] == "paid":
+                print(request, "결제가 성공적으로 완료되었습니다.")
+                return redirect('checkout_complete', cart_group_id=cart_group_id)
+            else:
+                print(request, f"결제 실패: {result.get('message', '알 수 없는 오류')}")
+
+        except Exception as e:
+            print(request, f"결제 중 오류 발생: {str(e)}")
+
+    return render(request, 'payment.html', {'total_price': total_price, 'cart_group_id': cart_group_id})
+
+
+# 3. 결제 완료 페이지
+def checkout_complete(request, cart_group_id):
+    orders = Order.objects.filter(cart_group_id=cart_group_id, user=request.user)
+
+    # 세션 정보 삭제
+    if 'total_price' in request.session:
+        del request.session['total_price']
+    if 'payment_method' in request.session:
+        del request.session['payment_method']
+
+    return render(request, 'checkout_complete.html', {'orders': orders})
+
+@login_required
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user).order_by('-order_date')
+    
+    # 주문 상태 필터링
+    bank_transfer_orders = orders.filter(payment_method='bank_transfer')
+    credit_card_orders = orders.filter(payment_method='credit_card')
+
+    context = {
+        'bank_transfer_orders': bank_transfer_orders,
+        'credit_card_orders': credit_card_orders,
+    }
+
+    return render(request, 'my_orders.html', context)

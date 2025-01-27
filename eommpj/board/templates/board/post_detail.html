@@ -1,14 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="post_detail">
 <h1>{{ post.title }}</h1>
-<p>카테고리: {{ post.category.name }}</p>
-<p>진행사항: {{ post.status }}</p>
-<p>작성자: {{ post.author }}</p>
-<p>작성일: {{ post.created_at|date:"Y-m-d H:i" }}</p>
-<p>조회수: {{ post.views }}</p>
+<table>
+    <tr class="post_detail_table_head">
+        <th>카테고리</th>
+        <th>진행사항</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th>조회수</th>
+    </tr>
+    <tr>
+        <td>{{ post.category.name }}</td>
+        <td>{{ post.status }}</td>
+        <td>{{ post.author }}</td>
+        <td>{{ post.created_at|date:"Y-m-d H:i" }}</td>
+        <td>{{ post.views }}</td>
+    </tr>
+</table>
 <hr>
 <div>
-    {{ post.content|safe }} <!-- CKEditor로 작성한 HTML을 렌더링 -->
+    {{ post.content|safe }}<!-- CKEditor로 작성한 HTML을 렌더링 -->
 </div>
+<div class="go_to_list">
 <a href="{% url 'post_list' %}">목록으로</a>
+</div>
+</div>
 {% endblock %}

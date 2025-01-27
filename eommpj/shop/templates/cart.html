@@ -3,6 +3,30 @@
 {% block content %}
 <div>
     <h1>장바구니</h1>
+    <!-- 사용자 정보 표시 -->
+    <div>
+        <h3>배송 정보</h3>
+        <table class="cart_form">
+            <tr>
+                <th>이름</th>
+                <th>연락처</th>
+                <th>주소</th>
+            </tr>
+            {% if user_profile %}
+            <tr>
+                <td>{{ user_profile.first_name }} {{ user_profile.last_name }}</td>
+                <td>{{ user_profile.phone_number }}</td>
+                <td>{{ user_profile.address }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td>사용자 정보를 찾을 수 없습니다. <a href="{% url 'my_page' %}">내 정보 수정</a></td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+
+    <h3>주문 상품</h3>
     <table class="cart_form">
         <tr>
             <th>상품이름</th>
@@ -14,20 +38,41 @@
         <tr>
             <td>{{ item.product.title }}</td>
             <td>{{ item.product.price }}원</td>
-            <form method="POST" action="{% url 'cart_update' item.id %}"></form>
-            <td>
-                <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
-            </td>
-            <td class="cart_form_setting">
-                <button type="submit">수정</button>&nbsp;| &nbsp;
-                <a href="{% url 'cart_remove' item.id %}">삭제</a>
-            </td>
+            <form method="POST" action="{% url 'cart_update' item.id %}">
+                {% csrf_token %}
+                <td>
+                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                </td>
+                <td class="cart_form_setting">
+                    <div>
+                    <span><button type="submit">수정</button></span>&nbsp;&nbsp;
+                    <span><a href="{% url 'cart_remove' item.id %}">삭제</a></span>
+                </div>
+                </td>
             </form>
         </tr>
         {% endfor %}
     </table>
-    <div style="text-align: right;">
-        <a href="{% url 'checkout' %}" style="background-color: #c58111; color: white; border-radius: 5px; border: none; margin-top: 10px; padding: 5px; font-size: 13px;">결제하기</a>
+
+    <div>
+        <h3>결제 방식</h3>
+        <form method="POST" action="{% url 'checkout' %}">
+            {% csrf_token %}
+            <input type="hidden" name="total_price" value="{% for item in cart_items %}{{ item.product.price|floatformat:0|add:item.quantity }}{% endfor %}">
+            <label>
+                <input type="radio" name="payment_method" value="bank_transfer" 
+                       {% if request.session.payment_method == "bank_transfer" %}checked{% endif %} required>
+                무통장 입금
+            </label>
+            <label>
+                <input type="radio" name="payment_method" value="credit_card" 
+                       {% if request.session.payment_method == "credit_card" %}checked{% endif %} required>
+                카드 결제
+            </label>
+            <div style="text-align: right; margin-top: 10px;">
+                <button type="submit" style="background-color: #c58111; color: white; border-radius: 5px; border: none; padding: 5px; font-size: 13px;">결제하기</button>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}

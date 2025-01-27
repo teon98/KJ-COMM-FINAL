@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+<div class="my_orders">
+    <h2>나의 주문 내역</h2>
+
+    <h3>무통장 입금 주문</h3>
+    <table border="1">
+        <tr style="background-color: lightgray;">
+            <th>주문번호</th>
+            <th>상품명</th>
+            <th>수량</th>
+            <th>총 금액</th>
+            <th>입금 상태</th>
+        </tr>
+        {% regroup bank_transfer_orders by cart_group_id as grouped_orders %}
+        {% for group in grouped_orders %}
+            <tr>
+                <td rowspan="{{ group.list|length }}">{{ group.grouper }}</td>
+                {% for order in group.list %}
+                    {% if not forloop.first %}<tr>{% endif %}
+                    <td><a href="{% url 'product_detail' order.product.id %}">{{ order.product.title }}</a></td>
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.total_price|floatformat:0|intcomma }}원</td>
+                    <td>
+                        {% if order.payment_status == 'pending' %}
+                            <span style="color: red;">입금 대기 중</span>
+                        {% else %}
+                            <span style="color: green;">입금 완료</span>
+                        {% endif %}
+                    </td>
+                    </tr>
+                {% endfor %}
+        {% empty %}
+            <tr>
+                <td colspan="5">무통장 입금 주문이 없습니다.</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h3>카드 결제 주문</h3>
+    <table border="1">
+        <tr style="background-color: lightgray;">
+            <th>주문번호</th>
+            <th>상품명</th>
+            <th>수량</th>
+            <th>총 금액</th>
+            <th>결제 상태</th>
+        </tr>
+        {% regroup credit_card_orders by cart_group_id as grouped_orders %}
+        {% for group in grouped_orders %}
+            <tr>
+                <td rowspan="{{ group.list|length }}">{{ group.grouper }}</td>
+                {% for order in group.list %}
+                    {% if not forloop.first %}<tr>{% endif %}
+                    <td><a href="{% url 'product_detail' order.product.id %}">{{ order.product.title }}</a></td>
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.total_price|floatformat:0|intcomma }}원</td>
+                    <td><span style="color: green;">결제 완료</span></td>
+                    </tr>
+                {% endfor %}
+        {% empty %}
+            <tr>
+                <td colspan="5">카드 결제 주문이 없습니다.</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

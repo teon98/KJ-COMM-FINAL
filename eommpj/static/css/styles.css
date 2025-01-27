@@ -952,10 +952,14 @@ footer table {
 }
 
 .cart_form_setting{
-  display: flex;
   font-size: 13px;
   align-items: center;
   justify-content: center;
+}
+
+.cart_form_setting div{
+  display: flex;
+  align-items: center;
 }
 
 .cart_form input[type="number"]{
@@ -964,4 +968,178 @@ footer table {
   text-align: center;
   height: 20px;
   color: #007bff;
+}
+
+.post_detail table{
+  font-size: 13px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.post_detail th, .post_detail td{
+  text-align: center; 
+  padding: 5px;
+}
+
+.post_detail_table_head{
+  background-color: #e9e7e7;
+} 
+
+.go_to_list{
+  text-align: right;
+  margin-top: 20px;
+  color: #c58111;
+  text-decoration: underline;
+}
+
+.post_form{
+  font-size: 13px;
+}
+.post_form th{
+  text-align: left;
+  min-width: 70px;
+}
+
+.post_form td select, .post_form input{
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+  height: 25px;
+  width: 200px;
+}
+
+.post_form textarea{
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+}
+
+
+.account_info th{
+  text-align: left;
+}
+
+.status_dashboard{
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+}
+
+.status_dashboard div{
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+  display: flex;
+  width: 120px;
+  align-items: center;
+  padding: 5px;
+  color: #707070;
+  justify-content: center;
+}
+
+.status_dashboard div p{
+  margin-left: 10px;
+  font-size: 24px;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.user-management table{
+  font-size: 13px;
+  border-collapse: collapse;
+  border: 1px solid #484848;
+  width: 100%;
+}
+
+.user-management table thead{
+  background-color: #f2f2f2;
+}
+
+.user-management table th, .user-management table td {
+  border: 1px solid #484848;
+  text-align: center;
+}
+
+.delete-user{
+  background-color: #484848;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+/* 관리자 (빨간색) */
+.user-role-admin {
+  color: #dd4040;
+}
+
+/* 사용자 (파란색) */
+.user-role-user {
+  color: #007bff;
+}
+
+.admin_order_detail_form{
+  width: 100%;
+  text-align: left;
+  font-size: 13px;
+}
+
+.admin_order_detail_form input{
+  border: 1px solid #bbbbbb;
+  width: 200px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.admin_order_lisdt_bt_group{
+  justify-content: right;
+  display: flex;
+  
+}
+.admin_order_lisdt_bt_group button{
+  background-color: #484848;
+  color: white;
+  height: 25px;
+  font-size: 13px;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.admin_order_list{
+  font-size: 13px;
+  border: 1px solid #707070;
+  border-collapse: collapse;
+}
+
+.admin_order_list thead{
+  background-color: #f2f2f2;
+}
+
+.admin_order_list th, .admin_order_list td{
+  text-align: center;
+  border: 1px solid #707070
+}
+
+.admin_order_detail{
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #707070;
+  margin-bottom: 20;
+}
+
+.admin_order_detail thead{
+  background-color: #f2f2f2;
+}
+
+.admin_order_detail th, .admin_order_detail td{
+  text-align: center;
+  border: 1px solid #707070
+}
+
+.my_orders table{
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #bbbbbb;
+  text-align: center;
+}
+
+.my_orders table a{
+  color: #c58111;
+  text-decoration: underline;
 }

@@ -1,24 +1,23 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
+{% block content %}
 <div class="board_category_update">
-<h1>게시판 카테고리 {{ action }}</h1>
-<form method="post">
-    <table>
-    <input type="hidden" name="csrfmiddlewaretoken" value="4nOyQeOUKymVL6cExFJJFTxxdXTQ5ClYmRfSPVLdqkCTHLWA1QUDT5q7DvgNt6kF">
-    <tr>
-        <th><label for="id_name">게시판 카테고리 이름</label></th>  
-        <td>{{ form.name }}</td>
-    </tr>
-    <tr>
-        <th><label for="id_description">게시판 카테고리 설명</label></th>
-        <td>{{ form.description }}</td>
-    </tr>
-    </table>
-    <div>
-        <button type="submit">{{ action }}</button>
-        <a href="{% url 'category_list' %}">목록으로 돌아가기</a>
-    </div>
-    
-</form>
-
+    <h1>게시판 카테고리 {{ action }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <th><label for="id_name">게시판 카테고리 이름</label></th>  
+                <td>{{ form.name }}</td>
+            </tr>
+            <tr>
+                <th><label for="id_description">게시판 카테고리 설명</label></th>
+                <td>{{ form.description }}</td>
+            </tr>
+        </table>
+        <div>
+            <button type="submit">{{ action }}</button>
+            <a href="{% url 'category_list' %}">목록으로 돌아가기</a>
+        </div>
+    </form>
 </div>
 {% endblock %}

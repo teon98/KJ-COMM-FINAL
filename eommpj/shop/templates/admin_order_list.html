@@ -1,60 +1,112 @@
-<h1>주문 관리</h1>
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+<div>
+    <h1>주문 관리</h1>
 
-<!-- 필터링 폼 -->
-<form method="GET" action="">
-    <label for="user">사용자 이름:</label>
-    <input type="text" id="user" name="user" value="{{ request.GET.user }}">
+    <!-- 필터링 폼 -->
+    <table class="admin_order_detail_form">
 
-    <label for="cart_group_id">장바구니 그룹 ID:</label>
-    <input type="text" id="cart_group_id" name="cart_group_id" value="{{ request.GET.cart_group_id }}">
-
-    <label for="date">주문 날짜:</label>
-    <input type="date" id="date" name="date" value="{{ request.GET.date }}">
-
-    <button type="submit">필터</button>
-</form>
-
-<!-- 주문 목록 -->
-<table>
-    <thead>
+    <form method="GET" action="" >
         <tr>
-            <th>주문 ID</th>
-            <th>사용자</th>
-            <th>상품</th>
-            <th>수량</th>
-            <th>총액</th>
-            <th>결제 방식</th>
-            <th>결제 상태</th>
-            <th>주문 날짜</th>
-            <th>상태 업데이트</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for order in orders %}
-        <tr>
-            <td>{{ order.id }}</td>
-            <td>{{ order.user.username }}</td>
-            <td>{{ order.product.title }}</td>
-            <td>{{ order.quantity }}</td>
-            <td>{{ order.total_price }}</td>
-            <td>{{ order.get_payment_method_display }}</td>
-            <td>{{ order.get_payment_status_display }}</td>
-            <td>{{ order.order_date }}</td>
+            <th>
+                <label for="user">사용자 ID</label>
+            </th>
             <td>
-                <form method="POST" action="{% url 'update_payment_status' order.id %}">
-                    {% csrf_token %}
-                    <select name="payment_status">
-                        <option value="pending" {% if order.payment_status == "pending" %}selected{% endif %}>
-                            입금 전
-                        </option>
-                        <option value="completed" {% if order.payment_status == "completed" %}selected{% endif %}>
-                            입금 완료
-                        </option>
-                    </select>
-                    <button type="submit">업데이트</button>
-                </form>
+                 <input type="text" id="user" name="user" value="{{ user_query }}">
             </td>
         </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        <tr>
+            <th>
+                <label for="cart_group_id">주문 ID</label>
+            </th>
+            <td>
+                <input type="text" id="cart_group_id" name="cart_group_id" value="{{ group_query }}">
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="date">주문 날짜:</label>
+            </th>
+            <td>
+                <input type="date" id="date" name="date" value="{{ date_query }}">
+            </td>
+        </tr>
+
+    </table>
+    <div class="admin_order_lisdt_bt_group">
+    <button type="submit">검색</button>
+    <button type="button" onclick="resetFilters()">검색 초기화</button>
+    </div>
+</form>
+    <hr/>
+    
+    <!-- 주문 목록 -->
+    <table class="admin_order_list">
+        <thead>
+            <tr>
+                <th>주문 ID</th>
+                <th>사용자</th>
+                <th>상품</th>
+                <th>수량</th>
+                <th>총액</th>
+                <th>결제 방식</th>
+                <th>결제 상태</th>
+                <th>주문 날짜</th>
+                <th>상태 업데이트</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if no_results %}
+                <tr>
+                    <td colspan="9" style="text-align: center; color: #707070;">검색 결과가 없습니다.</td>
+                </tr>
+            {% else %}
+                {% for order in orders %}
+                <tr>
+                    <td>
+                        <a href="{% url 'admin_order_detail' order.cart_group_id %}" style="color:#007bff; text-decoration: underline;">
+                            {{ order.cart_group_id }}
+                        </a>
+                    </td>
+                    <td>{{ order.user.userid }}</td>
+                    <td>{{ order.product.title }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.total_price|floatformat:0|intcomma }} 원</td>
+                    <td>{{ order.get_payment_method_display }}</td>
+                    <td>{{ order.get_payment_status_display }}</td>
+                    <td>{{ order.order_date }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'update_payment_status' order.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                            <select name="payment_status">
+                                <option value="pending" {% if order.payment_status == "pending" %}selected{% endif %}>
+                                    입금 전
+                                </option>
+                                <option value="completed" {% if order.payment_status == "completed" %}selected{% endif %}>
+                                    입금 완료
+                                </option>
+                            </select>
+                            <button type="submit" style="background: #484848; color: white; border-radius: 5px;">업데이트</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function resetFilters() {
+        // 검색어 입력 필드 초기화
+        document.getElementById('user').value = '';
+        document.getElementById('cart_group_id').value = '';
+        document.getElementById('date').value = '';
+
+        // URL 파라미터 제거 후 페이지 새로고침
+        window.location.href = window.location.pathname;
+    }
+</script>
+{% endblock %}

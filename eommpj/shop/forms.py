@@ -64,3 +64,9 @@ class ProfileUpdateForm(forms.ModelForm):
         self.fields['recommender_id'].required = False
         self.fields['additional_info'].required = False
         self.fields['birth_date'].required = False  # 생년월일 선택적 입력
+
+class PaymentForm(forms.Form):
+    card_number = forms.CharField(max_length=16, label="카드 번호")
+    expiry = forms.CharField(max_length=4, label="유효기간 (YYMM)")
+    birth = forms.CharField(max_length=6, label="생년월일 (YYMMDD)")
+    pwd_2digit = forms.CharField(max_length=2, label="비밀번호 앞 2자리")

@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="user-management">
+    <h1>사용자 관리</h1>
+
+    <!-- 통계 -->
+    <div class="status_dashboard">
+        <div>
+            <h4>총 사용자</h4>
+            <p>{{ users|length }}</p>
+        </div>
+        <div>
+            <h4>이번 달 <br>신규 가입자</h4>
+            <p>{{ this_month_users }}</p>
+        </div>
+        <div>   
+            <h4>저번 달 <br>신규 가입자</h4>
+            <p>{{ last_month_users }}</p>
+        </div>
+    </div>
+
+    <!-- 필터 -->
+    <form class=manage_user_setting"" method="get" action="{% url 'manage_users' %}">
+        <label for="user_type">사용자 유형:</label>
+        <select name="user_type" id="user_type" onchange="this.form.submit()">
+            <option value="" {% if not user_type_filter %}selected{% endif %}>전체</option>
+            <option value="admin" {% if user_type_filter == "admin" %}selected{% endif %}>관리자</option>
+            <option value="user" {% if user_type_filter == "user" %}selected{% endif %}>사용자</option>
+        </select>
+    </form>
+
+    <hr>
+
+    <!-- 사용자 리스트 -->
+    <table>
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>아이디</th>
+                <th>이메일</th>
+                <th>가입 날짜</th>
+                <th>유형</th>
+                <th>관리</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr id="user-row-{{ user.id }}">
+                <td>{{ user.id }}</td>
+                <td>{{ user.userid }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.date_joined|date:"Y-m-d" }}</td>
+                <td>
+                    <!-- 셀렉트 박스 -->
+                    <select name="user_type" class="user-role user-role-{{ user.user_type }}" data-user-id="{{ user.id }}">
+                        <option value="admin" {% if user.user_type == "admin" %}selected{% endif %}>관리자</option>
+                        <option value="user" {% if user.user_type == "user" %}selected{% endif %}>사용자</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="delete-user" data-user-id="{{ user.id }}">삭제</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+     <!-- 페이지네이션 -->
+     <div class="pagination">
+        <span class="step-links">
+            {% if users.has_previous %}
+                <a href="?page=1{% if user_type_filter %}&user_type={{ user_type_filter }}{% endif %}">처음</a>
+                <a href="?page={{ users.previous_page_number }}{% if user_type_filter %}&user_type={{ user_type_filter }}{% endif %}">이전</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ users.number }} of {{ users.paginator.num_pages }}
+            </span>
+
+            {% if users.has_next %}
+                <a href="?page={{ users.next_page_number }}{% if user_type_filter %}&user_type={{ user_type_filter }}{% endif %}">다음</a>
+                <a href="?page={{ users.paginator.num_pages }}{% if user_type_filter %}&user_type={{ user_type_filter }}{% endif %}">마지막</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // 사용자 역할 변경 이벤트
+    const roleSelectors = document.querySelectorAll(".user-role");
+    roleSelectors.forEach(select => {
+        select.addEventListener("change", function () {
+            const userId = this.dataset.userId; // data-user-id에서 사용자 ID 가져오기
+            const newRole = this.value; // 선택된 역할 가져오기
+
+            // 색상 업데이트
+            updateRoleColor(this);
+            
+            const updateUserRoleUrl = "{% url 'update_user_role' 0 %}".replace("0", userId);
+            // 서버로 요청 전송
+            fetch(updateUserRoleUrl, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `user_type=${newRole}`,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    alert(`Error: ${data.error}`);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    });
+
+    // 사용자 삭제
+    const deleteButtons = document.querySelectorAll(".delete-user");
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            const userId = this.dataset.userId; // data-user-id에서 사용자 ID 가져오기
+            const deleteUserRoleUrl = "{% url 'delete_user' 0 %}".replace("0", userId);
+            if (confirm("정말 삭제하시겠습니까?")) {
+                fetch(deleteUserRoleUrl, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    document.getElementById(`user-row-${userId}`).remove(); // 행 삭제
+                })
+                .catch(error => console.error("Error:", error));
+            }
+        });
+    });
+});
+
+
+
+</script>
+{% endblock %}
