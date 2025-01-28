@@ -86,19 +86,37 @@
 </div>
 
 <script>
+function updateRoleColor(selectElement) {
+    const role = selectElement.value; // 선택된 역할
+    if (role === "admin") {
+        selectElement.style.color = "red"; // 관리자는 빨간색
+    } else if (role === "user") {
+        selectElement.style.color = "blue"; // 사용자는 파란색
+    } else {
+        selectElement.style.color = "black"; // 기본 색상
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-    // 사용자 역할 변경 이벤트
+    console.log("DOMContentLoaded 이벤트가 실행되었습니다.");
+
     const roleSelectors = document.querySelectorAll(".user-role");
+    console.log("roleSelectors:", roleSelectors);
+
     roleSelectors.forEach(select => {
+        updateRoleColor(select); // 초기 색상 업데이트
+        console.log("초기 색상 업데이트 실행");
+
         select.addEventListener("change", function () {
-            const userId = this.dataset.userId; // data-user-id에서 사용자 ID 가져오기
+            const userId = this.dataset.userId; // 사용자 ID 가져오기
+            console.log("User ID:", userId);
             const newRole = this.value; // 선택된 역할 가져오기
+            console.log("New Role:", newRole);
 
             // 색상 업데이트
             updateRoleColor(this);
-            
+
             const updateUserRoleUrl = "{% url 'update_user_role' 0 %}".replace("0", userId);
-            // 서버로 요청 전송
             fetch(updateUserRoleUrl, {
                 method: "POST",
                 headers: {
@@ -123,6 +141,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error:", error));
         });
     });
+});
+
 
     // 사용자 삭제
     const deleteButtons = document.querySelectorAll(".delete-user");
@@ -146,8 +166,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-});
-
 
 
 </script>
