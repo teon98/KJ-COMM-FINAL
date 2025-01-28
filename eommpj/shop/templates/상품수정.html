@@ -175,7 +175,7 @@
           fetch(`/shop/api/categories/${parentId}/`)
             .then((response) => response.json())
             .then((data) => {
-              console.log("하위 카테고리 데이터:", data);
+              //console.log("하위 카테고리 데이터:", data);
               data.forEach((category) => {
                 const option = document.createElement("option");
                 option.value = category.id;
@@ -190,7 +190,7 @@
     document
       .getElementById("child-category")
       .addEventListener("change", function () {
-        console.log("선택된 하위 카테고리 ID:", this.value); // 하위 카테고리 ID 출력
+        //console.log("선택된 하위 카테고리 ID:", this.value); // 하위 카테고리 ID 출력
       });
   </script>
 </div>
