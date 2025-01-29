@@ -36,6 +36,7 @@
         <td>{{ post.views }}</td>
         {% if category.name == "A/S 접수" %}
         <td>
+            {% if request.user.user_type == "admin" %}
             <form method="post" action="{% url 'update_status' post.id %}">
                 {% csrf_token %}
                 <select name="status" id="id_status">
@@ -45,6 +46,9 @@
                 </select>
                 <button type="submit">저장</button>
             </form>
+            {% else %}
+                <span>{{ post.status }}</span>
+            {% endif %}
         </td>
         {% endif %}
         {% if request.user.user_type == "admin" %}
@@ -96,7 +100,7 @@
             const postId = this.action.split("/").slice(-3, -2)[0];
             const status = this.querySelector("select[name='status']").value;
 
-            console.log(postId)
+           // console.log(postId)
 
             fetch(this.action, {
                 method: "POST",
