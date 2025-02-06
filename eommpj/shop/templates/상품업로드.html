@@ -128,7 +128,7 @@
       <tr>
         <th>
           <label for="{{ form.is_free_shipping.id_for_label }}"
-            >착불 여부</label
+            >착불</label
           >
         </th>
         <td>{{ form.is_free_shipping }}</td>
@@ -168,7 +168,7 @@
             .then((response) => response.json())
             .then((data) => {
               //console.log("하위 카테고리 데이터:", data);
-              //data.forEach((category) => {
+              data.forEach((category) => {
                 const option = document.createElement("option");
                 option.value = category.id;
                 option.textContent = category.name;
