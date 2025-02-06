@@ -98,20 +98,20 @@ function updateRoleColor(selectElement) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("DOMContentLoaded 이벤트가 실행되었습니다.");
+    //console.log("DOMContentLoaded 이벤트가 실행되었습니다.");
 
     const roleSelectors = document.querySelectorAll(".user-role");
-    console.log("roleSelectors:", roleSelectors);
+    //console.log("roleSelectors:", roleSelectors);
 
     roleSelectors.forEach(select => {
         updateRoleColor(select); // 초기 색상 업데이트
-        console.log("초기 색상 업데이트 실행");
+        //console.log("초기 색상 업데이트 실행");
 
         select.addEventListener("change", function () {
             const userId = this.dataset.userId; // 사용자 ID 가져오기
-            console.log("User ID:", userId);
+            //console.log("User ID:", userId);
             const newRole = this.value; // 선택된 역할 가져오기
-            console.log("New Role:", newRole);
+            //console.log("New Role:", newRole);
 
             // 색상 업데이트
             updateRoleColor(this);

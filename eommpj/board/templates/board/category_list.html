@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const categoryId = this.dataset.id;
             const categoryName = this.dataset.name;
 
-            console.log(`/board/categories/${categoryId}/delete/`);
+            //(`/board/categories/${categoryId}/delete/`);
             if (confirm(`"${categoryName}" 카테고리를 삭제하시겠습니까?`)) {
                 fetch(`/board/categories/${categoryId}/delete/`, {
                     method: 'POST',
